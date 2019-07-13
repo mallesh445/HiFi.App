@@ -51,7 +51,21 @@ namespace HiFi.WebApplication
             //    .AddDefaultUI(UIFramework.Bootstrap4)
             //    .AddEntityFrameworkStores<ApplicationDBContext>();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddRazorPagesOptions(options =>
+            {
+                options.AllowAreas = true;
+                //options.Conventions.AddPageRoute("/Admin/Index", "Admin");
+            });
+            services.Configure<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>(o =>
+            {
+                o.AreaViewLocationFormats.Add("/Areas/{2}/{0}" + Microsoft.AspNetCore.Mvc.Razor.RazorViewEngine.ViewExtension);
+            });
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -77,6 +91,11 @@ namespace HiFi.WebApplication
 
             app.UseMvc(routes =>
             {
+                routes.MapAreaRoute(
+                    name: "areas",
+                    areaName:"Admin",
+                    template: "{area:exists}/{controller=Default}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

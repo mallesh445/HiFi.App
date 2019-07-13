@@ -5,30 +5,30 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HiFi.WebApplication.Areas.Admin.Controllers
+namespace HiFi.WebApplication.Areas.Testing.Controllers
 {
-    [Area("Admin")]
-    public class DefaultController : Controller
+    [Area("Testing")]
+    public class ShopController : Controller
     {
-        // GET: Default
+        // GET: Shop
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Default/Details/5
+        // GET: Shop/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Default/Create
+        // GET: Shop/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Default/Create
+        // POST: Shop/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -45,13 +45,13 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
         }
 
-        // GET: Default/Edit/5
+        // GET: Shop/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: Default/Edit/5
+        // POST: Shop/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -68,13 +68,13 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
         }
 
-        // GET: Default/Delete/5
+        // GET: Shop/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Default/Delete/5
+        // POST: Shop/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)

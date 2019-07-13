@@ -55,7 +55,7 @@ namespace HiFi.WebApplication
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddRazorPagesOptions(options =>
             {
                 options.AllowAreas = true;
-                //options.Conventions.AddPageRoute("/Admin/Index", "Admin");
+                options.Conventions.AddPageRoute("/Admin/Index", "Admin");
             });
             services.Configure<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions>(o =>
             {
@@ -95,6 +95,10 @@ namespace HiFi.WebApplication
                     name: "areas",
                     areaName:"Admin",
                     template: "{area:exists}/{controller=Default}/{action=Index}/{id?}");
+                routes.MapAreaRoute(
+                    name: "areas",
+                    areaName: "Testing",
+                    template: "{area:exists}/{controller=Shop}/{action=Index}/{id?}");
 
                 routes.MapRoute(
                     name: "default",

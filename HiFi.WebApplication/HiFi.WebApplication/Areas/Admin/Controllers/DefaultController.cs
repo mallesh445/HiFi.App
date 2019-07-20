@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Route("[controller]/[action]")]
     public class DefaultController : Controller
     {
         // GET: Default

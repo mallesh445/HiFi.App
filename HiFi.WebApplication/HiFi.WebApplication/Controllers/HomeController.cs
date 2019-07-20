@@ -8,6 +8,7 @@ using HiFi.WebApplication.Models;
 
 namespace HiFi.WebApplication.Controllers
 {
+    //[Route("Home")] 
     public class HomeController : Controller
     {
         public IActionResult Index()
@@ -25,5 +26,10 @@ namespace HiFi.WebApplication.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        //public IActionResult Dashboard1()
+        //{
+        //    return View();
+        //}
     }
 }

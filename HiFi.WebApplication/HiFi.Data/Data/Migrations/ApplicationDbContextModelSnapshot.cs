@@ -189,6 +189,10 @@ namespace HiFi.WebApplication.Data.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
+
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 

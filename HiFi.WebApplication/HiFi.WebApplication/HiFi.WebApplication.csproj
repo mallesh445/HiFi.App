@@ -11,18 +11,24 @@
     <PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
     <PackageReference Include="Sendgrid" Version="9.11.0" />
   </ItemGroup>
 
 
   <ItemGroup>
+    <ProjectReference Include="..\HiFi.Common\HiFi.Common.csproj" />
     <ProjectReference Include="..\HiFi.Data\HiFi.Data.csproj" />
   </ItemGroup>
 
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="wwwroot\themes\less\oregional\" />
   </ItemGroup>
 
 </Project>

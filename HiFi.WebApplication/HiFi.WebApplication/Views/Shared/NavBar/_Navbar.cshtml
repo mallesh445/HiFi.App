@@ -1,0 +1,52 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using HiFi.Data.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+<!-- Navbar ================================================== -->
+<div id="logoArea" class="navbar">
+    <a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </a>
+    <div class="navbar-inner">
+        <a class="brand" href="index.html"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
+        <form class="form-inline navbar-search" method="post" action="products.html">
+            <input id="srchFld" class="srchTxt" type="text" />
+            <select class="srchTxt">
+                <option>All</option>
+                <option>CLOTHES </option>
+                <option>FOOD AND BEVERAGES </option>
+                <option>HEALTH & BEAUTY </option>
+                <option>SPORTS & LEISURE </option>
+                <option>BOOKS & ENTERTAINMENTS </option>
+            </select>
+            <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
+        </form>
+        <ul id="topMenu" class="nav pull-right">
+            @*<li class=""><a href="normal.html">Delivery</a></li>*@
+            <li class=""><a href="@Url.Action("Contact", "Home")">Contact</a></li>
+            @*@Html.Partial("_LoginPartial")*@
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                </li>
+                <li class="nav-item">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                    </form>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

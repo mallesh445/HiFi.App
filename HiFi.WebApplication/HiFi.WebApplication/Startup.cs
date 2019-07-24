@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using HiFi.Data.Data;
 using HiFi.Data.Models;
 using HiFi.WebApplication.Areas.Admin.Services.Profile;
+using HiFi.Services.Catalog;
+using HiFi.Repository;
 
 namespace HiFi.WebApplication
 {
@@ -70,6 +72,12 @@ namespace HiFi.WebApplication
             });
 
             //Dependencies
+            services.AddScoped<IRepository<Category>, EfRepository<Category>>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
+            //services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            //services.AddScoped(IDbContext, ApplicationDBContext);
+            //services.AddScoped<IRepository<Category>, EfRepository<Category>>();
             //services.AddScoped<ApplicationUser, ApplicationUser>();
             //services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<ProfileManager, ProfileManager>();

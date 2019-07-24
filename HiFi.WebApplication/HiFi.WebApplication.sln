@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiFi.WebApplication", "HiFi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiFi.Data", "HiFi.Data\HiFi.Data.csproj", "{C16DA060-BAEA-45AC-92A4-AF20D75026FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiFi.Common", "HiFi.Common\HiFi.Common.csproj", "{F781C50A-03DF-40E1-9CD3-4F62680FF4E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HiFi.Common", "HiFi.Common\HiFi.Common.csproj", "{F781C50A-03DF-40E1-9CD3-4F62680FF4E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiFi.Services", "HiFi.Services\HiFi.Services.csproj", "{48D947C2-26EE-4FFB-AF87-52AD43009A57}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiFi.Repository", "HiFi.Repository\HiFi.Repository.csproj", "{0012BF81-B0AD-4AAB-9A48-912CF170EEEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{F781C50A-03DF-40E1-9CD3-4F62680FF4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F781C50A-03DF-40E1-9CD3-4F62680FF4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F781C50A-03DF-40E1-9CD3-4F62680FF4E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48D947C2-26EE-4FFB-AF87-52AD43009A57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48D947C2-26EE-4FFB-AF87-52AD43009A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48D947C2-26EE-4FFB-AF87-52AD43009A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48D947C2-26EE-4FFB-AF87-52AD43009A57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0012BF81-B0AD-4AAB-9A48-912CF170EEEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0012BF81-B0AD-4AAB-9A48-912CF170EEEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0012BF81-B0AD-4AAB-9A48-912CF170EEEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0012BF81-B0AD-4AAB-9A48-912CF170EEEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

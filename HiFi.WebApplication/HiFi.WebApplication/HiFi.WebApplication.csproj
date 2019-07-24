@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\HiFi.Common\HiFi.Common.csproj" />
     <ProjectReference Include="..\HiFi.Data\HiFi.Data.csproj" />
+    <ProjectReference Include="..\HiFi.Services\HiFi.Services.csproj" />
   </ItemGroup>
 
 

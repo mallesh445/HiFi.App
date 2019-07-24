@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
+    [Authorize]
     [Area("Admin")]
     public class ProfileController : Controller
     {

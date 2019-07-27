@@ -57,5 +57,23 @@ namespace HiFi.Repository
                 return false;
             }
         }
+
+        public bool BulkCreate(IList<T> categoriesList)
+        {
+            table.AddRange(categoriesList);
+            return Save();
+        }
+
+        public ApplicationUser GetApplicationUser(string userid ="")
+        {
+            if (userid!="")
+            {
+                return _context.ApplicationUser.Where(a => a.Id == userid).FirstOrDefault();
+            }
+            else
+            {
+                return _context.ApplicationUser.FirstOrDefault();
+            }
+        }
     }
 }

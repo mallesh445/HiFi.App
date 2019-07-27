@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 - @ViewData["Title"]</title>
+    <title>HiFi Technologies - @ViewData["Title"]</title>
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -33,9 +33,14 @@
 
     <environment include="Development">
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="~/css/CommonTableStyles.css"/>
+        <link href="~/libs/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+        <link href="~/libs/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link href="~/libs/datatables/css/jquery.dataTables.min.css" rel="stylesheet" />
+        <link href="~/libs/datatables/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
     </environment>
 
 
@@ -88,9 +93,13 @@
     <!-- ASP.NET site script -->
     <environment include="Development">
         <script src="~/js/site.js"></script>
+        <script src="~/libs/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="~/libs/datatables/js/dataTables.bootstrap4.min.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/libs/datatables/js/jquery.dataTables.min.js"></script>
+        <script src="~/libs/datatables/js/dataTables.bootstrap4.min.js"></script>
     </environment>
 
     <script>

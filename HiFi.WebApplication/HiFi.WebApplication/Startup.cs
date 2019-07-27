@@ -48,6 +48,9 @@ namespace HiFi.WebApplication
                 options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
                 options.Lockout.AllowedForNewUsers = true;
                 options.Lockout.MaxFailedAccessAttempts = 3;
+                // Password settings
+                options.Password.RequireDigit = true;
+                options.Password.RequireNonAlphanumeric = false;
             }).AddDefaultTokenProviders().AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDBContext>();
             //services.AddDefaultIdentity<IdentityUser>()

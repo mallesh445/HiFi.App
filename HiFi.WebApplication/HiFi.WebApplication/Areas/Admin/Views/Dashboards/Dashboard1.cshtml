@@ -1,4 +1,5 @@
-﻿@{
+﻿@model HiFi.WebApplication.Areas.Admin.ViewModels.DashboardViewModel
+@{
     ViewData["Title"] = "Dashboard 1";
 }
 
@@ -50,6 +51,7 @@
     <h1>
         Dashboard
         <small>Control panel</small>
+        <span></span>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -65,7 +67,7 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>150</h3>
+                    <h3>@Model.orders_count</h3>
 
                     <p>New Orders</p>
                 </div>
@@ -95,7 +97,7 @@
             <!-- small box -->
             <div class="small-box bg-yellow">
                 <div class="inner">
-                    <h3>44</h3>
+                    <h3>@Model.customers_count</h3>
 
                     <p>User Registrations</p>
                 </div>

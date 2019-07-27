@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using HiFi.Common.ExcelModel;
 using HiFi.Data.Models;
 
 namespace HiFi.Services.Catalog
@@ -16,8 +17,20 @@ namespace HiFi.Services.Catalog
         /// <returns>Categories</returns>
         IEnumerable<Category> GetAllCategories(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true);
 
+        /// <summary>
+        /// InsertCategory
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
         bool InsertCategory(Category category);
         bool UpdateCategory(Category category);
         bool DeleteCategory(Category category);
+
+        /// <summary>
+        /// InsertCategorInBulk
+        /// </summary>
+        /// <param name="records"></param>
+        /// <returns></returns>
+        bool InsertCategorInBulk(List<CategoryImportExcel> records);
     }
 }

@@ -23,7 +23,7 @@ namespace HiFi.Data.Models
 
         /// <summary>
         /// Gets or sets the picture identifier
-        /// </summary>
+        /// </summary>re
         public int PictureId { get; set; }
 
     }

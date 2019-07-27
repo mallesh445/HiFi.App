@@ -15,5 +15,7 @@ namespace HiFi.Repository
         bool Update(T obj);
         bool Delete(object id);
         bool Save();
+        bool BulkCreate(IList<T> categoriesList);
+        ApplicationUser GetApplicationUser(string userid="");
     }
 }

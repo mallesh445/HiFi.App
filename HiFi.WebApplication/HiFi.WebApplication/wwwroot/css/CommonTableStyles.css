@@ -1,0 +1,38 @@
+﻿.panel-body {
+    padding: 15px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-top: 5px;
+}
+
+.table {
+    background-color: white;
+    color: black;
+    border: 1px #ddd solid;
+}
+.tableHeader {
+    background-color: #f4f4f4;
+    color: black;
+    border: 1px;
+}
+
+.dataTable > thead > tr > th[class*="sort"]::after {
+    display: none
+}
+
+.dataTable > thead > tr > th[class*="sort"]::before {
+    display: none
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: unset !important;
+}
+
+table.dataTable thead th, table.dataTable thead td {
+    /*padding: 5px 18px !important;*/
+    border-bottom: 2px solid #00c0ef !important;
+}
+table.dataTable.no-footer {
+    border-bottom: 1px solid #00c0ef !important;
+}

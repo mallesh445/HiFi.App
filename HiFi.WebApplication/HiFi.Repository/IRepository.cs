@@ -12,10 +12,12 @@ namespace HiFi.Repository
         IEnumerable<T> GetAll();
         T GetById(object id);
         bool Insert(T obj);
+        T InsertData(T entity);
         bool Update(T obj);
         bool Delete(object id);
         bool Save();
         bool BulkCreate(IList<T> categoriesList);
         ApplicationUser GetApplicationUser(string userid="");
+        IEnumerable<ProductImage> GetAllById(int pKProductId);
     }
 }

@@ -24,6 +24,12 @@ namespace HiFi.Repository
         {
             return table.ToList();
         }
+
+        public IEnumerable<ProductImage> GetAllById(int pKProductId)
+        {
+            return _context.ProductImage.Where(a => a.Product.PKProductId == pKProductId);
+        }
+
         public T GetById(object id)
         {
             return table.Find(id);
@@ -32,6 +38,19 @@ namespace HiFi.Repository
         {
             table.Add(obj);
             return Save();
+        }
+        public T InsertData(T entity)
+        {
+            var storedEntity = table.Add(entity);
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            return storedEntity.Entity;
         }
         public bool Update(T obj)
         {
@@ -75,5 +94,6 @@ namespace HiFi.Repository
                 return _context.ApplicationUser.FirstOrDefault();
             }
         }
+
     }
 }

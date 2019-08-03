@@ -12,6 +12,6 @@ namespace HiFi.Data
         /// <summary>
         /// Gets or sets the entity identifier
         /// </summary>
-        public int EId { get; set; }
+        //public int EId { get; set; }
     }
 }

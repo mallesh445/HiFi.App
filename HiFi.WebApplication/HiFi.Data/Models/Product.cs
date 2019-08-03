@@ -40,5 +40,11 @@ namespace HiFi.Data.Models
         [ForeignKey("UpdatedByUserId")]
         public virtual ApplicationUser ApplicationUser1 { get; set; }
         public bool IsActive { get; set; }
+
+        [Display(Name = "SubCategoryOne")]
+        public int SubCategoryOneId { get; set; }
+
+        [ForeignKey("SubCategoryOneId")]
+        public virtual SubCategoryOne SubCategoryOne { get; set; }
     }
 }

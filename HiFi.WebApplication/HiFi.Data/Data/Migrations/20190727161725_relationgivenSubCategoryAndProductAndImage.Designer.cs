@@ -4,14 +4,16 @@ using HiFi.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HiFi.WebApplication.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190727161725_relationgivenSubCategoryAndProductAndImage")]
+    partial class relationgivenSubCategoryAndProductAndImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,6 +105,8 @@ namespace HiFi.WebApplication.Data.Migrations
 
                     b.Property<byte[]>("BinaryData");
 
+                    b.Property<int>("EId");
+
                     b.Property<int>("PictureId");
 
                     b.HasKey("Id");
@@ -125,6 +129,8 @@ namespace HiFi.WebApplication.Data.Migrations
 
                     b.Property<int>("DisplayOrder");
 
+                    b.Property<int>("EId");
+
                     b.Property<bool>("IsActive");
 
                     b.Property<decimal>("Price");
@@ -137,7 +143,7 @@ namespace HiFi.WebApplication.Data.Migrations
                     b.Property<string>("ShortDescription")
                         .IsRequired();
 
-                    b.Property<int>("SubCategoryOneId");
+                    b.Property<int?>("SubCategoryOneId");
 
                     b.Property<string>("UpdatedByUserId");
 
@@ -161,6 +167,8 @@ namespace HiFi.WebApplication.Data.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int>("EId");
 
                     b.Property<int?>("FKProductId");
 
@@ -196,6 +204,8 @@ namespace HiFi.WebApplication.Data.Migrations
                         .IsRequired();
 
                     b.Property<int>("DisplayOrder");
+
+                    b.Property<int>("EId");
 
                     b.Property<bool>("IsActive");
 
@@ -418,8 +428,7 @@ namespace HiFi.WebApplication.Data.Migrations
 
                     b.HasOne("HiFi.Data.Models.SubCategoryOne", "SubCategoryOne")
                         .WithMany()
-                        .HasForeignKey("SubCategoryOneId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SubCategoryOneId");
 
                     b.HasOne("HiFi.Data.Models.ApplicationUser", "ApplicationUser1")
                         .WithMany()

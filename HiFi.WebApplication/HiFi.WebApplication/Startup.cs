@@ -18,6 +18,8 @@ using HiFi.Data.Models;
 using HiFi.WebApplication.Areas.Admin.Services.Profile;
 using HiFi.Services.Catalog;
 using HiFi.Repository;
+using HiFi.Services;
+using HiFi.Services.Implementation;
 
 namespace HiFi.WebApplication
 {
@@ -77,6 +79,8 @@ namespace HiFi.WebApplication
             //Dependencies
             services.AddScoped<IRepository<Category>, EfRepository<Category>>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ISubCategoryService, SubCategoryService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
             //services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             //services.AddScoped(IDbContext, ApplicationDBContext);

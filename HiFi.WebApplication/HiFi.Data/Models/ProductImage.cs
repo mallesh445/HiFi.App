@@ -12,10 +12,22 @@ namespace HiFi.Data.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Required]
         public int PKImageId { get; set; }
+
+        [Required]
         public string ImageName { get; set; }
         public string ImagePath { get; set; }
 
         [Required]
         public bool IsMainImage { get; set; }
+        
+        [ForeignKey("FKProductId")]
+        public virtual Product Product { get; set; }
+
+        [Required]
+        [Display(Name = "CreatedDate")]
+        public DateTime CreatedDate { get; set; }
+
+        [Display(Name = "UpdatedDate")]
+        public DateTime UpdatedDate { get; set; }
     }
 }

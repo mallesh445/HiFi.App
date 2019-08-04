@@ -1,0 +1,19 @@
+﻿@model int
+
+@{
+    var modelId = Model;
+}
+
+<td style="width:150px;">
+    <div class="btn-group" role="group">
+        <a type="button" class="btn btn-primary" href="@Url.Action("Edit",new { id = modelId })">
+            <i class="fa fal fa-edit"></i>
+        </a>
+        <a type="button" class="btn btn-success" href="@Url.Action("Details",new { id = modelId })">
+            <i class="fa far fa-list-alt"></i>
+        </a>
+        <a type="button" class="btn btn-danger" href="@Url.Action("Delete",new { id = modelId })">
+            <i class="fa far fa-trash"></i>
+        </a>
+    </div>
+</td>

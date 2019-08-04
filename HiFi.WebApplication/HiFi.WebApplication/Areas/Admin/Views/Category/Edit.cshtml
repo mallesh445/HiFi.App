@@ -1,29 +1,26 @@
-﻿@model HiFi.Data.Models.SubCategoryOne
+﻿@model HiFi.Data.Models.Category
 
 @{
-    ViewData["Title"] = "Edit";
-    Layout = "~/Areas/Admin/Views/Shared/_ALayout.cshtml";
-    var categoryList = ViewBag.CategoryList;
+    //Layout = null;
 }
 
 <section class="container-fluid">
     <div class="content panel-body">
-        <h4>Edit SubCategoryOne</h4>
+        <h4>Category</h4>
         <hr />
         <div class="row">
             <div class="col-md-4">
                 <form asp-action="Edit">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        @Html.LabelFor(model => model.CategoryId, "Category", new { @class = "control-label col-md-2" })
-                        @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)categoryList, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CategoryId)
+                        <label asp-for="CategoryId" class="control-label"></label>
+                        <input asp-for="CategoryId" class="form-control" />
+                        <span asp-validation-for="CategoryId" class="text-danger"></span>
                     </div>
-                    <input type="hidden" asp-for="SubCategoryOneId" />
                     <div class="form-group">
-                        <label asp-for="SubCategoryName" class="control-label"></label>
-                        <input asp-for="SubCategoryName" class="form-control" />
-                        <span asp-validation-for="SubCategoryName" class="text-danger"></span>
+                        <label asp-for="CategoryName" class="control-label"></label>
+                        <input asp-for="CategoryName" class="form-control" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Description" class="control-label"></label>
@@ -49,16 +46,6 @@
                         <label class="form-check-label">
                             <input class="form-check-input" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
                         </label>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="SC_ImageName" class="control-label"></label>
-                        <input asp-for="SC_ImageName" class="form-control" />
-                        <span asp-validation-for="SC_ImageName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="SC_ImagePath" class="control-label"></label>
-                        <input asp-for="SC_ImagePath" class="form-control" />
-                        <span asp-validation-for="SC_ImagePath" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-primary" />

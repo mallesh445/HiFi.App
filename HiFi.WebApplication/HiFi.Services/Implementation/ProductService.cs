@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using HiFi.Data.Models;
 using HiFi.Repository;
 
@@ -26,6 +27,12 @@ namespace HiFi.Services.Implementation
         public IEnumerable<ProductImage> GetAllProductImages()
         {
             var data = imageRepository.GetAll();
+            return data;
+        }
+
+        public Product GetProductByProductId(int? id)
+        {
+            var data = productRepository.GetById(id);
             return data;
         }
         public IEnumerable<ProductImage> GetAllProductImagesById(int pKProductId)

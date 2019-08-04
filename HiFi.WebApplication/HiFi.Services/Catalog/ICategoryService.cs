@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using HiFi.Common.ExcelModel;
 using HiFi.Data.Models;
 
@@ -24,7 +25,7 @@ namespace HiFi.Services.Catalog
         /// <returns></returns>
         bool InsertCategory(Category category);
         bool UpdateCategory(Category category);
-        bool DeleteCategory(Category category);
+        bool DeleteCategory(int categoryId);
 
         /// <summary>
         /// InsertCategorInBulk
@@ -32,5 +33,6 @@ namespace HiFi.Services.Catalog
         /// <param name="records"></param>
         /// <returns></returns>
         bool InsertCategorInBulk(List<CategoryImportExcel> records);
+        Task<Category> GetCategoryByIdAsync(int id);
     }
 }

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace HiFi.WebApplication.Data.Migrations
+namespace HiFi.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20190721082938_AddedSubCatProductRelatedTables")]
-    partial class AddedSubCatProductRelatedTables
+    [Migration("20190803184344_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -139,6 +139,8 @@ namespace HiFi.WebApplication.Data.Migrations
                     b.Property<string>("ShortDescription")
                         .IsRequired();
 
+                    b.Property<int>("SubCategoryOneId");
+
                     b.Property<string>("UpdatedByUserId");
 
                     b.Property<DateTime>("UpdatedDate");
@@ -146,6 +148,8 @@ namespace HiFi.WebApplication.Data.Migrations
                     b.HasKey("PKProductId");
 
                     b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("SubCategoryOneId");
 
                     b.HasIndex("UpdatedByUserId");
 
@@ -158,13 +162,22 @@ namespace HiFi.WebApplication.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ImageName");
+                    b.Property<DateTime>("CreatedDate");
+
+                    b.Property<int?>("FKProductId");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired();
 
                     b.Property<string>("ImagePath");
 
                     b.Property<bool>("IsMainImage");
 
+                    b.Property<DateTime>("UpdatedDate");
+
                     b.HasKey("PKImageId");
+
+                    b.HasIndex("FKProductId");
 
                     b.ToTable("ProductImage");
                 });
@@ -177,6 +190,8 @@ namespace HiFi.WebApplication.Data.Migrations
 
                     b.Property<int?>("CategoryId");
 
+                    b.Property<string>("CreatedByUserId");
+
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<string>("Description")
@@ -186,14 +201,25 @@ namespace HiFi.WebApplication.Data.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<string>("SC_ImageName")
+                        .IsRequired();
+
+                    b.Property<string>("SC_ImagePath");
+
                     b.Property<string>("SubCategoryName")
                         .IsRequired();
+
+                    b.Property<string>("UpdatedByUserId");
 
                     b.Property<DateTime>("UpdatedDate");
 
                     b.HasKey("SubCategoryOneId");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.HasIndex("UpdatedByUserId");
 
                     b.ToTable("SubCategoryOne");
                 });
@@ -392,9 +418,21 @@ namespace HiFi.WebApplication.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CreatedByUserId");
 
+                    b.HasOne("HiFi.Data.Models.SubCategoryOne", "SubCategoryOne")
+                        .WithMany()
+                        .HasForeignKey("SubCategoryOneId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("HiFi.Data.Models.ApplicationUser", "ApplicationUser1")
                         .WithMany()
                         .HasForeignKey("UpdatedByUserId");
+                });
+
+            modelBuilder.Entity("HiFi.Data.Models.ProductImage", b =>
+                {
+                    b.HasOne("HiFi.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("FKProductId");
                 });
 
             modelBuilder.Entity("HiFi.Data.Models.SubCategoryOne", b =>
@@ -402,6 +440,14 @@ namespace HiFi.WebApplication.Data.Migrations
                     b.HasOne("HiFi.Data.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId");
+
+                    b.HasOne("HiFi.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId");
+
+                    b.HasOne("HiFi.Data.Models.ApplicationUser", "ApplicationUser1")
+                        .WithMany()
+                        .HasForeignKey("UpdatedByUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

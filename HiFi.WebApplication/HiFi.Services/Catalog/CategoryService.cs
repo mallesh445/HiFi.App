@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using HiFi.Common.ExcelModel;
 using HiFi.Data.Models;
 using HiFi.Repository;
@@ -22,6 +23,12 @@ namespace HiFi.Services.Catalog
             return data;
         }
 
+        public async Task<Category> GetCategoryByIdAsync(int id)
+        {
+            var result = _categoryRepository.GetById(id);
+            return result;
+        }
+
         public bool InsertCategory(Category category)
         {
             _categoryRepository.Insert(category);
@@ -34,9 +41,9 @@ namespace HiFi.Services.Catalog
             return true;
         }
 
-        public bool DeleteCategory(Category category)
+        public bool DeleteCategory(int categoryId)
         {
-            _categoryRepository.Delete(category);
+            _categoryRepository.Delete(categoryId);
             return true;
         }
 

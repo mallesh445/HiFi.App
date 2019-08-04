@@ -63,9 +63,20 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Category/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Category category = await _categoryService.GetCategoryByIdAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
         }
 
         // POST: Category/Edit/5
@@ -78,7 +89,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 // TODO: Add update logic here
                 if (ModelState.IsValid)
                 {
-                    bool result = _categoryService.InsertCategory(category);
+                    bool result = _categoryService.UpdateCategory(category);
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -89,9 +100,19 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Category/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var _category = await _categoryService.GetCategoryByIdAsync(id);
+            if (_category == null)
+            {
+                return NotFound();
+            }
+            return View(_category);
         }
 
         // POST: Category/Delete/5
@@ -101,7 +122,10 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                if (ModelState.IsValid)
+                {
+                    bool result = _categoryService.DeleteCategory(id);
+                }
 
                 return RedirectToAction(nameof(Index));
             }

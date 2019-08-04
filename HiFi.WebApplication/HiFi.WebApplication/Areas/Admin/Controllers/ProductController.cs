@@ -105,8 +105,9 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                         Quantity = productModel.Quantity,
                         CreatedDate = DateTime.Now,
                         UpdatedDate = DateTime.Now,
-                        SubCategoryOne = new SubCategoryOne
-                        { SubCategoryOneId= Convert.ToInt32(productModel.SubCategoryId) }
+                        SubCategoryOneId = Convert.ToInt32(productModel.SubCategoryId)
+                        //SubCategoryOne = new SubCategoryOne
+                        //{ SubCategoryOneId= Convert.ToInt32(productModel.SubCategoryId) }
                     };
 
                     var resultProduct = _productService.InsertProduct(product);
@@ -116,25 +117,28 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                         //Image Being Saved
                         string webRootPath = _hostingEnvironment.WebRootPath;
                         var files = HttpContext.Request.Form.Files;
+                        string uploadedImageName = files[0].FileName.Substring(0, files[0].FileName.LastIndexOf("."));
                         var productImage = new ProductImage();
                         if (files[0] != null && files[0].Length > 0)
                         {
                             //when user uploads an image
                             var uploads = Path.Combine(webRootPath, "Images");
                             var extension = files[0].FileName.Substring(files[0].FileName.LastIndexOf("."), files[0].FileName.Length - files[0].FileName.LastIndexOf("."));
-                            using (var filestream = new FileStream(Path.Combine(uploads, resultProduct.PKProductId + extension), FileMode.Create))
+                            using (var filestream = new FileStream(Path.Combine(uploads, uploadedImageName + resultProduct.PKProductId + extension), FileMode.Create))
                             {
                                 files[0].CopyTo(filestream);
                             }
-                            productImage.ImagePath = @"\Images\" + resultProduct.PKProductId + extension;
-                            productImage.ImageName = resultProduct.ProductName;
+                            productImage.ImagePath = @"\Images\" + uploadedImageName + resultProduct.PKProductId + extension;
+                            productImage.IsMainImage = true; //if it is 1 image then
+                            productImage.ImageName = uploadedImageName;
+                            //productImage.ImageName = resultProduct.ProductName;
                         }
                         else
                         {
                             //when user does not upload image
-                            var uploads = Path.Combine(webRootPath, @"Images\" + SD.DefaultFoodImage);
-                            System.IO.File.Copy(uploads, webRootPath + @"\Images\" + resultProduct.PKProductId + ".png");
-                            productImage.ImagePath = @"\Images\" + resultProduct.PKProductId + ".png";
+                            var uploads = Path.Combine(webRootPath, @"Images\" + SD.DefaultProductImage);
+                            System.IO.File.Copy(uploads, webRootPath + @"\Images\" + resultProduct.ProductName + resultProduct.PKProductId + ".png");
+                            productImage.ImagePath = @"\Images\" + resultProduct.ProductName + resultProduct.PKProductId + ".png";
                             productImage.ImageName = resultProduct.ProductName;
                         }
                         productImage.CreatedDate = DateTime.Now;
@@ -153,5 +157,33 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
         }
 
+        // GET: Admin/Product/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ProductViewModel productViewModel = null;
+            var editProduct = _productService.GetProductByProductId(id);
+            if (editProduct != null)
+            {
+                productViewModel = new ProductViewModel()
+                {
+                    ProductName = editProduct.ProductName,
+                    Description = editProduct.Description,
+                    ShortDescription = editProduct.ShortDescription,
+                    DisplayOrder = editProduct.DisplayOrder,
+                    Price = editProduct.Price,
+                    Quantity = editProduct.Quantity
+                };
+            }
+            else
+            {
+                return NotFound();
+            }
+            ViewBag.SubCategoryId = new SelectList(_subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName",editProduct.SubCategoryOneId);
+            return View(productViewModel);
+        }
     }
 }

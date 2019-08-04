@@ -19,7 +19,10 @@ namespace HiFi.Data.Models
 
         [Required]
         public bool IsMainImage { get; set; }
-        
+
+        [Display(Name = "Product")]
+        public int FKProductId { get; set; }
+
         [ForeignKey("FKProductId")]
         public virtual Product Product { get; set; }
 

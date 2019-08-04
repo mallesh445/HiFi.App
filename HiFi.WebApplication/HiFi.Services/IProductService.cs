@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HiFi.Services
 {
@@ -9,11 +10,12 @@ namespace HiFi.Services
     { 
         IEnumerable<Product> GetAllProducts(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true);
 
-        Product InsertProduct(Product category);
-        ProductImage InsertProductImage(ProductImage category);
-        bool UpdateProduct(Product category);
-        bool DeleteProduct(Product category);
+        Product InsertProduct(Product product);
+        ProductImage InsertProductImage(ProductImage product);
+        bool UpdateProduct(Product product);
+        bool DeleteProduct(Product product);
         IEnumerable<ProductImage> GetAllProductImagesById(int pKProductId);
+        Product GetProductByProductId(int? id);
 
         //bool InsertProductInBulk(List<ProductImportExcel> records);
     }

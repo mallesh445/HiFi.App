@@ -6,9 +6,12 @@ namespace HiFi.Common
 {
     public class SD
     {
-        public const string DefaultFoodImage = "default_food.png";
+        public const string DefaultProductImage = "default-product.PNG";
+        public const string DefaultSubCategoryImage = "default-subcat.PNG";
 
         public const string AdminEndUser = "Admin";
+        public const string ManagerEndUser = "Manager";
+        public const string EmployeeEndUser = "Employee";
         public const string CustomerEndUser = "Customer";
 
         public const string StatusSubmitted = "Submitted";

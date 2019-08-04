@@ -4,12 +4,12 @@
     ViewData["Title"] = "Index";
 }
 @*<head>
-    <style>
-        .dataTable > thead > tr > th[class*="sort"]::after {
-            display: none
-        }
-    </style>
-</head>*@
+        <style>
+            .dataTable > thead > tr > th[class*="sort"]::after {
+                display: none
+            }
+        </style>
+    </head>*@
 
 <section class="container-fluid">
     <div class="clearfix panel-body">
@@ -26,62 +26,58 @@
             </button>
         </div>
     </div>
-    <div class="panel panel-body"> 
-            <table class="table" id="adminCategoriesTable">
-                <thead>
+    <div class="panel panel-body">
+        <table class="table" id="adminCategoriesTable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.DisplayOrder)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.CreatedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UpdatedDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </th>
+                    <th>Operations</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CategoryName)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Description)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.DisplayOrder)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.CreatedDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.UpdatedDate)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.IsActive)
-                        </th>
-                        <th>Operations</th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CategoryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DisplayOrder)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UpdatedDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        @Html.Partial("_TableButtonPartial", item.CategoryId)
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CategoryName)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.DisplayOrder)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CreatedDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UpdatedDate)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.IsActive)
-                            </td>
-                            <td>
-                                <a asp-action="Edit" asp-route-id="@item.CategoryId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.CategoryId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.CategoryId">Delete</a>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                }
+            </tbody>
+        </table>
     </div>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -142,7 +138,7 @@
 
 @section scripts{
 
-    <script>
+    @*<script>
         $(document).ready(function () {
             $("#myFlashMessageDiv").show().delay(2000).fadeOut();
             var wed = $('#adminCategoriesTable').DataTable({
@@ -159,7 +155,7 @@
                     //{ sWidth: "10%", bSearchable: true, bSortable: true },
                     //match the number of columns here for table1
                 ],
-                "bAutoWidth": false,
+                "bAutoWidth": true,
                 "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
                 "info": true,
                 "paging": true,
@@ -190,5 +186,5 @@
 
             //$('.adminCategoriesTable').DataTable();
         })
-    </script>
+    </script>*@
 }

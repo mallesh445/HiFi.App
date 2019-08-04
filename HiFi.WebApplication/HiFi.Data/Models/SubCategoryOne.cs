@@ -36,8 +36,14 @@ namespace HiFi.Data.Models
         [Display(Name = "IsActive")]
         public bool IsActive { get; set; }
 
+        
+        [Display(Name = "Category")]
+        public int CategoryId { get; set; }
+
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+
+
 
         [Required]
         public string SC_ImageName { get; set; }

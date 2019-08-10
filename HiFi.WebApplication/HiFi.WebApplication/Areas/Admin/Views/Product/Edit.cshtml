@@ -5,12 +5,13 @@
 }
 
 <section class="container-fluid">
+    <div class="panel-heading panel-body MainHeaderColor">
+        <h4>Edit @Model.ProductName Product</h4>
+    </div>
     <div class="content panel-body">
-        <h4>Edit Product</h4>
-        <hr />
         <div class="row">
-            <div class="col-md-4">
-                <form asp-action="Edit" enctype="multipart/form-data">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div class="col-md-4">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="ProductId" class="control-label"></label>
@@ -55,8 +56,25 @@
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
-                </form>
-            </div>
+                </div>
+                <div class="col-md-2">
+                    @*maintaining space between controlls and images*@
+                </div>     
+                <div class="col-md-6">
+                    <div>
+                        <label>Picture : </label>
+                        @if (Model.ProductImageModel != null && Model.ProductImageModel.Count > 0 && Model.ProductImageModel[0].IsMainImage)
+                        {
+                            <div>
+                                <img src="@Model.ProductImageModel[0]?.ImagePath" width="90%" 
+                                     style="height: 450px; width: 270px;"/>
+                                @*<img src="@Model.ProductImageModel[0]?.ImagePath" width="90%"
+                                    style="border-radius:5px;border:1px solid #bbb9b9; height: 50px; width: 50px;" />*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div>

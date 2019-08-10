@@ -13,6 +13,7 @@ using HiFi.Services.Catalog;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using HiFi.Common;
+using HiFi.WebApplication.Areas.Admin.ViewModels;
 
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
@@ -53,15 +54,32 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
-            return View(subCategoryOne);
+            SubCategoryOneViewModel viewModel = PrepareSubCategoryOneViewModelFromSubCategoryOneEntity(subCategoryOne);
+            return View(viewModel);
         }
 
         // GET: Admin/SubCategoryOne/Create
         public IActionResult Create()
         {
             ViewBag.CategoryList = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName");
-            return View();
+            var catlist = _categoryService.GetAllCategories();
+            var cvm = new List<CategoryViewModel>();
+            foreach (var item in catlist)
+            {
+                CategoryViewModel categoryViewModel = new CategoryViewModel()
+                {
+                    CategoryId = item.CategoryId,
+                    CategoryName = item.CategoryName,
+                    Description = item.Description
+                };
+                cvm.Add(categoryViewModel);
+            }
+
+            SubCategoryOneViewModel viewModel = new SubCategoryOneViewModel()
+            {
+                MyCategoryList = cvm
+            };
+            return View(viewModel);
         }
 
         // POST: Admin/SubCategoryOne/Create
@@ -69,10 +87,13 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(SubCategoryOne subCategoryOne, IFormFile imageFile)
+        public async Task<IActionResult> Create(SubCategoryOneViewModel subCategoryVM, IFormFile file, IFormCollection fc)
         {
             if (ModelState.IsValid)
             {
+                subCategoryVM.CategoryId = Convert.ToInt32(fc["CategoryId"]);
+                SubCategoryOne subCategoryOne = PrepareSubCategoryOneFromViewModel(subCategoryVM);
+
                 _context.Add(subCategoryOne);
                 var result = await _context.SaveChangesAsync();
                 if (result > 0)
@@ -105,7 +126,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(subCategoryOne);
+            return View(subCategoryVM);
         }
 
         // GET: Admin/SubCategoryOne/Edit/5
@@ -117,12 +138,27 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
 
             var subCategoryOne = await _context.SubCategoryOne.FindAsync(id);
-            if (subCategoryOne == null)
+            SubCategoryOneViewModel scViewModel = PrepareSubCategoryOneViewModelFromSubCategoryOneEntity(subCategoryOne);
+
+            var catlist = _categoryService.GetAllCategories();
+            var cvm = new List<CategoryViewModel>();
+            foreach (var item in catlist)
+            {
+                CategoryViewModel categoryViewModel = new CategoryViewModel()
+                {
+                    CategoryId = item.CategoryId,
+                    CategoryName = item.CategoryName,
+                    Description = item.Description
+                };
+                cvm.Add(categoryViewModel);
+            }
+            
+            if (scViewModel == null)
             {
                 return NotFound();
             }
-            ViewBag.CategoryList = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName",subCategoryOne.CategoryId);
-            return View(subCategoryOne);
+            scViewModel.MyCategoryList = cvm;
+            return View(scViewModel);
         }
 
         // POST: Admin/SubCategoryOne/Edit/5
@@ -130,7 +166,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,SubCategoryOne subCategoryOne)
+        public async Task<IActionResult> Edit(int id, SubCategoryOne subCategoryOne)
         {
             if (id != subCategoryOne.SubCategoryOneId)
             {
@@ -192,6 +228,50 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         private bool SubCategoryOneExists(int id)
         {
             return _context.SubCategoryOne.Any(e => e.SubCategoryOneId == id);
+        }
+
+        /// <summary>
+        /// Prepare SubCategoryOne From SubCategoryViewModel
+        /// </summary>
+        /// <param name="subCategoryVM"></param>
+        /// <returns></returns>
+        private SubCategoryOne PrepareSubCategoryOneFromViewModel(SubCategoryOneViewModel subCategoryVM)
+        {
+            SubCategoryOne subCategoryOne = new SubCategoryOne();
+            if (subCategoryVM != null)
+            {
+                subCategoryOne.CategoryId = subCategoryVM.CategoryId;
+                subCategoryOne.SubCategoryName = subCategoryVM.SubCategoryName;
+                subCategoryOne.Description = subCategoryVM.Description;
+                subCategoryOne.DisplayOrder = subCategoryVM.DisplayOrder;
+                subCategoryOne.IsActive = subCategoryVM.IsActive;
+                subCategoryOne.CreatedDate = subCategoryVM.CreatedDate;
+                subCategoryOne.UpdatedDate = subCategoryVM.UpdatedDate;
+                subCategoryOne.SC_ImagePath = subCategoryVM.ImagePath;
+                //Temporarly storing b'coz this column is expecting not null.so later we will update exact name.
+                subCategoryOne.SC_ImageName = "Default";
+            }
+            return subCategoryOne;
+        }
+
+        private SubCategoryOneViewModel PrepareSubCategoryOneViewModelFromSubCategoryOneEntity(SubCategoryOne subCategoryOne)
+        {
+            SubCategoryOneViewModel subCategoryVM = new SubCategoryOneViewModel();
+            if (subCategoryVM != null)
+            {
+                subCategoryVM.CategoryId = subCategoryOne.CategoryId;
+                subCategoryVM.SubCategoryName = subCategoryOne.SubCategoryName;
+                subCategoryVM.Description = subCategoryOne.Description;
+                subCategoryVM.DisplayOrder = subCategoryOne.DisplayOrder;
+                subCategoryVM.IsActive = subCategoryOne.IsActive;
+                subCategoryVM.CreatedDate = subCategoryOne.CreatedDate;
+                subCategoryVM.UpdatedDate = subCategoryOne.UpdatedDate;
+                subCategoryVM.ImagePath = subCategoryOne.SC_ImagePath;
+                //Temporarly storing b'coz this column is expecting not null.so later we will update exact name.
+                subCategoryVM.ImageName = subCategoryOne.SC_ImageName;
+                subCategoryVM.ImagePath = subCategoryOne.SC_ImagePath;
+            }
+            return subCategoryVM;
         }
     }
 }

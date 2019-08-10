@@ -6,8 +6,8 @@
 }
 
 <section class="container-fluid">
-    <div class="clearfix panel-body">
-        <div class="pull-left" style="font-size: 26px;">Categories</div>
+    <div class="clearfix panel-body MainHeaderColor">
+        <div class="pull-left MainHeaderColor" style="font-size: 26px;">Products List</div>
         <div></div>
         <div class="pull-right">
             <a class="btn bg-blue" asp-action="Create"><i class="fa fa-plus-square"></i>Add New</a>
@@ -21,77 +21,77 @@
         </div>
     </div>
     <div class="content panel-body">
-        <h4>Products List</h4>
-        <table id="adminProductTable" class="table">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProductId)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.ProductName)
-                    </th>
-                    @*<th>
+        <div id="WrapTables">
+            <table id="adminProductTable" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ProductName)
+                        </th>
+                        @*<th>
                         @Html.DisplayNameFor(model => model.Description)
                     </th>*@
-                    <th>
-                        @Html.DisplayNameFor(model => model.ShortDescription)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Quantity)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Price)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.SubCategoryId)
-                    </th>
-                    <th>
-                        <div>Image</div>
-                    </th>
-                    <th>Operations</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProductId)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProductName)
-                        </td>
-                        @*<td>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ShortDescription)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Quantity)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Price)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubCategoryId)
+                        </th>
+                        <th>
+                            <div>Image</div>
+                        </th>
+                        <th>Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProductName)
+                            </td>
+                            @*<td>
                             @Html.DisplayFor(modelItem => item.Description)
                         </td>*@
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ShortDescription)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Quantity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SubCategoryId)
-                        </td>
-                        <td>
-                            @if (@item.ProductImageModel != null && item.ProductImageModel.Count > 0 && item.ProductImageModel[0].FKProductId == item.ProductId)
-                            {
-                                <div>
-                                    <img src="@item.ProductImageModel[0]?.ImagePath" width="90%"
-                                         style="border-radius:5px;border:1px solid #bbb9b9; height: 50px; width: 50px;" />
-                                </div>
-                            }
-                        </td>
-                        @Html.Partial("_TableButtonPartial", item.ProductId)
-                    </tr>
-                }
-            </tbody>
-        </table>
-
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ShortDescription)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Quantity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Price)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SubCategoryId)
+                            </td>
+                            <td>
+                                @if (@item.ProductImageModel != null && item.ProductImageModel.Count > 0 && item.ProductImageModel[0].FKProductId == item.ProductId)
+                                {
+                                    <div>
+                                        <img src="@item.ProductImageModel[0]?.ImagePath" width="90%"
+                                             style="border-radius:5px;border:1px solid #bbb9b9; height: 50px; width: 50px;" />
+                                    </div>
+                                }
+                            </td>
+                            @Html.Partial("_TableButtonPartial", item.ProductId)
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 

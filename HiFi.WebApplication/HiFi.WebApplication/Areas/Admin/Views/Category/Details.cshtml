@@ -1,25 +1,28 @@
-﻿@model HiFi.Data.Models.SubCategoryOne
+﻿@model HiFi.Data.Models.Category
 
 @{
-    ViewData["Title"] = "Delete";
-    Layout = "~/Areas/Admin/Views/Shared/_ALayout.cshtml";
+    ViewData["Title"] = "Details";
 }
 
     <section class="container-fluid">
         <div class="panel-heading panel-body MainHeaderColor">
-            <h3>Delete @Model.SubCategoryName</h3>
+            <h3>@Model.CategoryName Category Details</h3>
         </div>
+
         <div class="content panel-body">
-            <h3>Are you sure you want to delete this?</h3>
             <div>
-                <h4>SubCategoryOne</h4>
-                <hr />
                 <dl class="row">
                     <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.SubCategoryName)
+                        @Html.DisplayNameFor(model => model.CategoryId)
                     </dt>
                     <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.SubCategoryName)
+                        @Html.DisplayFor(model => model.CategoryId)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CategoryName)
                     </dd>
                     <dt class="col-sm-2">
                         @Html.DisplayNameFor(model => model.Description)
@@ -51,26 +54,15 @@
                     <dd class="col-sm-10">
                         @Html.DisplayFor(model => model.IsActive)
                     </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.SC_ImageName)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.SC_ImageName)
-                    </dd>
-                    <dt class="col-sm-2">
-                        @Html.DisplayNameFor(model => model.SC_ImagePath)
-                    </dt>
-                    <dd class="col-sm-10">
-                        @Html.DisplayFor(model => model.SC_ImagePath)
-                    </dd>
                 </dl>
-
-                <form asp-action="Delete">
-                    <input type="hidden" asp-for="SubCategoryOneId" />
-                    <input type="submit" value="Delete" class="btn btn-danger" /> |
-                    <a asp-action="Index">Back to List</a>
-                </form>
             </div>
+        </div>
 
+
+        <div class="panel-footer">
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+                <a asp-action="Index">Back to List</a>
+            </p>
         </div>
     </section>

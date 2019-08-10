@@ -11,130 +11,129 @@
         </style>
     </head>*@
 
-<section class="container-fluid">
-    <div class="clearfix panel-body">
-        <div class="pull-left" style="font-size: 26px;">Categories</div>
-        <div></div>
-        <div class="pull-right">
-            <a class="btn bg-blue" asp-action="Create"><i class="fa fa-plus-square"></i> Add New</a>
-            <button type="button" class="btn bg-olive" data-toggle="modal" data-target="#myModal">
-                <i class="fa fa-download"></i> Import
-            </button>
-            <button type="button" class="btn btn-success" id="btnExportData">
-                <i class="fa fa-upload"></i>
-                Export
-            </button>
+    <section class="container-fluid">
+        <div class="clearfix panel-body">
+            <div class="pull-left MainHeaderColor" style="font-size: 26px;">List of Categories</div>
+            <div class="pull-right">
+                <a class="btn bg-blue" asp-action="Create"><i class="fa fa-plus-square"></i> Add New</a>
+                <button type="button" class="btn bg-olive" data-toggle="modal" data-target="#myModal">
+                    <i class="fa fa-download"></i> Import
+                </button>
+                <button type="button" class="btn btn-success" id="btnExportData">
+                    <i class="fa fa-upload"></i>
+                    Export
+                </button>
+            </div>
         </div>
-    </div>
-    <div class="panel panel-body">
-        <table class="table" id="adminCategoriesTable">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CategoryName)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Description)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.DisplayOrder)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.CreatedDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.UpdatedDate)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.IsActive)
-                    </th>
-                    <th>Operations</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="panel panel-body" id="WrapTables">
+            <table class="table" id="adminCategoriesTable">
+                <thead>
                     <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CategoryName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.DisplayOrder)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CreatedDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.UpdatedDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.IsActive)
-                        </td>
-                        @Html.Partial("_TableButtonPartial", item.CategoryId)
+                        <th>
+                            @Html.DisplayNameFor(model => model.CategoryName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DisplayOrder)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UpdatedDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </th>
+                        <th>Operations</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            @using (Html.BeginForm("ImportCategories", "Category", FormMethod.Post, new { enctype = "multipart/form-data" }))
-            {
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dissmiss="modal" aria-hidden="true">X</button>
-                        <h4 class="modal-title" id="myModalLabel">Import Categories from Excel</h4>
-                    </div>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CategoryName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DisplayOrder)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UpdatedDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsActive)
+                            </td>
+                            @Html.Partial("_TableButtonPartial", item.CategoryId)
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                @using (Html.BeginForm("ImportCategories", "Category", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dissmiss="modal" aria-hidden="true">X</button>
+                            <h4 class="modal-title" id="myModalLabel">Import Categories from Excel</h4>
+                        </div>
 
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <p>
-                                Imported categories are distinguished by ID. If the ID already exists, then its corresponding category will be updated. You should not specify ID (leave 0) for new categories.
-                                Import requires a lot of memory resources. That's why it's not recommended to import more than 500 - 1,000 records at once.
-                            </p>
-                            <div class="col-md-2">
-                                <div class="label-wrapper" style="margin-top:10px">
-                                    <label class="control-label">
-                                        Excel file
-                                    </label>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <p>
+                                    Imported categories are distinguished by ID. If the ID already exists, then its corresponding category will be updated. You should not specify ID (leave 0) for new categories.
+                                    Import requires a lot of memory resources. That's why it's not recommended to import more than 500 - 1,000 records at once.
+                                </p>
+                                <div class="col-md-2">
+                                    <div class="label-wrapper" style="margin-top:10px">
+                                        <label class="control-label">
+                                            Excel file
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-10">
+                                    @*<input type="file" name="postedFile" id="file1" />*@
+                                    <input type="file" class="form-control" name="postedExcelFile" id="excelfileId" placeholder="Id" />
                                 </div>
                             </div>
-                            <div class="col-md-10">
-                                @*<input type="file" name="postedFile" id="file1" />*@
-                                <input type="file" class="form-control" name="postedExcelFile" id="excelfileId" placeholder="Id" />
-                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         </div>
                     </div>
+                }
 
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                        <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            }
+            </div>
+        </div>
+        @if (TempData["Success"] != null)
+        {
+            <div id="myFlashMessageDiv" class="alert alert-success alert-dismissible fade in" style="background-color:#bcf5bc">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Success!</strong> @TempData["Success"].ToString().
+            </div>
 
-        </div>
-    </div>
-    @if (TempData["Success"] != null)
-    {
-        <div id="myFlashMessageDiv" class="alert alert-success alert-dismissible fade in" style="background-color:#bcf5bc">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Success!</strong> @TempData["Success"].ToString().
-        </div>
-
-    }
-    @if (TempData["Error"] != null)
-    {
-        <div id="myFlashMessageDiv" class="alert alert-danger alert-dismissible fade in">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>Error!</strong> @TempData["Error"].ToString().
-        </div>
-    }
-</section>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div id="myFlashMessageDiv" class="alert alert-danger alert-dismissible fade in">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Error!</strong> @TempData["Error"].ToString().
+            </div>
+        }
+    </section>
 
 @section scripts{
 

@@ -22,14 +22,13 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
     [Area("Admin")]
     public class ProductController : Controller
     {
-
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly ISubCategoryService _subCategoryService;
 
-        public ProductController(IProductService productService, IHostingEnvironment hostingEnvironment, 
-            ICategoryService categoryService,ISubCategoryService subCategoryService)
+        public ProductController(IProductService productService, IHostingEnvironment hostingEnvironment,
+            ICategoryService categoryService, ISubCategoryService subCategoryService)
         {
             _productService = productService;
             _hostingEnvironment = hostingEnvironment;
@@ -53,31 +52,38 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     ProductName = item.ProductName,
                     Quantity = item.Quantity,
                     ShortDescription = item.ShortDescription,
-                    SubCategoryId = item.SubCategoryOne?.SubCategoryName
+                    SubCategoryId = item.SubCategoryOneId.ToString()
                 };
                 var prodImages = _productService.GetAllProductImagesById(item.PKProductId);
-                foreach (var img in prodImages)
+                if (prodImages.Count() > 0)
                 {
-                    if (img.IsMainImage)
-                    {
-                        ProductImageViewModel productImageViewModel = new ProductImageViewModel
-                        {
-                            ImageName = img.ImageName,
-                            ImagePath = img.ImagePath,
-                            IsMainImage = img.IsMainImage,
-                            CreatedDate = img.CreatedDate,
-                            PKImageId = img.PKImageId,
-                            UpdatedDate = img.UpdatedDate,
-                            FKProductId = img.Product.PKProductId
-                            
-                        };
-                        productViewModel.ProductImageModel.Add(productImageViewModel);
-                    }
+                    productViewModel.ProductImageModel.Add(AssignProdudctImageToProduct(prodImages));
                 }
+                #region Implemented in Separate method
+                //foreach (var img in prodImages)
+                //{
+                //    if (img.IsMainImage)
+                //    {
+                //        ProductImageViewModel productImageViewModel = new ProductImageViewModel
+                //        {
+                //            ImageName = img.ImageName,
+                //            ImagePath = img.ImagePath,
+                //            IsMainImage = img.IsMainImage,
+                //            CreatedDate = img.CreatedDate,
+                //            PKImageId = img.PKImageId,
+                //            UpdatedDate = img.UpdatedDate,
+                //            FKProductId = img.Product.PKProductId
+
+                //        };
+                //        productViewModel.ProductImageModel.Add(productImageViewModel);
+                //    }
+                //} 
+                #endregion
                 listProductViewModel.Add(productViewModel);
             }
             return View(listProductViewModel);
         }
+
 
         // GET: Admin/SubCategoryOne/Create
         public IActionResult Create()
@@ -95,20 +101,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Product product = new Product
-                    {
-                        ProductName = productModel.ProductName,
-                        Description = productModel.Description,
-                        ShortDescription = productModel.ShortDescription,
-                        DisplayOrder = productModel.DisplayOrder,
-                        Price = productModel.Price,
-                        Quantity = productModel.Quantity,
-                        CreatedDate = DateTime.Now,
-                        UpdatedDate = DateTime.Now,
-                        SubCategoryOneId = Convert.ToInt32(productModel.SubCategoryId)
-                        //SubCategoryOne = new SubCategoryOne
-                        //{ SubCategoryOneId= Convert.ToInt32(productModel.SubCategoryId) }
-                    };
+                    Product product =PrepareProductEntityFromProductViewModel(productModel,true);
 
                     var resultProduct = _productService.InsertProduct(product);
 
@@ -157,6 +150,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
         }
 
+
         // GET: Admin/Product/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -164,26 +158,162 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ProductViewModel productViewModel = null;
-            var editProduct = _productService.GetProductByProductId(id);
-            if (editProduct != null)
-            {
-                productViewModel = new ProductViewModel()
-                {
-                    ProductName = editProduct.ProductName,
-                    Description = editProduct.Description,
-                    ShortDescription = editProduct.ShortDescription,
-                    DisplayOrder = editProduct.DisplayOrder,
-                    Price = editProduct.Price,
-                    Quantity = editProduct.Quantity
-                };
-            }
-            else
+            int _productId =(Int32) id;
+            ProductViewModel productViewModel = GetProductByProductId(_productId);
+
+            if (productViewModel == null)
+                return NotFound();
+            ViewBag.SubCategoryId = new SelectList(_subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName", productViewModel.SubCategoryId);
+            return View(productViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ProductViewModel productViewModel)
+        {
+            if (id != productViewModel.ProductId)
             {
                 return NotFound();
             }
-            ViewBag.SubCategoryId = new SelectList(_subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName",editProduct.SubCategoryOneId);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Product product = PrepareProductEntityFromProductViewModel(productViewModel,false);
+                    var resultProduct = _productService.UpdateProduct(product);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                return RedirectToAction(nameof(Index));
+            }
             return View(productViewModel);
         }
+
+        // GET: Admin/Product/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            ProductViewModel productViewModel = GetProductByProductId(id);
+
+            if (productViewModel == null)
+                return NotFound();
+            ViewBag.SubCategoryId = new SelectList(_subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName", productViewModel.SubCategoryId);
+            return View(productViewModel);
+        }
+
+        private ProductViewModel GetProductByProductId(int productId)
+        {
+            ProductViewModel productViewModel = null;
+            var retrievedProduct = _productService.GetProductByProductId(productId);
+            if (retrievedProduct != null)
+            {
+                productViewModel = PrepareProductViewModelFromProductEntity(retrievedProduct);
+
+                var productImages = _productService.GetAllProductImagesById(retrievedProduct.PKProductId);
+                if (productImages != null && productImages.Count() > 0)
+                {
+                    productViewModel.ProductImageModel.Add(AssignProdudctImageToProduct(productImages));
+                }
+            }
+            else
+            {
+                return null;
+            }
+            return productViewModel;
+        }
+
+        /// <summary>
+        /// Assign ProdudctImages To Product
+        /// </summary>
+        /// <param name="prodImages"></param>
+        /// <returns></returns>
+        private ProductImageViewModel AssignProdudctImageToProduct(IEnumerable<ProductImage> prodImages)
+        {
+            ProductImageViewModel productImageViewModel = null;
+            foreach (var img in prodImages)
+            {
+                if (img.IsMainImage)
+                {
+                    productImageViewModel = new ProductImageViewModel
+                    {
+                        ImageName = img.ImageName,
+                        ImagePath = img.ImagePath,
+                        IsMainImage = img.IsMainImage,
+                        CreatedDate = img.CreatedDate,
+                        PKImageId = img.PKImageId,
+                        UpdatedDate = img.UpdatedDate,
+                        FKProductId = img.Product.PKProductId
+
+                    };
+                    return productImageViewModel;
+                }
+            }
+            return productImageViewModel;
+        }
+
+
+        /// <summary>
+        /// PrepareProductEntityFromProductViewModel
+        /// </summary>
+        /// <param name="productModel"></param>
+        /// <returns></returns>
+        private Product PrepareProductEntityFromProductViewModel(ProductViewModel productModel,bool IsNewProduct)
+        {
+            Product product = new Product
+            {
+                ProductName = productModel.ProductName,
+                Description = productModel.Description,
+                ShortDescription = productModel.ShortDescription,
+                DisplayOrder = productModel.DisplayOrder,
+                Price = productModel.Price,
+                Quantity = productModel.Quantity,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                SubCategoryOneId = Convert.ToInt32(productModel.SubCategoryId)
+                //SubCategoryOne = new SubCategoryOne
+                //{ SubCategoryOneId= Convert.ToInt32(productModel.SubCategoryId) }
+            };
+            if (IsNewProduct)
+            {
+                product.PKProductId = productModel.ProductId;
+            }
+            return product;
+        }
+
+        /// <summary>
+        /// PrepareProductViewModelFromProductEntity
+        /// </summary>
+        /// <param name="retrievedProduct"></param>
+        /// <returns></returns>
+        private ProductViewModel PrepareProductViewModelFromProductEntity(Product retrievedProduct)
+        {
+            try
+            {
+                ProductViewModel productViewModel = new ProductViewModel()
+                {
+                    ProductId = retrievedProduct.PKProductId,
+                    ProductName = retrievedProduct.ProductName,
+                    Description = retrievedProduct.Description,
+                    ShortDescription = retrievedProduct.ShortDescription,
+                    DisplayOrder = retrievedProduct.DisplayOrder,
+                    Price = retrievedProduct.Price,
+                    Quantity = retrievedProduct.Quantity,
+                    SubCategoryId = retrievedProduct.SubCategoryOneId.ToString()
+                };
+                return productViewModel;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
     }
 }

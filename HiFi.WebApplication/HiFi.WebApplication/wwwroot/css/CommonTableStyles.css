@@ -87,3 +87,13 @@ table.dataTable.no-footer {
     margin-bottom: 1rem !important;
 }
 /*card header,card, footer styles*/
+@media only screen and (max-width: 411px) {
+    #WrapTables {
+        overflow-x: scroll;
+        overflow-y: scroll;
+    }
+}
+
+.MainHeaderColor{
+   color:#3c8dbc;
+}

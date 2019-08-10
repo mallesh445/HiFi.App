@@ -30,15 +30,27 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Category/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Category category = await _categoryService.GetCategoryByIdAsync(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return View(category);
         }
 
         // GET: Category/Create
         public ActionResult Create()
         {
-            return View();
+            Category category = new Category() { CreatedDate = DateTime.Now, UpdatedDate = DateTime.Now };
+            return View(category);
         }
 
         // POST: Category/Create

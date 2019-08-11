@@ -38,7 +38,7 @@ namespace HiFi.WebApplication.Controllers
         public List<ProductViewModel> GetAllProductsUnderSubCategory(int subCateforyId)
         {
             var products = _productService.GetAllProducts();
-            List<ProductViewModel> list= products.Where(x => x.SubCategoryOneId == subCateforyId).ToList();
+            List<ProductViewModel> list = new List<ProductViewModel>();
             return list;
         }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using HiFi.Data.Models;
+using HiFi.Data.ViewModels;
 using HiFi.Repository;
 
 namespace HiFi.Services.Implementation
@@ -22,6 +23,12 @@ namespace HiFi.Services.Implementation
         {
             var data = productRepository.GetAll();
             return data;
+        }
+        public IEnumerable<ProductViewModel> GetAllProducts()
+        {
+            var data = productRepository.GetAll();
+            List<ProductViewModel> productModelList = new List<ProductViewModel>();
+            return productModelList;
         }
 
         public IEnumerable<ProductImage> GetAllProductImages()

@@ -1,4 +1,4 @@
-﻿@model HiFi.Data.ViewModels.LatestAndFeatureProductsViewModel
+﻿@model LatestAndFeatureProductsViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -6,33 +6,47 @@
 }
 <div class="span9">
     <div class="well well-small">
-        <h4>Featured Products DB<small class="pull-right">100+ featured products</small></h4>
+        <h4>Featured Products<small class="pull-right">100+ featured products</small></h4>
         <div class="row-fluid">
             <div id="featured" class="carousel slide">
 
                 <div class="carousel-inner">
-                    @for (int i = 0; i < Model.FeatureProductsVM.Count(); i += 4)
-                    {
-                        <div class="item @if(i==0){<text>active</text>}">
-                            <ul class="thumbnails">
-                                @foreach (var item in Model.FeatureProductsVM.Skip(i).Take(4))
+                    @{ var index = 0;}
+                    <div class="item active">
+                        <ul class="thumbnails">
+                            @foreach (var item in Model.FeatureProductsVM)
+                            {
+                                @if (index < 4)
                                 {
                                     <li class="span3">
-                                        <div class="thumbnail">
+                                        <div class="thumbnail" id="@item.PKProductId">
                                             <i class="tag"></i>
-                                            <a href="product_details.html"><img src="themes/images/products/b1.jpg" alt=""></a>
+                                            @if (@item.ProductImage != null && item.ProductImage.Count > 0 && item.ProductImage[0].FKProductId == item.PKProductId)
+                                            {
+                                                <a href="/Product/ProductDetails?productId=@item.PKProductId">
+                                                    <img src="@item.ProductImage[0]?.ImagePath" alt="@item.ProductImage[0].ImageName"
+                                                         style="height: 160px; width: 160px;" />
+                                                </a>
+                                            }
                                             <div class="caption">
                                                 <h5>@item.ProductName</h5>
                                                 <h4>
-                                                    <a class="btn" href="product_details.html">VIEW</a>
+                                                    <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">VIEW</a>
                                                     <span class="pull-right">$@item.Price</span>
                                                 </h4>
                                             </div>
                                         </div>
                                     </li>
                                 }
-                            </ul>
-                        </div>}
+                                else
+                                {
+                                    break;
+                                }
+                                index++;
+                            }
+                        </ul>
+                    </div>
+                   
                 </div>
                 <a class="left carousel-control" href="#featured" data-slide="prev">‹</a>
                 <a class="right carousel-control" href="#featured" data-slide="next">›</a>
@@ -48,79 +62,36 @@
         {
             <li class="span3">
                 <div class="thumbnail">
-                    <a href="product_details.html"><img src="themes/images/products/6.jpg" alt="" /></a>
+                    @if (@item.ProductImage != null && item.ProductImage.Count > 0 && item.ProductImage[0].FKProductId == item.PKProductId)
+                    {
+                        <a href="/Product/ProductDetails?productId=@item.PKProductId">
+                            <img src="@item.ProductImage[0]?.ImagePath" width="90%" alt="@item.ProductImage[0].ImageName"
+                                 style="height: 160px; width: 160px;" />
+                        </a>
+                    }
+
                     <div class="caption">
                         <h5>@item.ProductName</h5>
                         <p>
-                           @item.ShortDescription
+                            @if (@item.ShortDescription.Length > 35)
+                            {
+                                @item.ShortDescription.Substring(0, 35)
+                            }
+                            else
+                            {
+                                @item.ShortDescription
+                            }
                         </p>
 
-                        <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
+                        <h4 style="text-align:center"><a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">
+                            <i class="fa fa-search-plus"></i></a> 
+                        <a class="btn" href="ShoppingCart/AddToShoppingCart?productId=@item.PKProductId">Add to <i class="fa fa-cart-plus"></i></a>
+                        <a class="btn btn-primary" href="#">$@item.Price</a></h4>
                     </div>
                 </div>
             </li>
         }
 
-        @*<li class="span3">
-            <div class="thumbnail">
-                <a href="product_details.html"><img src="themes/images/products/7.jpg" alt="" /></a>
-                <div class="caption">
-                    <h5>Product name</h5>
-                    <p>
-                        Lorem Ipsum is simply dummy text.
-                    </p>
-                    <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
-                </div>
-            </div>
-        </li>
-        <li class="span3">
-            <div class="thumbnail">
-                <a href="product_details.html"><img src="themes/images/products/8.jpg" alt="" /></a>
-                <div class="caption">
-                    <h5>Product name</h5>
-                    <p>
-                        Lorem Ipsum is simply dummy text.
-                    </p>
-                    <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
-                </div>
-            </div>
-        </li>
-        <li class="span3">
-            <div class="thumbnail">
-                <a href="product_details.html"><img src="themes/images/products/9.jpg" alt="" /></a>
-                <div class="caption">
-                    <h5>Product name</h5>
-                    <p>
-                        Lorem Ipsum is simply dummy text.
-                    </p>
-                    <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
-                </div>
-            </div>
-        </li>
-        <li class="span3">
-            <div class="thumbnail">
-                <a href="product_details.html"><img src="themes/images/products/10.jpg" alt="" /></a>
-                <div class="caption">
-                    <h5>Product name</h5>
-                    <p>
-                        Lorem Ipsum is simply dummy text.
-                    </p>
-                    <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
-                </div>
-            </div>
-        </li>
-        <li class="span3">
-            <div class="thumbnail">
-                <a href="product_details.html"><img src="themes/images/products/11.jpg" alt="" /></a>
-                <div class="caption">
-                    <h5>Product name</h5>
-                    <p>
-                        Lorem Ipsum is simply dummy text.
-                    </p>
-                    <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
-                </div>
-            </div>
-        </li>*@
     </ul>
 
 </div>

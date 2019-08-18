@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HiFi.WebApplication.Services
 {
-    public static class EmailSenderExtensions
+    public static class EmailSenderExtensionsd
     {
         public static Task SendEmailConfirmationAsync(this IEmailSender emailSender, string email, string link)
         {
@@ -39,5 +39,10 @@ namespace HiFi.WebApplication.Services
 
             return emailSender.SendEmailAsync(email, subject, message);
         }
+
+        //public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+        //{
+        //    return await Task.Delay(1);
+        //}
     }
 }

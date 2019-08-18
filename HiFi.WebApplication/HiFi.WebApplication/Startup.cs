@@ -20,6 +20,10 @@ using HiFi.Services.Catalog;
 using HiFi.Repository;
 using HiFi.Services;
 using HiFi.Services.Implementation;
+using AutoMapper;
+using HiFi.Data.ViewModels;
+using HiFi.Data.DomainObjects;
+using HiFi.WebApplication.Helpers;
 
 namespace HiFi.WebApplication
 {
@@ -82,14 +86,28 @@ namespace HiFi.WebApplication
             services.AddScoped<ISubCategoryService, SubCategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
+
+            services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             //services.AddScoped(IDbContext, ApplicationDBContext);
-            //services.AddScoped<IRepository<Category>, EfRepository<Category>>();
-            //services.AddScoped<ApplicationUser, ApplicationUser>();
-            //services.AddScoped<SignInManager<ApplicationUser>, SignInManager<ApplicationUser>>();
             services.AddScoped<ProfileManager, ProfileManager>();
-           
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, EmailSender>();
+            #region Automapper Configuration
+            MapperConfiguration mapperConfiguration = ResolveMappers();
+            IMapper mapper = mapperConfiguration.CreateMapper();
+            services.AddSingleton(mapper); 
+            #endregion
+
+            //services.AddAutoMapper(typeof(Startup).Assembly);
+            //services.AddAutoMapper();
+            services.AddAutoMapper(typeof(Startup).Assembly);
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -110,7 +128,10 @@ namespace HiFi.WebApplication
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            app.UseStatusCodePagesWithRedirects("~/error/{0}");
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
             app.UseAuthentication();
+            app.UseSession();
 
             //This is for Areas controller as home screen
             //app.UseMvc(routes =>
@@ -136,6 +157,23 @@ namespace HiFi.WebApplication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        /// <summary>
+        /// Mapping entities initializing.
+        /// </summary>
+        /// <returns></returns>
+        private MapperConfiguration ResolveMappers()
+        {
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Product, ProductViewModel>();
+                cfg.CreateMap<Product, LatestProductsViewModel>();
+                cfg.CreateMap<Product, FeatureProductsViewModel>();
+                cfg.CreateMap<ProductImage, ProductImageViewModel>();
+                cfg.CreateMap<OrderDto, OrderHeader>();
+            });
+            return config;
         }
     }
 }

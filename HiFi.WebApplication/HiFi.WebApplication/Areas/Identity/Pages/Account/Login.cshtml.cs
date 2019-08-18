@@ -13,6 +13,8 @@ using HiFi.Data.Models;
 using Microsoft.AspNetCore.Http;
 using HiFi.Data.Data;
 using HiFi.Common;
+using HiFi.WebApplication.Helpers;
+using System.Text.Encodings.Web;
 
 namespace HiFi.WebApplication.Areas.Identity.Pages.Account
 {
@@ -22,12 +24,15 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly ApplicationDBContext _db;
+        private readonly IEmailSender _emailSender;
 
-        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger, ApplicationDBContext dbContext)
+        public LoginModel(SignInManager<ApplicationUser> signInManager, ILogger<LoginModel> logger,
+            ApplicationDBContext dbContext,IEmailSender emailSender)
         {
             _signInManager = signInManager;
             _logger = logger;
             _db = dbContext;
+            _emailSender = emailSender;
         }
 
         [BindProperty]
@@ -96,6 +101,10 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
                                            select p.Name).FirstOrDefault();
                         //HttpContext.Session.SetInt32("CartCount", count);
                         _logger.LogInformation("User logged in.");
+                        
+                        await _emailSender.SendEmailAsync(Input.Email, "Login Success email",
+                        $"Logined Successfully account by "+Input.Email +" you.");
+
                         if (roleName.ToLower() == SD.AdminEndUser.ToLower())
                         {
                             return RedirectToAction("Dashboard1", "Dashboards", new { Area = "Admin" });

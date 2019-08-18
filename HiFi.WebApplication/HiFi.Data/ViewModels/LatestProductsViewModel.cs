@@ -6,6 +6,7 @@ namespace HiFi.Data.ViewModels
 {
     public class LatestProductsViewModel
     {
+        public int PKProductId { get; set; }
         public string ProductName { get; set; }
 
         public string Description { get; set; }
@@ -22,5 +23,6 @@ namespace HiFi.Data.ViewModels
         public bool IsActive { get; set; }
 
         public int SubCategoryOneId { get; set; }
+        public List<ProductImageViewModel> ProductImage { get; set; }
     }
 }

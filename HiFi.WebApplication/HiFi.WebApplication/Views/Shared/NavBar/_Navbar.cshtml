@@ -1,8 +1,36 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using HiFi.Data.Models
+@using Microsoft.AspNetCore.Http
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var currentUserName = @User.Identity.Name ?? "User";
+    var cartCount = 0;
+    if (HttpContextAccessor.HttpContext.Session.GetInt32("CartCount") != null)
+    {
+        cartCount = Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetInt32("CartCount"));
+    }
+}
 <!-- Navbar ================================================== -->
+<div id="welcomeLine" class="row">
+    <div class="span6">Welcome!<strong> @currentUserName</strong></div>
+    <div class="span6">
+        <div class="pull-right">
+            <span class="btn btn-mini">En</span>
+            <a href="\"><span>&pound;</span></a>
+            <span class="btn btn-mini">₹155.00</span>
+            <a href="\"><span class="">$</span></a>
+            <a href="/ShoppingCart/Index">
+                <span class="btn btn-mini btn-primary">
+                    <i class="fa fa-shopping-cart" style="color:white">
+                    </i> @cartCount Itemes in your cart.
+                </span>
+            </a>
+        </div>
+    </div>
+</div>
 <div id="logoArea" class="navbar">
     <a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
         <span class="icon-bar"></span>
@@ -10,7 +38,7 @@
         <span class="icon-bar"></span>
     </a>
     <div class="navbar-inner">
-        <a class="brand" href="index.html"><img src="themes/images/logo.png" alt="Bootsshop" /></a>
+        <a class="brand" href="\"><img src="~/themes/images/hiLogo.jpg" alt="Hi-FI" /></a>
         <form class="form-inline navbar-search" method="post" action="products.html">
             <input id="srchFld" class="srchTxt" type="text" />
             <select class="srchTxt">
@@ -30,11 +58,19 @@
             @if (SignInManager.IsSignedIn(User))
             {
                 <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                        Hello @User.Identity.Name!
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+                    @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout"
+                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Logout</a>*@
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark btnLogout" style="color:#DDD;
+                            font-family:Arial, Helvetica, sans-serif; font-size:16px;padding-top:20px">
+                            Logout
+                        </button>
                     </form>
                 </li>
             }

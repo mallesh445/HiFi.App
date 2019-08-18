@@ -46,5 +46,7 @@ namespace HiFi.Data.Models
 
         [ForeignKey("SubCategoryOneId")]
         public virtual SubCategoryOne SubCategoryOne { get; set; }
+
+        public List<ProductImage> ProductImage { get; } = new List<ProductImage>();
     }
 }

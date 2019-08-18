@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using HiFi.Data.ViewModels;
 using HiFi.Services;
 using HiFi.Services.Catalog;
-using HiFi.WebApplication.Areas.Admin.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,34 +13,47 @@ namespace HiFi.WebApplication.Controllers
 {
     public class ProductController : Controller
     {
-
+        IMapper _mapper;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly ISubCategoryService _subCategoryService;
 
         public ProductController(IProductService productService, IHostingEnvironment hostingEnvironment,
-            ICategoryService categoryService, ISubCategoryService subCategoryService)
+            ICategoryService categoryService, ISubCategoryService subCategoryService, IMapper mapper)
         {
             _productService = productService;
             _hostingEnvironment = hostingEnvironment;
             _categoryService = categoryService;
             _subCategoryService = subCategoryService;
+            _mapper = mapper;
         }
 
         // GET: Admin/SubCategoryOne
         public IActionResult Index()
         {
-           
-           
             return View();
         }
 
-        public List<ProductViewModel> GetAllProductsUnderSubCategory(int subCateforyId)
+        public IActionResult GetAllProductsBySubCategory(int subCategoryId)
         {
-            var products = _productService.GetAllProducts();
-            List<ProductViewModel> list = new List<ProductViewModel>();
-            return list;
+            return View(GetAllProductsBySubCategoryId(subCategoryId));
+        }
+
+        public IEnumerable<ProductViewModel> GetAllProductsBySubCategoryId(int subCategoryId)
+        {
+            var listOfDbProducts = _productService.GetAllProductsFromBySubCategory(subCategoryId);
+            IEnumerable<ProductViewModel> listOfProductsVM = _mapper.Map<IEnumerable<ProductViewModel>>(listOfDbProducts);
+            ViewBag.SubCategoryName = listOfDbProducts.FirstOrDefault().SubCategoryOne.SubCategoryName.ToString();
+            
+            return listOfProductsVM;
+        }
+
+        public IActionResult ProductDetails(int productId)
+        {
+            var productFromDB = _productService.GetProductByProductId(productId);
+            ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(productFromDB);
+            return View(productViewModel);
         }
 
     }

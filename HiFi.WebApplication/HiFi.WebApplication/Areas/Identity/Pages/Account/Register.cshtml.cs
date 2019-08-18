@@ -5,10 +5,11 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using HiFi.Common;
 using HiFi.Data.Models;
+using HiFi.WebApplication.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
+//using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -117,7 +118,7 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created with new password.");
-                    //HttpContext.Session.SetInt32("CartCount", 0);
+                    HttpContext.Session.SetInt32("CartCount", 0);
                     return LocalRedirect(returnUrl);
                 }
                 foreach (var error in result.Errors)

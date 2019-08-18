@@ -8,9 +8,9 @@ namespace HiFi.Data.ViewModels
     {
         public ProductViewModel()
         {
-            ProductImageModel = new List<ProductImageViewModel>();
+            ProductImage = new List<ProductImageViewModel>();
         }
-        public int ProductId { get; set; }
+        public int PKProductId { get; set; }
 
         public string ProductName { get; set; }
 
@@ -23,9 +23,9 @@ namespace HiFi.Data.ViewModels
         public int Quantity { get; set; }
         public decimal Price { get; set; }
 
-        public string SubCategoryId { get; set; }
+        public string SubCategoryOneId { get; set; }
 
-        public List<ProductImageViewModel> ProductImageModel { get; set; }
+        public List<ProductImageViewModel> ProductImage { get; set; }
 
     }
 }

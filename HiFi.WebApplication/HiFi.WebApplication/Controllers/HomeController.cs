@@ -9,20 +9,26 @@ using HiFi.Common;
 using HiFi.Data.ViewModels;
 using HiFi.Services;
 using HiFi.Data.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace HiFi.WebApplication.Controllers
 {
     //[Route("Home")] 
     public class HomeController : Controller
     {
+        IMapper _mapper;
         private readonly IProductService _productService;
+        private readonly IShoppingCartService _shoppingCart;
         //private readonly UserManager<ApplicationUser> _userManager;
-        
-        public HomeController(IProductService productService)
+
+        public HomeController(IProductService productService, IMapper mapper, IShoppingCartService shoppingCart)
         {
             _productService = productService;
+            _mapper = mapper;
+            _shoppingCart = shoppingCart;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (HttpContext.User.Identity.IsAuthenticated)
             {
@@ -41,26 +47,44 @@ namespace HiFi.WebApplication.Controllers
                     else
                     {
                         LatestAndFeatureProductsViewModel latestAndFeatureVM = BindLatestAndFeatureProducts();
-                        var products = _productService.GetAllProducts();
-                        latestAndFeatureVM = PrepareLatestAndFeatureProducts(products);
+                        var products = _productService.GetAllProductsFromBySubCategory();
+                        latestAndFeatureVM = PrepareLatestAndFeatureProductsByAutoMapper(products);
+
+                        //var products = _productService.GetAllProducts();
+                        //latestAndFeatureVM = PrepareLatestAndFeatureProducts(products);
                         return View(latestAndFeatureVM);
                     }
                 }
                 else
                 {
                     LatestAndFeatureProductsViewModel latestAndFeatureVM = BindLatestAndFeatureProducts();
-                    var products = _productService.GetAllProducts();
-                    latestAndFeatureVM = PrepareLatestAndFeatureProducts(products);
+                    var products = _productService.GetAllProductsFromBySubCategory();
+                    latestAndFeatureVM = PrepareLatestAndFeatureProductsByAutoMapper(products);
                     return View(latestAndFeatureVM);
                 }
             }
             else
             {
-                LatestAndFeatureProductsViewModel latestAndFeatureVM = BindLatestAndFeatureProducts();
-                var products = _productService.GetAllProducts();
-                latestAndFeatureVM = PrepareLatestAndFeatureProducts(products);
+                var shoppingCartCount = await _shoppingCart.GetCartCountAndTotalAmountAsync();
+                HttpContext.Session.SetInt32("CartCount", shoppingCartCount.ItemCount);
+                LatestAndFeatureProductsViewModel latestAndFeatureVM = null;
+                var products = _productService.GetAllProductsFromBySubCategory();
+                latestAndFeatureVM = PrepareLatestAndFeatureProductsByAutoMapper(products);
                 return View(latestAndFeatureVM);
             }
+        }
+
+        private LatestAndFeatureProductsViewModel PrepareLatestAndFeatureProductsByAutoMapper(IEnumerable<Product> products)
+        {
+            LatestAndFeatureProductsViewModel lpViewModel = BindLatestAndFeatureProducts();
+            IEnumerable<FeatureProductsViewModel> featureProductsList = _mapper.Map<IEnumerable<FeatureProductsViewModel>>(products);
+            IEnumerable<LatestProductsViewModel> latestProductsList = _mapper.Map<IEnumerable<LatestProductsViewModel>>(products);
+
+            lpViewModel.FeatureProductsVM = new List<FeatureProductsViewModel>();
+            lpViewModel.FeatureProductsVM = featureProductsList.OrderBy(d => d.DisplayOrder);
+            lpViewModel.LatestProductsVM = new List<LatestProductsViewModel>();
+            lpViewModel.LatestProductsVM = latestProductsList.OrderByDescending(l => l.CreatedDate);
+            return lpViewModel;
         }
 
         /// <summary>
@@ -116,9 +140,9 @@ namespace HiFi.WebApplication.Controllers
                 }
 
                 lpViewModel.FeatureProductsVM = new List<FeatureProductsViewModel>();
-                lpViewModel.FeatureProductsVM = featureProductsList.OrderBy(d=>d.DisplayOrder);
+                lpViewModel.FeatureProductsVM = featureProductsList.OrderBy(d => d.DisplayOrder);
                 lpViewModel.LatestProductsVM = new List<LatestProductsViewModel>();
-                lpViewModel.LatestProductsVM = latestProductsList.OrderByDescending(l=>l.CreatedDate);
+                lpViewModel.LatestProductsVM = latestProductsList.OrderByDescending(l => l.CreatedDate);
                 return lpViewModel;
             }
             catch (Exception e)

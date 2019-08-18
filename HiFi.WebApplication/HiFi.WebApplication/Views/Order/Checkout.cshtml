@@ -1,0 +1,103 @@
+﻿@model OrderDto
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<style>
+    .myspanids{
+        padding: 5px 70px 5px 56px;
+    }
+</style>
+<div class="container">
+    <div class="row">
+            @*<ul class="breadcrumb">
+                <li><a href="\">Home</a> <span class="divider">/</span></li>
+                <li class="active">CheckOut</li>
+            </ul>*@
+            <div class="row">
+                <div class="col-md-6 col-lg-6 offset-lg-3">
+                    <h3><b>CheckOut :</b> Provide Your details to proceed further.</h3>
+                    <div>
+                        <div asp-validation-summary="ModelOnly"></div>
+                    </div> 
+                    <form asp-controller="order" asp-action="checkout" method="post">
+                        <div class="row">
+                            <div class="span6">
+                                <div class="form-inline">
+                                    <label asp-for="FirstName" style="padding-right: 53px;padding-top: 15px;"></label>
+                                    <span class="">
+                                        <input asp-for="FirstName" class="form-control" />
+                                        <span asp-validation-for="FirstName"></span>
+                                    </span>
+                                </div>
+                                <div class="form-inline">
+                                    <label asp-for="PhoneNumber" style="padding-right: 27px;padding-top: 15px;"></label>
+                                    <input asp-for="PhoneNumber" class="form-control" />
+                                    <span asp-validation-for="PhoneNumber"></span>
+                                </div>
+                                <div class="form-inline">
+                                    <label asp-for="AddressLine1" style="padding-right: 27px;padding-top: 15px;"></label>
+                                    <input asp-for="AddressLine1" class="form-control" />
+                                    <span asp-validation-for="AddressLine1"></span>
+                                </div>
+                                <div class="form-inline">
+                                    <label asp-for="City" style="padding-right: 96px;padding-top: 15px;"></label>
+                                    <input asp-for="City" class="form-control" />
+                                    <span asp-validation-for="City"></span>
+                                </div>
+                                <div class="form-inline">
+                                    <label asp-for="Country" style="padding-right:70px;padding-top: 15px;"></label>
+                                    <input asp-for="Country" class="form-control" />
+                                    <span asp-validation-for="Country"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="span6">
+                                <div class="form-inline">
+                                    <label asp-for="LastName" style="padding-right: 58px;    padding-top: 15px;"></label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName"></span>
+                                </div>
+                                <div class="form-inline">
+                                    <label asp-for="Email" style="padding-right: 36px;    padding-top: 15px;"></label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email"></span>
+                                </div>
+                                <div class="form-inline">
+                                    <label asp-for="AddressLine2" style="padding-right: 33px;    padding-top: 15px;"></label>
+                                    <input asp-for="AddressLine2" class="form-control" />
+                                </div>
+                                <div class="form-inline">
+                                    <label asp-for="State" style="padding-right: 95px;    padding-top: 15px;"></label>
+                                    <input asp-for="State" class="form-control" />
+                                    <span asp-validation-for="State"></span>
+                                </div>
+                                <div class="form-inline">
+                                    <label asp-for="ZipCode" style="padding-right: 71px;    padding-top: 15px;"></label>
+                                    <input asp-for="ZipCode" class="form-control" />
+                                    <span asp-validation-for="ZipCode"></span>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6" style="padding: 33px;float: right;">
+                                <button class="btn btn-success"><i class="fa fa-check"></i>Place Order</button>
+                                <a href="@Url.Action("AddToCart","ShoppingCart")" name="btnCancel" class="btn btn-sm btn-danger">
+                                    <i class="fa fa-times"></i>Cancel
+                                    @*<input type="button" value="Cancel" name="btnCancel" class="btn btn-sm btn-danger" />*@
+                                </a>
+                            </div>
+                        </div>
+                       
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+
+<br />
+<br />

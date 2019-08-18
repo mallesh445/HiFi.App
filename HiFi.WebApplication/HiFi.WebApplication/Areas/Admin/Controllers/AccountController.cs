@@ -24,11 +24,21 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout(string returnUrl=null)
         {
+            //await _signInManager.SignOutAsync();
+            //_logger.LogInformation("User logged out.");
+            //return RedirectToPage("/Index");
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
-            return RedirectToPage("/Index");
+            if (returnUrl != null)
+            {
+                return LocalRedirect(returnUrl);
+            }
+            else
+            {
+                return LocalRedirect("/");
+            }
         }
     }
 }

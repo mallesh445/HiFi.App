@@ -95,6 +95,98 @@ namespace HiFi.Data.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("HiFi.Data.Models.OrderDetails", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<int>("OrderId");
+
+                    b.Property<double>("Price");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("HiFi.Data.Models.OrderHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AddressLine1")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("AddressLine2")
+                        .HasMaxLength(255);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Comments");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("CreatedByUserId")
+                        .IsRequired();
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<DateTime>("OrderPlacedTime");
+
+                    b.Property<decimal>("OrderTotal");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(10);
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.Property<string>("Status");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasMaxLength(6);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedByUserId");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("HiFi.Data.Models.PictureBinary", b =>
                 {
                     b.Property<int>("Id")
@@ -178,6 +270,31 @@ namespace HiFi.Data.Migrations
                     b.HasIndex("FKProductId");
 
                     b.ToTable("ProductImage");
+                });
+
+            modelBuilder.Entity("HiFi.Data.Models.ShoppingCartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ApplicationUserId");
+
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("Qunatity");
+
+                    b.Property<string>("ShoppingCartId")
+                        .IsRequired()
+                        .HasMaxLength(255);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("HiFi.Data.Models.SubCategoryOne", b =>
@@ -410,6 +527,27 @@ namespace HiFi.Data.Migrations
                         .HasForeignKey("CreatedByUserId");
                 });
 
+            modelBuilder.Entity("HiFi.Data.Models.OrderDetails", b =>
+                {
+                    b.HasOne("HiFi.Data.Models.OrderHeader", "OrderHeader")
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("HiFi.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("HiFi.Data.Models.OrderHeader", b =>
+                {
+                    b.HasOne("HiFi.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("HiFi.Data.Models.Product", b =>
                 {
                     b.HasOne("HiFi.Data.Models.ApplicationUser", "ApplicationUser")
@@ -429,8 +567,20 @@ namespace HiFi.Data.Migrations
             modelBuilder.Entity("HiFi.Data.Models.ProductImage", b =>
                 {
                     b.HasOne("HiFi.Data.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductImage")
                         .HasForeignKey("FKProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("HiFi.Data.Models.ShoppingCartItem", b =>
+                {
+                    b.HasOne("HiFi.Data.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("HiFi.Data.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

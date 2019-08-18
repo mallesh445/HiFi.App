@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HiFi.Data.Models;
@@ -24,23 +25,38 @@ namespace HiFi.Services.Implementation
             var data = productRepository.GetAll();
             return data;
         }
-        public IEnumerable<ProductViewModel> GetAllProducts()
+
+        public IEnumerable<Product> GetAllProductsFromDB()
         {
-            var data = productRepository.GetAll();
-            List<ProductViewModel> productModelList = new List<ProductViewModel>();
-            return productModelList;
+            var data = productRepository.GetAll().ToList();
+            return data;
         }
 
+        public IEnumerable<Product> GetAllProductsFromBySubCategory(int subCategoryId=0)
+        {
+            //var data = productRepository.GetAll().ToList();
+            //string[] includes = new string[2] {"SubCategoryOne", "ProductImage" };
+            //var data = productRepository.GetAll(includes);
+            //var products = data.Where(p => p.SubCategoryOneId == subCategoryId);
+
+            var products = productRepository.GetProductsBySubCategoryId(subCategoryId);
+            return products;
+        }
         public IEnumerable<ProductImage> GetAllProductImages()
         {
             var data = imageRepository.GetAll();
             return data;
         }
 
-        public Product GetProductByProductId(int? id)
+        public Product GetProductByProductId(int id)
         {
-            var data = productRepository.GetById(id);
+            var data = productRepository.GetProductByProductId(id);
             return data;
+        }
+
+        public async Task<Product> GetProductById(int id)
+        {
+            return await productRepository.GetProductById(id);
         }
         public IEnumerable<ProductImage> GetAllProductImagesById(int pKProductId)
         {

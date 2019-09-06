@@ -3,85 +3,86 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Cart <i class="fa fa-shopping-cart" aria-hidden="true"></i> </h2>
+<div class="span9">
+    <div class="border border-info" style="padding:15px;">
+        <h2>Cart <i class="fa fa-shopping-cart" aria-hidden="true"></i> </h2>
 
-@if (Model.ShoppingCart != null && Model.ShoppingCart.Count() <= 0)
-{
-    <br />
-    <h6>Opps! Your Cart is empty!</h6>
-    return;
-}
-
-<div class="border border-info" style="padding:15px;">
-    <div class="container">
-        <table class="table table-striped" width="100%">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.ShoppingCart)
-                {
+        @if (Model.ShoppingCart != null && Model.ShoppingCart.Count() <= 0)
+        {
+            <br />
+            <h6>Opps! Your Cart is empty!</h6>
+            return;
+        }
+        <div>
+            <table class="table table-striped" width="100%">
+                <thead>
                     <tr>
-                        <td>@item.Product.ProductName</td>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ShoppingCart)
+                    {
+                        <tr>
+                            <td>@item.Product.ProductName</td>
+                            <td>
+                                <form class="d-inline align-middle" method="post">
+                                    <button type="submit" class="btn btn-danger" asp-action="RemoveFromShoppingCart"
+                                            asp-controller="ShoppingCart" asp-route-productId="@item.ProductId">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <span style="padding:1px 10px">@item.Qunatity</span>
+                                    <button type="submit" class="btn btn-success" asp-action="AddToShoppingCart"
+                                            asp-controller="ShoppingCart" asp-route-productId="@item.ProductId">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                    @*<button class="btn fa fa-minus fa-small" aria-hidden="true"></button>*@
+                                </form>
+
+                            </td>
+                            <td>@item.Product.Price.ToString("c")</td>
+                            <td>@((item.Product.Price * item.Qunatity).ToString("c"))</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">Total: </td>
+                        <td>@Model.ShoppingCartTotal.ToString("c")</td>
+                    </tr>
+                    <tr>
+                        <td class="row">
+                            <div class="col-2">
+                                <label class="custom-label">Comments : </label>
+                            </div>
+                            <div class="col-10">
+                                <textarea asp-for="@Model.Comments" class="form-control"></textarea>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr style="border:0">
                         <td>
-                            <form class="d-inline align-middle" method="post">
-                                <button type="submit" class="btn btn-danger" asp-action="RemoveFromShoppingCart"
-                                        asp-controller="ShoppingCart" asp-route-productId="@item.ProductId">
-                                    <i class="fa fa-minus"></i>
+                            <form asp-action="RemoveAllCart" method="post">
+                                <button class="btn btn-link text-dark" asp-action="RemoveAllCart">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                    Clear Cart
                                 </button>
-                                <span style="padding:1px 10px">@item.Qunatity</span>
-                                <button type="submit" class="btn btn-success" asp-action="AddToShoppingCart"
-                                        asp-controller="ShoppingCart" asp-route-productId="@item.ProductId">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                                @*<button class="btn fa fa-minus fa-small" aria-hidden="true"></button>*@
                             </form>
 
                         </td>
-                        <td>@item.Product.Price.ToString("c")</td>
-                        <td>@((item.Product.Price * item.Qunatity).ToString("c"))</td>
+                        <td colspan="2"></td>
+                        <td class="text-center">
+                            <a class="btn btn-success buy-now-btn float-right" asp-action="checkout" asp-controller="order">
+                                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                                Checkout
+                            </a>
+                        </td>
                     </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="3">Total: </td>
-                    <td>@Model.ShoppingCartTotal.ToString("c")</td>
-                </tr>
-                <tr>
-                    <td class="row">
-                        <div class="col-2">
-                            <label class="custom-label">Comments : </label>
-                        </div>
-                        <div class="col-10">
-                            <textarea asp-for="@Model.Comments" class="form-control"></textarea>
-                        </div>
-                    </td>
-                </tr>
-                <tr style="border:0">
-                    <td>
-                        <form asp-action="RemoveAllCart" method="post">
-                            <button class="btn btn-link text-dark" asp-action="RemoveAllCart">
-                                <i class="fa fa-times" aria-hidden="true"></i>
-                                Clear Cart
-                            </button>
-                        </form>
-
-                    </td>
-                    <td colspan="2"></td>
-                    <td class="text-center">
-                        <a class="btn btn-success buy-now-btn float-right" asp-action="checkout" asp-controller="order">
-                            <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                            Checkout
-                        </a>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+                </tfoot>
+            </table>
+        </div>
     </div>
 </div>

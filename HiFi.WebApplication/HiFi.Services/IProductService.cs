@@ -19,6 +19,7 @@ namespace HiFi.Services
         IEnumerable<ProductImage> GetAllProductImagesById(int pKProductId);
         Product GetProductByProductId(int id);
         Task<Product> GetProductById(int id);
+        IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId);
 
         //bool InsertProductInBulk(List<ProductImportExcel> records);
     }

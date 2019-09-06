@@ -12,5 +12,6 @@ namespace HiFi.Services
         bool InsertSubCategory(SubCategoryOne subCategory);
         bool UpdateSubCategory(SubCategoryOne subCategory);
         bool DeleteSubCategory(SubCategoryOne subCategory);
+        IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId);
     }
 }

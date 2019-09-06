@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using HiFi.Common;
 using HiFi.Common.ExcelModel;
+using HiFi.Common.ViewModel;
 using HiFi.Data.Models;
 using HiFi.Repository;
 
@@ -82,5 +84,21 @@ namespace HiFi.Services.Catalog
             }
             return true;
         }
+
+        public int GetProductCategoriesByProductId(int currentProductId)
+        {
+           return _categoryRepository.GetProductCategoriesByProductId(currentProductId);
+        }
+
+        public List<CategoryChildsCount> GetNoOfProductsAndSubCategoriesByCategories()
+        {
+            return _categoryRepository.GetNoOfProductsAndSubCategoriesByCategories();
+        }
+
+        public List<CategoryNavViewModel> GetCategoriesAndSubCategories()
+        {
+            return _categoryRepository.GetCategoriesAndSubCategories();
+        }
+
     }
 }

@@ -32,6 +32,12 @@ namespace HiFi.Services.Implementation
             return data;
         }
 
+        public IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId)
+        {
+            var products = productRepository.GetSubCategoriesByCategoryId(categoryId);
+            return products;
+        }
+
         public IEnumerable<Product> GetAllProductsFromBySubCategory(int subCategoryId=0)
         {
             //var data = productRepository.GetAll().ToList();

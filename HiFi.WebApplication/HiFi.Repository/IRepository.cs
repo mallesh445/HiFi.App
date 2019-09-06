@@ -1,4 +1,6 @@
-﻿using HiFi.Data;
+﻿using HiFi.Common;
+using HiFi.Common.ViewModel;
+using HiFi.Data;
 using HiFi.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -26,5 +28,9 @@ namespace HiFi.Repository
         IEnumerable<Product> GetProductsBySubCategoryId(int subcaId = 0);
         Product GetProductByProductId(int productId);
         Task<Product> GetProductById(int id);
+        int GetProductCategoriesByProductId(int currentProductId);
+        List<CategoryChildsCount> GetNoOfProductsAndSubCategoriesByCategories();
+        IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId);
+        List<CategoryNavViewModel> GetCategoriesAndSubCategories();
     }
 }

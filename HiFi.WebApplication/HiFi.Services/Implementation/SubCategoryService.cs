@@ -9,9 +9,12 @@ namespace HiFi.Services.Implementation
     public class SubCategoryService: ISubCategoryService
     {
         private readonly IRepository<SubCategoryOne> _subCategoryRepository;
-        public SubCategoryService(IRepository<SubCategoryOne> subCategoryRepository)
+
+        private readonly IShoppingCartRepository _shoppingCartRepository;
+        public SubCategoryService(IRepository<SubCategoryOne> subCategoryRepository, IShoppingCartRepository shoppingCartRepository)
         {
             _subCategoryRepository = subCategoryRepository;
+            _shoppingCartRepository = shoppingCartRepository;
         }
 
 
@@ -37,6 +40,11 @@ namespace HiFi.Services.Implementation
         {
             _subCategoryRepository.Delete(subCategory);
             return true;
+        }
+
+        public IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId)
+        {
+            return _subCategoryRepository.GetSubCategoriesByCategoryId(categoryId);
         }
     }
 }

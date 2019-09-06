@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using HiFi.Common;
 using HiFi.Common.ExcelModel;
+using HiFi.Common.ViewModel;
 using HiFi.Data.Models;
 
 namespace HiFi.Services.Catalog
 {
     public interface ICategoryService
     {
+
         /// <summary>
         /// Gets all categories
         /// </summary>
@@ -26,6 +29,9 @@ namespace HiFi.Services.Catalog
         bool InsertCategory(Category category);
         bool UpdateCategory(Category category);
         bool DeleteCategory(int categoryId);
+        int GetProductCategoriesByProductId(int currentProductId);
+
+        List<CategoryChildsCount> GetNoOfProductsAndSubCategoriesByCategories();
 
         /// <summary>
         /// InsertCategorInBulk
@@ -34,5 +40,6 @@ namespace HiFi.Services.Catalog
         /// <returns></returns>
         bool InsertCategorInBulk(List<CategoryImportExcel> records);
         Task<Category> GetCategoryByIdAsync(int id);
+        List<CategoryNavViewModel> GetCategoriesAndSubCategories();
     }
 }

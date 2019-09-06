@@ -61,7 +61,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         // GET: Admin/SubCategoryOne/Create
         public IActionResult Create()
         {
-            ViewBag.CategoryList = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName");
+            //ViewBag.CategoryList = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName");
             var catlist = _categoryService.GetAllCategories();
             var cvm = new List<CategoryViewModel>();
             foreach (var item in catlist)

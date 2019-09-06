@@ -35,6 +35,8 @@ namespace HiFi.WebApplication.Controllers
             return View();
         }
 
+        
+
         public IActionResult GetAllProductsBySubCategory(int subCategoryId)
         {
             return View(GetAllProductsBySubCategoryId(subCategoryId));
@@ -44,7 +46,14 @@ namespace HiFi.WebApplication.Controllers
         {
             var listOfDbProducts = _productService.GetAllProductsFromBySubCategory(subCategoryId);
             IEnumerable<ProductViewModel> listOfProductsVM = _mapper.Map<IEnumerable<ProductViewModel>>(listOfDbProducts);
-            ViewBag.SubCategoryName = listOfDbProducts.FirstOrDefault().SubCategoryOne.SubCategoryName.ToString();
+            if (listOfProductsVM.Count() > 0)
+            {
+                ViewBag.SubCategoryName = listOfDbProducts.FirstOrDefault().SubCategoryOne.SubCategoryName.ToString();
+            }
+            else
+            {
+                ViewBag.SubCategoryName = "No Products Under this "+ subCategoryId.ToString();
+            }
             
             return listOfProductsVM;
         }

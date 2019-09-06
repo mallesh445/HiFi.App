@@ -157,6 +157,7 @@ namespace HiFi.WebApplication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+            
         }
 
         /// <summary>
@@ -167,6 +168,8 @@ namespace HiFi.WebApplication
         {
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
+                cfg.CreateMap<SubCategoryOne, SubCategoryViewModel>()
+                .ForMember(dest=>dest.SubCategoryId,opt=>opt.MapFrom(src=>src.SubCategoryOneId));
                 cfg.CreateMap<Product, ProductViewModel>();
                 cfg.CreateMap<Product, LatestProductsViewModel>();
                 cfg.CreateMap<Product, FeatureProductsViewModel>();

@@ -2,26 +2,24 @@
 
 @{
     ViewData["Title"] = "ProductDetails";
+    //Layout = "_MainLayout";
 }
-    @*<style type="text/css">
-
-    @media (min-width: 1200px)
-       .span9 {
-              width: 1100px !important;
-              }
-    </style>*@
-<h4>Product Details @Model.ProductName</h4>
+   
 <div id="mainBody">
     <div class="container">
         <div class="row">
+            <h4>Product Details @Model.ProductName</h4>
             @*@Html.Partial("~/Views/SideBar/_SideBarMenu.cshtml")*@
             @*<div class="col-lg-3"></div>*@
             @*<div class="col-lg-9">*@
             <div class="span9">
                 <ul class="breadcrumb">
                     <li><a href="\">Home</a> <span class="divider">/</span></li>
-                    <li><a asp-controller="Product" asp-action="GetAllProductsBySubCategory" asp-route-id="@Model.SubCategoryOneId">
-                        Products</a> <span class="divider">/</span></li>
+                    <li>
+                        <a asp-controller="Product" asp-action="GetAllProductsBySubCategory" asp-route-id="@Model.SubCategoryOneId">
+                            Products
+                        </a> <span class="divider">/</span>
+                    </li>
                     <li class="active">Product Details</li>
                 </ul>
                 <div class="row">
@@ -29,10 +27,10 @@
                         @if (Model.ProductImage != null && Model.ProductImage.Count > 0 && Model.ProductImage[0].FKProductId == Model.PKProductId)
                         {
                             <a href="@Model.ProductImage[0]?.ImagePath" title="@Model.ProductName">
-                                <img src="@Model.ProductImage[0]?.ImagePath" alt="@Model.ProductImage[0].ImageName"/>
+                                <img src="@Model.ProductImage[0]?.ImagePath" alt="@Model.ProductImage[0].ImageName" />
                             </a>
                         }
-                        
+
                         <div id="differentview" class="moreOptopm carousel slide">
                             <div class="carousel-inner">
                                 <div class="item active">
@@ -47,16 +45,16 @@
                                 </div>
                             </div>
                             <!--
-        <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-        <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-        -->
+                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                    <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                    -->
                         </div>
 
                         <div class="btn-toolbar">
                             <div class="btn-group">
                                 <span class="btn"><i class="icon-envelope"></i></span>
                                 <span class="btn"><i class="icon-print"></i></span>
-                                <span class="btn"><i class="icon-zoom-in"></i></span>
+                                <span class="btn"><i class="fa fa-search"></i></span>
                                 <span class="btn"><i class="icon-star"></i></span>
                                 <span class="btn"><i class=" icon-thumbs-up"></i></span>
                                 <span class="btn"><i class="icon-thumbs-down"></i></span>
@@ -67,18 +65,19 @@
                         <h3>@Model.ProductName</h3>
                         <small>- @Model.ShortDescription</small>
                         <hr class="soft" />
-                        <form class="form-horizontal qtyFrm" asp-controller="ShoppingCart" asp-action="AddToShoppingCart" 
+                        <form class="form-horizontal qtyFrm" asp-controller="ShoppingCart" asp-action="AddToShoppingCart"
                               asp-route-productId="@Model.PKProductId" method="post">
                             <div class="control-group">
                                 <label class="control-label"><span>@Model.Price</span></label>
                                 <div class="controls">
                                     <input type="number" class="span1" placeholder="Qty." />
-                                    @*<a type="button" class="btn btn-large btn-primary pull-right" 
-                                       href="@Url.Action("AddToShoppingCart","ShoppingCart",new { productId = @Model.PKProductId })">
-                                        Add to cart<i class=" icon-shopping-cart"></i>
-                                    </a>*@
+                                    @*<a type="button" class="btn btn-large btn-primary pull-right"
+                                   href="@Url.Action("AddToShoppingCart","ShoppingCart",new { productId = @Model.PKProductId })">
+                                    Add to cart<i class=" icon-shopping-cart"></i>
+                                </a>*@
                                     <button type="submit" class="btn btn-large btn-primary pull-right">
-                                        Add to cart <i class=" icon-shopping-cart"></i></button>
+                                        Add to cart <i class=" icon-shopping-cart"></i>
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -132,7 +131,7 @@
 
                                 <h5>Features</h5>
                                 <p>
-                                    @Model.Description 
+                                    @Model.Description
                                 </p>
 
                                 <h4>Editorial Reviews</h4>
@@ -187,8 +186,9 @@
                                                     </label><br />
                                                     <div class="btn-group">
                                                         <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary">
-                                                        Add to <i class=" icon-shopping-cart"></i></a>
-                                                        <a href="#" class="btn btn-large"><i class="icon-zoom-in"></i></a>
+                                                            Add to <i class=" icon-shopping-cart"></i>
+                                                        </a>
+                                                        <a href="#" class="btn btn-large"><i class="fa fa-search"></i></a>
                                                     </div>
                                                 </form>
                                             </div>
@@ -216,8 +216,9 @@
                                                         <input type="checkbox">  Adds product to compair
                                                     </label><br />
                                                     <div class="btn-group">
-                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary"> 
-                                                        Add to <i class=" icon-shopping-cart"></i></a>
+                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary">
+                                                            Add to <i class=" icon-shopping-cart"></i>
+                                                        </a>
                                                         <a href="#" class="btn btn-large"><i class="icon-zoom-in"></i></a>
                                                     </div>
                                                 </form>
@@ -246,8 +247,9 @@
                                                         <input type="checkbox">  Adds product to compair
                                                     </label><br />
                                                     <div class="btn-group">
-                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary"> 
-                                                        Add to <i class=" icon-shopping-cart"></i></a>
+                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary">
+                                                            Add to <i class=" icon-shopping-cart"></i>
+                                                        </a>
                                                         <a href="#" class="btn btn-large"><i class="icon-zoom-in"></i></a>
                                                     </div>
                                                 </form>
@@ -274,10 +276,11 @@
                                                     <h3> @Model.Price</h3>
                                                     <label class="checkbox">
                                                         <input type="checkbox">  Adds product to compair
-                                                    </label><br />  
+                                                    </label><br />
                                                     <div class="btn-group">
-                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary"> 
-                                                        Add to <i class=" icon-shopping-cart"></i></a>
+                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary">
+                                                            Add to <i class=" icon-shopping-cart"></i>
+                                                        </a>
                                                         <a href="#" class="btn btn-large"><i class="icon-zoom-in"></i></a>
                                                     </div>
                                                 </form>
@@ -307,8 +310,9 @@
                                                         <input type="checkbox">  Adds product to compair
                                                     </label><br />
                                                     <div class="btn-group">
-                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary"> 
-                                                        Add to <i class=" icon-shopping-cart"></i></a>
+                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary">
+                                                            Add to <i class=" icon-shopping-cart"></i>
+                                                        </a>
                                                         <a href="#" class="btn btn-large"><i class="icon-zoom-in"></i></a>
                                                     </div>
                                                 </form>
@@ -337,8 +341,9 @@
                                                         <input type="checkbox">  Adds product to compair
                                                     </label><br />
                                                     <div class="btn-group">
-                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary"> 
-                                                        Add to <i class=" icon-shopping-cart"></i></a>
+                                                        <a href="ShoppingCart/AddToShoppingCart?productId=@Model.PKProductId" class="btn btn-large btn-primary">
+                                                            Add to <i class=" icon-shopping-cart"></i>
+                                                        </a>
                                                         <a href="#" class="btn btn-large"><i class="icon-zoom-in"></i></a>
                                                     </div>
                                                 </form>
@@ -380,7 +385,8 @@
                                                         <p>
                                                             Lorem Ipsum is simply dummy text.
                                                         </p>
-                                                        <h4 style="text-align:center"><a class="btn" href="#"> <i class="icon-zoom-in"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">&euro;222.00</a></h4>
+                                                        <h4 style="text-align:center"><a class="btn" href="#"> 
+                                                            <i class="fa fa-search"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">&euro;222.00</a></h4>
                                                     </div>
                                                 </div>
                                             </li>

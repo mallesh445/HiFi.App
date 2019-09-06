@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using HiFi.Data.Models
 @using Microsoft.AspNetCore.Http
+@model SelectList;
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
+@*@inject HiFi.Services.Catalog.ICategoryService categoryService;*@
 
 @{
     var currentUserName = @User.Identity.Name ?? "User";
@@ -12,6 +14,8 @@
     {
         cartCount = Convert.ToInt32(HttpContextAccessor.HttpContext.Session.GetInt32("CartCount"));
     }
+    //var categoriesList = new SelectList(categoryService.GetAllCategories(), "CategoryId", "CategoryName");
+    var categoriesList = Model;
 }
 <!-- Navbar ================================================== -->
 <div id="welcomeLine" class="row">
@@ -38,18 +42,29 @@
         <span class="icon-bar"></span>
     </a>
     <div class="navbar-inner">
-        <a class="brand" href="\"><img src="~/themes/images/hiLogo.jpg" alt="Hi-FI" /></a>
-        <form class="form-inline navbar-search" method="post" action="products.html">
-            <input id="srchFld" class="srchTxt" type="text" />
-            <select class="srchTxt">
-                <option>All</option>
-                <option>CLOTHES </option>
-                <option>FOOD AND BEVERAGES </option>
-                <option>HEALTH & BEAUTY </option>
-                <option>SPORTS & LEISURE </option>
-                <option>BOOKS & ENTERTAINMENTS </option>
-            </select>
-            <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
+        <a class="brand" href="\"><img src="~/themes/images/Hi-Fi Logo.jpg" alt="Hi-FI" height="55" width="55" /></a>
+        <form class="form-inline navbar-search" method="post" action="#">
+            @*<input id="srchFld" class="srchTxt" type="text" />
+                    <select class="srchTxt">
+                    <option>All</option>
+                    <option>CLOTHES </option>
+                    <option>FOOD AND BEV    ERAGES </option>
+                    <option>HEALTH & BEAUTY </option>
+                    <option>SPORTS & LEISURE </option>
+                    <option>BOOKS & ENTERTAINMENTS </option>
+                </select>*@
+            <div class="input-group">
+                <span class="input-group">
+                    <i class="fa fa-search"></i>
+                </span>
+                <input id="txtSearch" placeholder="Search" class="form-control" type="text" />
+                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)categoriesList, new { @class = "form-control" })
+                <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
+            </div>
+            @*<input id="txtSearch" placeholder="Search" class="form-control" type="text" />
+                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)categoriesList, new { @class = "form-control" })
+                    <button type="submit" id="submitButton" class="btn btn-primary">Go</button>*@
+
         </form>
         <ul id="topMenu" class="nav pull-right">
             @*<li class=""><a href="normal.html">Delivery</a></li>*@

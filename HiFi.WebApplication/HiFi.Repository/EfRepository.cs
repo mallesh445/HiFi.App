@@ -1,9 +1,12 @@
-﻿using HiFi.Data;
+﻿using HiFi.Common;
+using HiFi.Common.ViewModel;
+using HiFi.Data;
 using HiFi.Data.Data;
 using HiFi.Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -128,16 +131,34 @@ namespace HiFi.Repository
             }
         }
 
-        public IEnumerable<Product> GetProductsBySubCategoryId(int subcaId = 0)
+        public IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId = 0)
         {
-            if (subcaId == 0)
+            if (categoryId == 0)
+            {
+                var data = _context.SubCategoryOne.ToList();
+                return data;
+            }
+            else
+            {
+                var subCategoryId = _context.SubCategoryOne.Where(c => c.CategoryId == categoryId)
+                    .Select(sc => sc.SubCategoryOneId).ToList();
+                var subCategoriesData = _context.SubCategoryOne.Include(f => f.Category)
+                    .Where(c => c.CategoryId == categoryId).ToList();
+                //var data = _context.Product.Where(a => a.SubCategoryOneId == categoryId)
+                //        .Include(sc => sc.SubCategoryOne).Include(pi => pi.ProductImage);
+                return subCategoriesData;
+            }
+        }
+        public IEnumerable<Product> GetProductsBySubCategoryId(int subCategoryId = 0)
+        {
+            if (subCategoryId == 0)
             {
                 var data = _context.Product.Include(sc => sc.SubCategoryOne).Include(pi => pi.ProductImage);
                 return data;
             }
             else
             {
-                var data = _context.Product.Where(a => a.SubCategoryOneId == subcaId)
+                var data = _context.Product.Where(a => a.SubCategoryOneId == subCategoryId)
                         .Include(sc => sc.SubCategoryOne).Include(pi => pi.ProductImage);
                 return data;
             }
@@ -161,5 +182,79 @@ namespace HiFi.Repository
             var data = GetProductByProductId(id);
             return data;
         }
+
+        public int GetProductCategoriesByProductId(int currentProductId)
+        {
+            var subCatId = _context.Product.Where(s => s.PKProductId == currentProductId).
+                Select(c => c.SubCategoryOneId).FirstOrDefault();
+            return _context.SubCategoryOne.Where(s => s.SubCategoryOneId == subCatId).Select(c => c.CategoryId).FirstOrDefault();
+        }
+
+        public List<CategoryChildsCount> GetNoOfProductsAndSubCategoriesByCategories()
+        {
+            try
+            {
+                var data = _context.CategoryChildsCounts.FromSql(@"SELECT c.CategoryId,C.CategoryName, count(distinct s.SubCategoryName) as SubCategorycount,  count(Ci.ProductName) as ProductCount
+                                FROM Category c
+                                INNER JOIN SubCategoryOne s
+                                 on c.CategoryId = s.CategoryId
+                                left JOIN Product ci
+                                  ON s.SubCategoryOneId = ci.SubCategoryOneId
+                                GROUP BY C.CategoryId, C.CategoryName").ToList();
+                return data;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
+
+        public List<CategoryNavViewModel> GetCategoriesAndSubCategories()
+        {
+            try
+            {
+                List<CategoryNavViewModel> categoryNavViewModels = new List<CategoryNavViewModel>();
+                var categoryNavs = _context.CategorySubCategoryTable.FromSql(@"
+                                    Select  c.CategoryId,c.CategoryName  ,ISNULL(sc.SubCategoryOneId,0)  AS SubCategoryOneId,ISNULL(sc.SubCategoryName,'') AS SubCategoryName,count(pkproductid) as ProductsCount
+                                    From Category c 
+                                    left join SubCategoryOne sc on c.CategoryId = sc.CategoryId 
+                                    left join Product p on sc.SubCategoryOneId = p.SubCategoryOneId
+                                    group by c.CategoryId,c.CategoryName,sc.SubCategoryOneId,sc.SubCategoryName order by c.CategoryId
+                                    ").ToList();
+                //Added by Ashok
+                List<string> categoryList=  categoryNavs.Select(x => x.CategoryName).Distinct().ToList();
+
+                foreach (string item in categoryList)
+                {
+                    CategoryNavViewModel categoryNav = categoryNavs.Where(x => x.CategoryName == item).Select(x => new CategoryNavViewModel { CategoryId = x.CategoryId, CategoryName = x.CategoryName }).FirstOrDefault();
+
+                    List<SubCategoriesNavViewModel> subCatList = categoryNavs.Where(x => x.CategoryName == item).Select(x => new SubCategoriesNavViewModel { SubCategoryId = x.SubCategoryOneId, SubCategoryName = x.SubCategoryName,NumberOfProducts=x.ProductsCount }).ToList();
+
+                    categoryNav.SubCategories = subCatList;
+                    categoryNavViewModels.Add(categoryNav);
+
+                }
+                //end by Ashok
+
+
+                //foreach (var row in categoryNavs)
+                //{
+                //    CategoryNavViewModel categoryNav = new CategoryNavViewModel();
+                //    categoryNav.CategoryId = row.CategoryId;
+                //    categoryNav.CategoryName = row.CategoryName;
+                //    List<SubCategoriesNavViewModel> subCatList=new List<SubCategoriesNavViewModel>();
+
+                //    categoryNav.SubCategories = subCatList;
+                //}
+                return categoryNavViewModels;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
+
     }
 }

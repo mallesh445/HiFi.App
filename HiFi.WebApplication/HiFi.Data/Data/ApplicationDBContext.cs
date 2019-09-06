@@ -1,4 +1,5 @@
-﻿using HiFi.Data.Models;
+﻿using HiFi.Common;
+using HiFi.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,5 +31,7 @@ namespace HiFi.Data.Data
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<OrderHeader> Orders { get; set; }
         public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbQuery<CategoryChildsCount> CategoryChildsCounts { get; set; }
+        public DbQuery<CategorySubCategoryTable> CategorySubCategoryTable { get; set; }
     }
 }

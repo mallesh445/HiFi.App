@@ -1,0 +1,56 @@
+﻿@model IEnumerable<HiFi.Common.ViewModel.CategoryNavViewModel>;
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<!-- Sidebar ================================================== -->
+<div id="sidebar" class="span3">
+    <div class="well well-small">
+        <a id="myCart" href="product_summary.html">
+            <img src="~/themes/images/ico-cart.png" alt="cart">3 Items in your cart
+        </a>
+    </div>
+    <ul id="sideManu" class="nav nav-tabs nav-stacked">
+        @foreach (var currentCategory in Model)
+        {
+            <li class="subMenu">
+                <a asp-controller="Category" asp-action="GetSubCategoriesByCategoryId" asp-route-id="@currentCategory.CategoryId"> @currentCategory.CategoryName</a>
+                <ul>
+                    @foreach (var subCat in currentCategory.SubCategories)
+                    {
+                        @if (currentCategory.SubCategories.Count > 0 && currentCategory.SubCategories[0].SubCategoryId!=0)
+                        {
+                            <li>
+                                <a asp-controller="Product" asp-action="GetAllProductsBySubCategory" asp-route-subCategoryId="@subCat.SubCategoryId">
+                                    <i class="icon-chevron-right"></i>@subCat.SubCategoryName (@subCat.NumberOfProducts)
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </li>
+        }
+
+    </ul>
+    <br />
+    <div class="thumbnail">
+        <img src="~/themes/images/products/panasonic.jpg" alt="HiFi panasonoc New camera" />
+        <div class="caption">
+            <h5>Panasonic</h5>
+            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="fa fa-search"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
+        </div>
+    </div><br />
+    <div class="thumbnail">
+        <img src="~/themes/images/products/kindle.png" title="HiFi New Kindel" alt="HiFi Kindel">
+        <div class="caption">
+            <h5>Kindle</h5>
+            <h4 style="text-align:center"><a class="btn" href="product_details.html"> <i class="fa fa-search"></i></a> <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> <a class="btn btn-primary" href="#">$222.00</a></h4>
+        </div>
+    </div><br />
+    <div class="thumbnail">
+        <img src="~/themes/images/payment_methods.png" title="App Payment Methods" alt="Payments Methods">
+        <div class="caption">
+            <h5>Payment Methods</h5>
+        </div>
+    </div>
+</div>
+<!-- Sidebar end=============================================== -->

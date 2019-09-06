@@ -4,9 +4,9 @@
     ViewData["Title"] = "Get AllProducts By SubCategory";
 }
 
-    <h3>Products By SubCategory : @ViewBag.SubCategoryName </h3>
 
 <div class="span9">
+    <h4>Products By SubCategory : @ViewBag.SubCategoryName </h4>
     <ul class="thumbnails">
         @foreach (var item in Model)
         {
@@ -14,7 +14,7 @@
                 <div class="thumbnail">
                     @if (@item.ProductImage != null && item.ProductImage.Count > 0 && item.ProductImage[0].FKProductId == item.PKProductId)
                     {
-                        <a asp-controller="Product" asp-action="GetAllProductsBySubCategory" asp-route-id="@item.PKProductId">
+                        <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@item.PKProductId">
                             <img src="@item.ProductImage[0]?.ImagePath" width="90%" alt="@item.ProductImage[0].ImageName"
                                  style="height: 160px; width: 160px;" />
                         </a>
@@ -31,10 +31,13 @@
                                 @item.ShortDescription
                             }
                         </p>
-                        <h4 style="text-align:center"><a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId"> 
-                            <i class="icon-zoom-in"></i></a> 
-                        <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a> 
-                        <a class="btn btn-primary" href="#">$@item.Price</a></h4>
+                        <h4 style="text-align:center">
+                            <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">
+                                <i class="fa fa-search"></i>
+                            </a>
+                            <a class="btn" href="#">Add to <i class="icon-shopping-cart"></i></a>
+                            <a class="btn btn-primary" href="#">$@item.Price</a>
+                        </h4>
                     </div>
                 </div>
             </li>

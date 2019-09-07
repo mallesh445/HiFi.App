@@ -11,25 +11,30 @@ using HiFi.Services;
 using HiFi.Data.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication.Controllers
 {
     //[Route("Home")] 
     public class HomeController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
         IMapper _mapper;
         private readonly IProductService _productService;
         private readonly IShoppingCartService _shoppingCart;
         //private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(IProductService productService, IMapper mapper, IShoppingCartService shoppingCart)
+        public HomeController(IProductService productService, IMapper mapper, IShoppingCartService shoppingCart,
+            ILogger<HomeController> logger)
         {
             _productService = productService;
             _mapper = mapper;
             _shoppingCart = shoppingCart;
+            _logger = logger;
         }
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation("Index page invoked from HomeController");
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 string userData = User.Identity.Name;

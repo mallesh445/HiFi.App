@@ -16,10 +16,10 @@
             <div class="span3">
                 <h5>INFORMATION</h5>
                 <a asp-controller="Home" asp-action="Contact">CONTACT</a>
-                <a href="register.html">REGISTRATION</a>
-                <a href="legal_notice.html">LEGAL NOTICE</a>
-                <a href="tac.html">TERMS AND CONDITIONS</a>
-                <a href="faq.html">FAQ</a>
+                <a asp-area="Identity" asp-page="/Account/Register">REGISTRATION</a>
+                <a asp-controller="Home" asp-action="LegalNotice">LEGAL NOTICE</a>
+                <a asp-controller="Home" asp-action="TermsAndConditions">TERMS AND CONDITIONS</a>
+                <a asp-controller="Home" asp-action="Faq">FAQ</a>
             </div>
             <div class="span3">
                 <h5>OUR OFFERS</h5>

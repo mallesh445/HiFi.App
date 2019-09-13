@@ -7,15 +7,19 @@ using HiFi.Common.ExcelModel;
 using HiFi.Common.ViewModel;
 using HiFi.Data.Models;
 using HiFi.Repository;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace HiFi.Services.Catalog
 {
     public class CategoryService : ICategoryService
     {
         private readonly IRepository<Category> _categoryRepository;
-        public CategoryService(IRepository<Category> categoryRepository)
+        private readonly IMemoryCache _memoryCache;
+        public CategoryService(IRepository<Category> categoryRepository,IMemoryCache memoryCache)
         {
             _categoryRepository = categoryRepository;
+            _memoryCache = memoryCache;
         }
 
 
@@ -97,8 +101,48 @@ namespace HiFi.Services.Catalog
 
         public List<CategoryNavViewModel> GetCategoriesAndSubCategories()
         {
-            return _categoryRepository.GetCategoriesAndSubCategories();
+            var categoryNavViewModels = SetGetCategoriesAndSubCategoriesMemoryCache();
+            return categoryNavViewModels;
+            //return _categoryRepository.GetCategoriesAndSubCategories();
         }
 
+        /// <summary>
+        /// Gets & Sets CategoryNavList in Cache from Database.
+        /// </summary>
+        /// <returns></returns>
+        private List<CategoryNavViewModel> SetGetCategoriesAndSubCategoriesMemoryCache()
+        {
+            try
+            {
+                //2
+                string cacheKey = "CategoryNavList-Cache";
+                List<CategoryNavViewModel> categoryList;
+
+                //3: We will try to get the Cache data
+                //If the data is present in cache the 
+                //Condition will be true else it is false 
+                if (!_memoryCache.TryGetValue(cacheKey, out categoryList))
+                {
+                    //4.fetch the data from the object
+                    categoryList = _categoryRepository.GetCategoriesAndSubCategories();
+                    //5.Save the received data in cache
+                    _memoryCache.Set(cacheKey, categoryList,
+                        new MemoryCacheEntryOptions()
+                        .SetSlidingExpiration(TimeSpan.FromMinutes(30)));
+                    //_logger.LogInformation($"{cacheKey} updated from source.");
+                }
+                else
+                {
+                    categoryList = _memoryCache.Get(cacheKey) as List<CategoryNavViewModel>;
+                    //_logger.LogInformation($"{cacheKey} retrieved from cache.");
+                }
+                return categoryList;
+            }
+            catch (Exception ex)
+            {
+                //_logger.LogError($"{ex.Message}");
+                throw ex;
+            }
+        }
     }
 }

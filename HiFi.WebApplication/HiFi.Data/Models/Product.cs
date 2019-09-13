@@ -17,6 +17,13 @@ namespace HiFi.Data.Models
         public string ProductName { get; set; }
 
         [Required]
+        [Display(Name = "Model Number")]
+        public string ModelNumber { get; set; }
+        
+        [Display(Name = "SerialNumber")]
+        public string SerialNumber { get; set; }
+
+        [Required]
         [Display(Name = "Description")]
         public string Description { get; set; }
         [Required]

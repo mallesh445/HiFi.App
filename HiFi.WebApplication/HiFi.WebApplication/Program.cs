@@ -55,8 +55,7 @@ namespace HiFi.WebApplication
             foreach (string file in files)
             {
                 FileInfo fi = new FileInfo(file);
-
-                if (fi.LastAccessTime < DateTime.Now.AddDays(-5))
+                if (fi.LastAccessTime < DateTime.Now.AddDays(-2))
                 {
                     fi.Delete();
                 }

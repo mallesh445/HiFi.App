@@ -12,6 +12,7 @@ using HiFi.Data.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace HiFi.WebApplication.Controllers
 {
@@ -22,15 +23,19 @@ namespace HiFi.WebApplication.Controllers
         IMapper _mapper;
         private readonly IProductService _productService;
         private readonly IShoppingCartService _shoppingCart;
+        private readonly IMemoryCache _memoryCache;
+        private readonly ICacheService _cacheService;
         //private readonly UserManager<ApplicationUser> _userManager;
 
         public HomeController(IProductService productService, IMapper mapper, IShoppingCartService shoppingCart,
-            ILogger<HomeController> logger)
+            ILogger<HomeController> logger, IMemoryCache memCache, ICacheService cacheService)
         {
             _productService = productService;
             _mapper = mapper;
             _shoppingCart = shoppingCart;
             _logger = logger;
+            _memoryCache = memCache;
+            _cacheService=cacheService;
         }
         public async Task<IActionResult> Index()
         {
@@ -186,6 +191,25 @@ namespace HiFi.WebApplication.Controllers
         public IActionResult Contact()
         {
             return View();
+        }
+
+        public IActionResult LegalNotice()
+        {
+            return View();
+        }
+        public IActionResult Faq()
+        {
+            return View();
+        }
+        public IActionResult TermsAndConditions()
+        {
+            return View();
+        }
+
+        public IActionResult ClearCache()
+        {
+            _cacheService.ClearCache();
+            return RedirectToAction("Index");
         }
 
         //public IActionResult Dashboard1()

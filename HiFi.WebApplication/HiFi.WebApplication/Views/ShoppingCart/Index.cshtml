@@ -5,8 +5,16 @@
 
 <div class="span9">
     <div class="border border-info" style="padding:15px;">
-        <h2>Cart <i class="fa fa-shopping-cart" aria-hidden="true"></i> </h2>
-
+        <div class="wrapper">
+            <div style="float:left">
+                <h2>Cart <i class="fa fa-shopping-cart" aria-hidden="true"></i> </h2>
+            </div>
+            <div style="float:right">
+                <a class="btn btn-default btn-outline float-right" asp-action="Index" asp-controller="Home">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    Continue shopping </a>
+            </div>
+        </div>
         @if (Model.ShoppingCart != null && Model.ShoppingCart.Count() <= 0)
         {
             <br />

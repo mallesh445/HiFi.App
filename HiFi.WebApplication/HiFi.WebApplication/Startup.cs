@@ -63,6 +63,7 @@ namespace HiFi.WebApplication
             //    .AddDefaultUI(UIFramework.Bootstrap4)
             //    .AddEntityFrameworkStores<ApplicationDBContext>();
 
+            services.AddMemoryCache();
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddRazorPagesOptions(options =>
             {
@@ -81,22 +82,7 @@ namespace HiFi.WebApplication
             });
 
             //Dependencies
-            services.AddScoped<IRepository<Category>, EfRepository<Category>>();
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<ISubCategoryService, SubCategoryService>();
-            services.AddScoped<IProductService, ProductService>();
-            services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
-
-            services.AddScoped<IShoppingCartService, ShoppingCartService>();
-            services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
-            services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            //services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            //services.AddScoped(IDbContext, ApplicationDBContext);
-            services.AddScoped<ProfileManager, ProfileManager>();
-            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
-            services.AddSingleton<IEmailSender, EmailSender>();
+            ResolveDependencyServices(services);
             #region Automapper Configuration
             MapperConfiguration mapperConfiguration = ResolveMappers();
             IMapper mapper = mapperConfiguration.CreateMapper();
@@ -107,7 +93,6 @@ namespace HiFi.WebApplication
             //services.AddAutoMapper();
             services.AddAutoMapper(typeof(Startup).Assembly);
         }
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -133,6 +118,7 @@ namespace HiFi.WebApplication
             app.UseAuthentication();
             app.UseSession();
 
+            #region RouteCommented
             //This is for Areas controller as home screen
             //app.UseMvc(routes =>
             //{
@@ -144,7 +130,8 @@ namespace HiFi.WebApplication
             //    routes.MapRoute(
             //        name: "default",
             //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
+            //}); 
+            #endregion
 
             //This is for showing normal controller as home screen
             app.UseMvc(routes =>
@@ -158,6 +145,32 @@ namespace HiFi.WebApplication
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             
+        }
+
+        /// <summary>
+        /// ResolveDependencyServices
+        /// </summary>
+        /// <param name="services"></param>
+        private void ResolveDependencyServices(IServiceCollection services)
+        {
+            services.AddScoped<IRepository<Category>, EfRepository<Category>>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ISubCategoryService, SubCategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<ISalesOrderService, SalesOrderService>();
+
+            services.AddScoped<IShoppingCartService, ShoppingCartService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            //services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            //services.AddScoped(IDbContext, ApplicationDBContext);
+            services.AddScoped<ProfileManager, ProfileManager>();
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<ICacheService, CacheService>();
         }
 
         /// <summary>

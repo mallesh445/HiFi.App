@@ -56,19 +56,18 @@ namespace HiFi.WebApplication.Controllers
                     }
                     else
                     {
-                        LatestAndFeatureProductsViewModel latestAndFeatureVM = BindLatestAndFeatureProducts();
-                        var products = _productService.GetAllProductsFromBySubCategory();
+                        LatestAndFeatureProductsViewModel latestAndFeatureVM;
+                        //var products = SetOrGetAllProductsFromBySubCategoryInCache();
+                        var products = _productService.GetAllProductsFromBySubCategory(); //direct call so bypassing through cache above.
                         latestAndFeatureVM = PrepareLatestAndFeatureProductsByAutoMapper(products);
 
-                        //var products = _productService.GetAllProducts();
-                        //latestAndFeatureVM = PrepareLatestAndFeatureProducts(products);
                         return View(latestAndFeatureVM);
                     }
                 }
                 else
                 {
-                    LatestAndFeatureProductsViewModel latestAndFeatureVM = BindLatestAndFeatureProducts();
-                    var products = _productService.GetAllProductsFromBySubCategory();
+                    LatestAndFeatureProductsViewModel latestAndFeatureVM;
+                    var products = _productService.GetAllProductsFromBySubCategory(); //direct call so bypassing through cache above.
                     latestAndFeatureVM = PrepareLatestAndFeatureProductsByAutoMapper(products);
                     return View(latestAndFeatureVM);
                 }
@@ -78,10 +77,26 @@ namespace HiFi.WebApplication.Controllers
                 var shoppingCartCount = await _shoppingCart.GetCartCountAndTotalAmountAsync();
                 HttpContext.Session.SetInt32("CartCount", shoppingCartCount.ItemCount);
                 LatestAndFeatureProductsViewModel latestAndFeatureVM = null;
-                var products = _productService.GetAllProductsFromBySubCategory();
+                var products = _productService.GetAllProductsFromBySubCategory(); //direct call so bypassing through cache above.
                 latestAndFeatureVM = PrepareLatestAndFeatureProductsByAutoMapper(products);
                 return View(latestAndFeatureVM);
             }
+        }
+
+        private IEnumerable<Product> SetOrGetAllProductsFromBySubCategoryInCache()
+        {
+            string cacheKey = CacheKeys.ProductsListCache;
+            IEnumerable<Product> products;
+
+            if (!_memoryCache.TryGetValue(cacheKey, out products))
+            {
+                products = _productService.GetAllProductsFromBySubCategory();
+                _memoryCache.Set(cacheKey, products,
+                    new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromMinutes(30)));
+                //_logger.LogInformation($"{cacheKey} updated from source.");
+            }
+            return products;
         }
 
         private LatestAndFeatureProductsViewModel PrepareLatestAndFeatureProductsByAutoMapper(IEnumerable<Product> products)

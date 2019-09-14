@@ -314,6 +314,61 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
         }
 
+        /// <summary>
+        /// Importing Categories.
+        /// </summary>
+        /// <param name="postedExcelFile"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ImporProducts(IFormFile postedExcelFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (postedExcelFile == null)
+                {
+                    ModelState.AddModelError("File", "Please Upload Your file");
+                    TempData["Error"] = "Please Upload Your file.";
+                    return RedirectToAction("Index");
+                }
+                else if (postedExcelFile.Length > UtilityConstants.MaxContentLength)
+                {
+                    TempData["Error"] = "SizeExceed";
+                    return RedirectToAction("Index");
+                }
+                else if (postedExcelFile.Length > 0)
+                {
+                    string path = ExcelHelper.SavePathForThePostedFile(postedExcelFile);
+
+                    if (!(path.Contains("xlsx") || path.Contains("xls")))
+                        return Content("FileFormatError");
+
+                    try
+                    {
+                        //List<CategoryImportExcel> records = ExcelHelper.ReadSheet<CategoryImportExcel>(path, true, 0, null, true).ToList();
+                        //records = records.Where(r => !string.IsNullOrEmpty(r.CategoryName) && !string.IsNullOrEmpty(r.CreatedByUser)).ToList();
+                        //if (records.Count > 0)
+                        //{
+                        //    //objCategoryBO.InsertCategoryInBulk(records);
+                        //    bool result = _categoryService.InsertCategorInBulk(records);
+                        //    System.IO.File.Delete(path);
+                        //    TempData["Success"] = $"\"NumberOfRecords Uploaded\" : {records.Count()}";
+                        //    return RedirectToAction("Index");
+                        //}
+                        //System.IO.File.Delete(path);
+                        //TempData["Success"] = $"\"NumberOfRecords Uploaded\" : 0";
+                        //return RedirectToAction("Index");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.Message.Contains("InValidZipCode"))
+                        {
+                            return Content(ex.Message);
+                        }
+                    }
+                }
+            }
+            return Content("Error");
+        }
 
     }
 }

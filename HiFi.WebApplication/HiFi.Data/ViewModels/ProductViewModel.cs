@@ -25,6 +25,10 @@ namespace HiFi.Data.ViewModels
 
         public string SubCategoryOneId { get; set; }
 
+        public string SerialNumber { get; set; }
+
+        public string ModelNumber { get; set; }
+        public DateTime UpdatedDate { get; set; }
         public List<ProductImageViewModel> ProductImage { get; set; }
 
     }

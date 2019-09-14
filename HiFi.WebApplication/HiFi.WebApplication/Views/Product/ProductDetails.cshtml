@@ -4,7 +4,7 @@
     ViewData["Title"] = "ProductDetails";
     //Layout = "_MainLayout";
 }
-   
+
 <div>
     <div class="container">
         <div class="row">
@@ -45,9 +45,9 @@
                                 </div>
                             </div>
                             <!--
-                <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
-                <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
-                -->
+                            <a class="left carousel-control" href="#myCarousel" data-slide="prev">‹</a>
+                            <a class="right carousel-control" href="#myCarousel" data-slide="next">›</a>
+                            -->
                         </div>
 
                     </div>
@@ -62,19 +62,22 @@
                                 <div class="controls">
                                     <input type="number" id="productQty" class="span1" placeholder="Qty." />
                                     @*<a type="button" class="btn btn-large btn-primary pull-right"
-                               href="@Url.Action("AddToShoppingCart","ShoppingCart",new { productId = @Model.PKProductId })">
-                                Add to cart<i class=" icon-shopping-cart"></i>
-                            </a>*@
+                                           href="@Url.Action("AddToShoppingCart","ShoppingCart",new { productId = @Model.PKProductId })">
+                                            Add to cart<i class=" icon-shopping-cart"></i>
+                                        </a>*@
                                     <button type="submit" class="btn btn-large btn-primary pull-right">
                                         Add to cart <i class="fa fa-shopping-cart"></i>
                                     </button>
+
+                                    <input id="itemId" value="6" />
+                                    <input type="button" id="btnAddtoCartAjax" value="Add2Cart Ajax" />
                                 </div>
                             </div>
                         </form>
 
                         <hr class="soft" />
                         <h4>100 items in stock</h4>
-                        
+
                         <hr class="soft clr" />
                         <p>
                             14 Megapixels. 18.0 x Optical Zoom. 3.0-inch LCD Screen. Full HD photos and 1280 x 720p HD movie capture. ISO sensitivity ISO6400 at reduced resolution.
@@ -99,9 +102,10 @@
                                 <table class="table table-bordered">
                                     <tbody>
                                         <tr class="techSpecRow"><th colspan="2">Product Details</th></tr>
-                                        <tr class="techSpecRow"><td class="techSpecTD1">Brand: </td><td class="techSpecTD2">Fujifilm</td></tr>
-                                        <tr class="techSpecRow"><td class="techSpecTD1">Model:</td><td class="techSpecTD2">FinePix S2950HD</td></tr>
-                                        <tr class="techSpecRow"><td class="techSpecTD1">Released on:</td><td class="techSpecTD2"> 2011-01-28</td></tr>
+                                        @*<tr class="techSpecRow"><td class="techSpecTD1">Brand: </td><td class="techSpecTD2">Fujifilm</td></tr>*@
+                                        <tr class="techSpecRow"><td class="techSpecTD1">Serial Number: </td><td class="techSpecTD2">@Model.SerialNumber</td></tr>
+                                        <tr class="techSpecRow"><td class="techSpecTD1">Model Number:</td><td class="techSpecTD2">@Model.ModelNumber</td></tr>
+                                        <tr class="techSpecRow"><td class="techSpecTD1">Released on:</td><td class="techSpecTD2"> @Model.UpdatedDate.Date.ToString("dddd, dd MMMM yyyy")</td></tr>
                                         <tr class="techSpecRow"><td class="techSpecTD1">Dimensions:</td><td class="techSpecTD2"> 5.50" h x 5.50" w x 2.00" l, .75 pounds</td></tr>
                                         <tr class="techSpecRow"><td class="techSpecTD1">Display size:</td><td class="techSpecTD2">3</td></tr>
                                     </tbody>
@@ -137,8 +141,11 @@
                             </div>
                             <div class="tab-pane fade" id="profile">
                                 <div id="myTab" class="pull-right">
-                                    <a href="#listView" data-toggle="tab"><span class="btn btn-large">
-                                        <i class="fa fa-th-list"></i></span></a>
+                                    <a href="#listView" data-toggle="tab">
+                                        <span class="btn btn-large">
+                                            <i class="fa fa-th-list"></i>
+                                        </span>
+                                    </a>
                                     <a href="#blockView" data-toggle="tab"><span class="btn btn-large btn-primary"><i class="fa fa-th-large"></i></span></a>
                                 </div>
                                 <br class="clr" />
@@ -426,3 +433,36 @@
     </div>
 </div>
 
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#btnAddtoCartAjax").click(function () {
+                debugger;
+                 var productId = $('#itemId').val();
+                var productQty = $('#productQty').val();
+                var data = JSON.stringify({
+                    'productId': $("#itemId").val(),
+                    'productQty': $("#productQty").val()
+                });
+                $.ajax({
+                    type: 'POST',
+                    //url: '/ShoppingCart/AddToShoppingCart',
+                    url: ' @Url.Action("AddToShoppingCart", "ShoppingCart")',
+                    data: { 'productId': productId, 'productQty': productQty },
+                    dataType: JSON,
+                    //data: {
+                    //    productId: $("#itemId").val(),
+                    //    productQty: $("#productQty").val()
+                    //},
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (data) {
+                        alert('success'+data);
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            });
+        });
+    </script>
+}

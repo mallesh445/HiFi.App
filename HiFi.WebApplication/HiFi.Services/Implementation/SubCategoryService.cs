@@ -1,4 +1,5 @@
-﻿using HiFi.Data.Models;
+﻿using HiFi.Common.ExcelModel;
+using HiFi.Data.Models;
 using HiFi.Repository;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,55 @@ namespace HiFi.Services.Implementation
         public IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId)
         {
             return _subCategoryRepository.GetSubCategoriesByCategoryId(categoryId);
+        }
+
+        /// <summary>
+        /// Inserts bulk Sub Categories
+        /// </summary>
+        /// <param name="subCategoryExcelList"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public bool InsertSubCategoriesInBulk(List<SubCategoryImportExcel> subCategoryExcelList, string userId)
+        {
+            if (subCategoryExcelList.Count > 0)
+            {
+                try
+                {
+                    IList<SubCategoryOne> subCategoriesList = new List<SubCategoryOne>();
+                    ApplicationUser applicationUser = _subCategoryRepository.GetApplicationUser(userId);
+                    foreach (var item in subCategoryExcelList)
+                    {
+                        SubCategoryOne subCategoryExcel = new SubCategoryOne();
+                        subCategoryExcel.CategoryId = Convert.ToInt32(item.CategoryId);
+                        subCategoryExcel.SubCategoryName = item.SubCategoryName;
+                        subCategoryExcel.Description = item.Description;
+                        subCategoryExcel.DisplayOrder = item.DisplayOrder;
+                        subCategoryExcel.IsActive = item.IsActive;
+                        subCategoryExcel.ApplicationUser = applicationUser; //CreatedByUserId
+                        subCategoryExcel.ApplicationUser1 = applicationUser;//UpdatedByUserId
+                        subCategoryExcel.CreatedDate = DateTime.Now;
+                        subCategoryExcel.UpdatedDate = DateTime.Now;
+                        if (!string.IsNullOrEmpty(item.ImageName))
+                        {
+                            subCategoryExcel.SC_ImageName = item.ImageName;
+                        }
+                        else
+                        {
+                            subCategoryExcel.SC_ImageName = "Default";
+                        }
+                        if (!string.IsNullOrEmpty(item.ImagePath))
+                            subCategoryExcel.SC_ImagePath= item.ImagePath;
+
+                        subCategoriesList.Add(subCategoryExcel);
+                    }
+                    return _subCategoryRepository.BulkCreate(subCategoriesList);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return true;
         }
     }
 }

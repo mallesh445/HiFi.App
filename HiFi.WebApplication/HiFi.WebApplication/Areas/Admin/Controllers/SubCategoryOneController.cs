@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using HiFi.Common;
 using HiFi.WebApplication.Areas.Admin.ViewModels;
+using HiFi.Common.ExcelModel;
 
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
@@ -152,7 +153,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 };
                 cvm.Add(categoryViewModel);
             }
-            
+
             if (scViewModel == null)
             {
                 return NotFound();
@@ -273,5 +274,65 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
             return subCategoryVM;
         }
+
+        /// <summary>
+        /// Importing Categories.
+        /// </summary>
+        /// <param name="postedExcelFile"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ImportSubCategories(IFormFile postedExcelFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (postedExcelFile == null)
+                {
+                    ModelState.AddModelError("File", "Please Upload Your file");
+                    TempData["Error"] = "Please Upload Your file.";
+                    return RedirectToAction("Index");
+                }
+                else if (postedExcelFile.Length > UtilityConstants.MaxContentLength)
+                {
+                    TempData["Error"] = "SizeExceed";
+                    return RedirectToAction("Index");
+                }
+                else if (postedExcelFile.Length > 0)
+                {
+                    string path = ExcelHelper.SavePathForThePostedFile(postedExcelFile);
+
+                    if (!(path.Contains("xlsx") || path.Contains("xls")))
+                        return Content("FileFormatError");
+
+                    try
+                    {
+                        List<SubCategoryImportExcel> records = ExcelHelper.ReadSheet<SubCategoryImportExcel>(path, true, 0, null, true).ToList();
+                        records = records.Where(r => !string.IsNullOrEmpty(r.SubCategoryName) && !string.IsNullOrEmpty(r.CategoryId)).ToList();
+                        if (records.Count > 0)
+                        {
+                            string userId = User.Claims.
+                                Where(t => t.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").
+                                Select(a => a.Value).FirstOrDefault();
+
+                            bool result = _subCategoryService.InsertSubCategoriesInBulk(records,userId);
+                            System.IO.File.Delete(path);
+                            TempData["Success"] = $"\"NumberOfRecords Uploaded\" : {records.Count()}";
+                            return RedirectToAction("Index");
+                        }
+                        System.IO.File.Delete(path);
+                        TempData["Success"] = $"\"NumberOfRecords Uploaded\" : 0";
+                        return RedirectToAction("Index");
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.Message.Contains("InValidZipCode"))
+                        {
+                            return Content(ex.Message);
+                        }
+                    }
+                }
+            }
+            return Content("Error");
+        }
+
     }
 }

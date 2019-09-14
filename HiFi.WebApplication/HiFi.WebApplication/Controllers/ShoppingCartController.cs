@@ -44,7 +44,7 @@ namespace HiFi.WebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToShoppingCart(int productId)
+        public async Task<IActionResult> AddToShoppingCart(int productId,int productQty = 1)
         {
             var selectedProduct = await _productService.GetProductById(productId);
             if (selectedProduct == null)

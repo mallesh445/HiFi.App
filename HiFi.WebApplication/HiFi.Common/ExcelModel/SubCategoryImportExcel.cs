@@ -8,14 +8,16 @@ namespace HiFi.Common.ExcelModel
 {
     public class SubCategoryImportExcel
     {
-        public string CategoryName { get; set; }
+        public string CategoryId { get; set; }
         public string SubCategoryName { get; set; }
+        public string Description { get; set; }
+        public int DisplayOrder { get; set; }
         public string ImageName { get; set; }
         public string ImagePath { get; set; }
         public System.DateTime CreatedDate { get; set; }
-        public Nullable<System.DateTime> UpdatedDate { get; set; }
-        public int FKCreatedByUserId { get; set; }
-        public Nullable<int> FKUpdatedByUserId { get; set; }
+        public System.DateTime UpdatedDate { get; set; }
+        public int CreatedByUserId { get; set; }
+        public int UpdatedByUserId { get; set; }
         public bool IsActive { get; set; }
 
     }

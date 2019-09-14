@@ -1,6 +1,30 @@
-﻿<!DOCTYPE html>
+﻿@inject HiFi.Services.Catalog.ICategoryService categoryService;
+@functions{
+    public List<Category> PrepareCategoriesDDL(List<HiFi.Common.ViewModel.CategoryNavViewModel> categoryNavsList)
+    {
+        List<Category> categories = new List<Category>();
+        foreach (var categoryNavViewModel in categoryNavsList)
+        {
+            Category category = new Category()
+            {
+                CategoryName = categoryNavViewModel.CategoryName,
+                CategoryId = categoryNavViewModel.CategoryId
+            };
+
+            categories.Add(category);
+        }
+
+        return categories;
+    }
+}
+@{
+    var categoriesList = categoryService.GetCategoriesAndSubCategories();
+    var ddlCategoriesList = new SelectList(PrepareCategoriesDDL(categoriesList), "CategoryId", "CategoryName");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- #region Header -->
     <meta charset="utf-8">
     <title>HI-FI online Shopping cart</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,7 +39,8 @@
     <!--<link rel="stylesheet/less" type="text/css" href="themes/less/bootshop.less">
     <script src="themes/js/less.js" type="text/javascript"></script> -->
     <!-- Bootstrap style -->
-    <link id="callCss" rel="stylesheet" href="~/themes/bootshop/bootstrap.min.css" media="screen" />
+    @*<link id="callCss" rel="stylesheet" href="~/themes/bootshop/bootstrap.min.css" media="screen" />*@
+    <link id="callCss" rel="stylesheet" href="~/themes/cerulean/bootstrap.min.css" media="screen" />
     <link href="~/themes/css/base.css" rel="stylesheet" media="screen" />
     <!-- Bootstrap style responsive -->
     <link href="~/themes/css/bootstrap-responsive.min.css" rel="stylesheet" />
@@ -31,15 +56,25 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="~/themes/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="~/themes/images/ico/apple-touch-icon-57-precomposed.png">
     <style type="text/css" id="enject"></style>
+    <link href="~/css/CommonTableStyles.css" rel="stylesheet" />
+    <!-- #endregion -->
 </head>
 <body>
+    <!-- Header End====================================================================== -->
+    @*<div id="header">
+            <div class="container">
+                 Navbar ==================================================
+                @Html.Partial("~/Views/Shared/NavBar/_Navbar.cshtml")
+
+            </div>
+        </div>*@
     <div id="header">
         <div class="container">
             <!-- Navbar ================================================== -->
-            @*@Html.Partial("~/Views/Shared/NavBar/_Navbar.cshtml")*@
-
+            @Html.Partial("~/Views/Shared/NavBar/_Navbar.cshtml", ddlCategoriesList)
         </div>
     </div>
+    <!-- Header End====================================================================== -->
 
     <div id="mainBody">
         <div class="container">
@@ -62,6 +97,7 @@
 
     <script src="~/themes/js/bootshop.js"></script>
     <script src="~/themes/js/jquery.lightbox-0.5.js"></script>
+    <script src="~/js/MyScripts.js"></script>
 
 
     @RenderSection("Scripts", required: false)

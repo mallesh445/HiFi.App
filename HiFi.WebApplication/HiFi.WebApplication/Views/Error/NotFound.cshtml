@@ -1,12 +1,32 @@
 ﻿
 @{
     ViewData["Title"] = "NotFound";
+    Layout = "_MainLayout";
 }
+<head></head>
+@*<h1>@ViewBag.ErrorMessage</h1>
+    <h4>@ViewBag.RouteOfException</h4>
 
-<h1>@ViewBag.ErrorMessage</h1>
-<h4>@ViewBag.RouteOfException</h4>
+    <a asp-action="Index" asp-controller="Home">
+        Click Here to Navigate to Home Page.
+    </a>*@
+<div class="col-md-12">
+    <div class="hifierror-template">
+        <h1>
+            Oops! 404 Not Found
+        </h1>
+        <h3>@ViewBag.ErrorMessage</h3>
+        <h4>@ViewBag.RouteOfException</h4>
+        <div class="error-details">
+            Sorry, an error has occured, Requested page not found!
+        </div>
+        <div class="hifierror-actions">
+            <a class="btn btn-primary btn-lg" href="@Url.Action("Index","Home")"  style="margin-right: 16px" >
+                <i class="fa fa-home"></i>Take Me Home
+            </a><a class="btn btn-primary btn-lg" href="@Url.Action("Contact","Home")"  style="margin-right: 16px" >
+                <i class="fa fa-envelope" aria-hidden="true"></i> Contact Support
+            </a>
 
-<a asp-action="Index" asp-controller="Home">
-    Click Here to Navigate to Home Page.
-</a>
-
+        </div>
+    </div>
+</div>

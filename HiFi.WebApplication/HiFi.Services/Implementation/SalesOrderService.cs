@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HiFi.Common;
 using HiFi.Data.Models;
 using HiFi.Repository;
 using Microsoft.Extensions.Caching.Memory;
@@ -27,7 +28,7 @@ namespace HiFi.Services.Implementation
 
         private IEnumerable<OrderHeader> SetGetSalesOrderByCache()
         {
-            string cacheKey = "OrderList-Cache";
+            string cacheKey = CacheKeys.OrderListCache;
             IEnumerable<OrderHeader> orders;
 
             if (!_memoryCache.TryGetValue(cacheKey, out orders))

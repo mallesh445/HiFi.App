@@ -67,6 +67,7 @@ namespace HiFi.Services.Catalog
                         categoryExcel.CategoryName = item.CategoryName;
                         categoryExcel.Description = item.Description;
                         categoryExcel.DisplayOrder = item.DisplayOrder;
+                        categoryExcel.IsActive = item.IsActive;
                         if (!string.IsNullOrEmpty(item.CreatedByUser))
                         {
                             categoryExcel.ApplicationUser = _categoryRepository.GetApplicationUser(item.CreatedByUser);
@@ -115,7 +116,7 @@ namespace HiFi.Services.Catalog
             try
             {
                 //2
-                string cacheKey = "CategoryNavList-Cache";
+                string cacheKey = CacheKeys.CategoryNavListCache;
                 List<CategoryNavViewModel> categoryList;
 
                 //3: We will try to get the Cache data

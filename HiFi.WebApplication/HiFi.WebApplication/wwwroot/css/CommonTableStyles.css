@@ -110,3 +110,21 @@ table.dataTable.no-footer {
     .btnLogout:hover {
         color: white;
     }
+
+.hifierror-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.hifierror-actions {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+    .hifierror-actions .btn {
+        margin-right: 10px;
+    }
+
+.LoginRegister {
+    color:red !important;
+}

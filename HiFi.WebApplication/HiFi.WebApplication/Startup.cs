@@ -158,6 +158,7 @@ namespace HiFi.WebApplication
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISubCategoryService, SubCategoryService>();
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IManufacturerService,ManufacturerService>();
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<ISalesOrderService, SalesOrderService>();
 

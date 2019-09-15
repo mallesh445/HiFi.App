@@ -69,7 +69,10 @@
                 <a href="~/Admin/Product/Index"><i class="fa fa-product-hunt"></i>Product</a>
             </li>
             <li class="@(Html.IsMenuActive("/Admin/SalesOrder/Index") ? "active" : "")">
-                <a href="~/Admin/SalesOrder/Index"><i class="fa fa-pie-chart"></i> Order</a>
+                <a href="~/Admin/SalesOrder/Index"><i class="fa fa-first-order"></i> Order</a>
+            </li>
+            <li class="@(Html.IsMenuActive("/Admin/Manufacturer/Index") ? "active" : "")">
+                <a href="~/Admin/Manufacturer/Index"><i class="fa fa-industry"></i> Manufacturers</a>
             </li>
             <li class="@(Html.IsMenuActive("/Admin/Administrator/Index") ? "active" : "")">
                 <a href="~/Admin/Administrator/Index"><i class="fa fa-user-circle"></i> Users</a>
@@ -78,30 +81,30 @@
                 <a href="~/Admin/Administrator/Roles"><i class="fa fa-chain"></i> Roles</a>
             </li>
             @*<li class="treeview @(Html.IsMenuActive("/Admin/Category") ? "active" : "")">
-                <a href="#">
-                    <i class="fa fa-pie-chart"></i>
-                    <span>Category</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="@(Html.IsMenuActive("/Admin/Category/Index") ? "active" : "")">
-                        <a href="~/Admin/Category/Index"><i class="fa fa-circle-o"></i> Category</a>
-                    </li>
-                    <li class="@(Html.IsMenuActive("/Admin/Category/Index") ? "active" : "")">
-                        <a href="~/Admin/Category/Index"><i class="fa fa-circle-o"></i> Category</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="@(Html.IsMenuActive("/Widgets") ? "active" : "")">
-                <a href="~/Admin/Default/Index">
-                    <i class="fa fa-th"></i> <span>Default</span>
-                    <span class="pull-right-container">
-                        <small class="label pull-right bg-green">Hot</small>
-                    </span>
-                </a>
-            </li>*@
+            <a href="#">
+                <i class="fa fa-pie-chart"></i>
+                <span>Category</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li class="@(Html.IsMenuActive("/Admin/Category/Index") ? "active" : "")">
+                    <a href="~/Admin/Category/Index"><i class="fa fa-circle-o"></i> Category</a>
+                </li>
+                <li class="@(Html.IsMenuActive("/Admin/Category/Index") ? "active" : "")">
+                    <a href="~/Admin/Category/Index"><i class="fa fa-circle-o"></i> Category</a>
+                </li>
+            </ul>
+        </li>
+        <li class="@(Html.IsMenuActive("/Widgets") ? "active" : "")">
+            <a href="~/Admin/Default/Index">
+                <i class="fa fa-th"></i> <span>Default</span>
+                <span class="pull-right-container">
+                    <small class="label pull-right bg-green">Hot</small>
+                </span>
+            </a>
+        </li>*@
             <li class="header">LABELS</li>
             <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
             <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>

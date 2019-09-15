@@ -1,24 +1,17 @@
-﻿@model IEnumerable<HiFi.Data.Models.OrderHeader>
+﻿@model IEnumerable<HiFi.Data.Models.Manufacturer>
 
 @{
     ViewData["Title"] = "Index";
 }
-@*<head>
-        <style>
-            .dataTable > thead > tr > th[class*="sort"]::after {
-                display: none
-            }
-        </style>
-    </head>*@
 
 <section class="container-fluid">
     <div class="clearfix panel-body">
-        <div class="pull-left MainHeaderColor" style="font-size: 26px;">List of Orders</div>
+        <div class="pull-left MainHeaderColor" style="font-size: 26px;">List of Manufacturers</div>
         <div class="pull-right">
-            @*<a class="btn bg-blue" asp-action="Create"><i class="fa fa-plus-square"></i> Add New</a>
+            <a class="btn bg-blue" asp-action="Create"><i class="fa fa-plus-square"></i> Add New</a>
             <button type="button" class="btn bg-olive" data-toggle="modal" data-target="#myModal">
                 <i class="fa fa-download"></i> Import
-            </button>*@
+            </button>
             <button type="button" class="btn btn-success" id="btnExportData">
                 <i class="fa fa-upload"></i>
                 Export
@@ -30,49 +23,49 @@
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayName("OrderId")
+                        @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th>
-                        @Html.DisplayName("Status")
+                        @Html.DisplayNameFor(model => model.Description)
                     </th>
                     <th>
-                        @Html.DisplayName("Customer Name")
+                        @Html.DisplayNameFor(model => model.DisplayOrder)
                     </th>
                     <th>
-                        @Html.DisplayName("Address")
+                        @Html.DisplayNameFor(model => model.CreatedDate)
                     </th>
                     <th>
-                        @Html.DisplayName("Order Date")
+                        @Html.DisplayNameFor(model => model.UpdatedDate)
                     </th>
                     <th>
-                        @Html.DisplayName("Total Amount")
+                        @Html.DisplayNameFor(model => model.IsActive)
                     </th>
                     <th>Operations</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var order in Model)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayFor(modelItem => order.Id)
+                            @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => order.Status)
+                            @Html.DisplayFor(modelItem => item.Description)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => order.FirstName)
+                            @Html.DisplayFor(modelItem => item.DisplayOrder)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => order.AddressLine1)
+                            @Html.DisplayFor(modelItem => item.CreatedDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => order.OrderPlacedTime)
+                            @Html.DisplayFor(modelItem => item.UpdatedDate)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => order.OrderTotal)
+                            @Html.DisplayFor(modelItem => item.IsActive)
                         </td>
-                        @Html.Partial("_TableButtonPartial", order.Id)
+                        @Html.Partial("_TableButtonPartial", item.ManufacturerId)
                     </tr>
                 }
             </tbody>
@@ -80,18 +73,18 @@
     </div>
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            @using (Html.BeginForm("ImportCategories", "Category", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            @using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data" }))
             {
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dissmiss="modal" aria-hidden="true">X</button>
-                        <h4 class="modal-title" id="myModalLabel">Import Categories from Excel</h4>
+                        <h4 class="modal-title" id="myModalLabel">Import Manufacturers from Excel(Not Available Now)</h4>
                     </div>
 
                     <div class="modal-body">
                         <div class="form-group">
                             <p>
-                                Imported categories are distinguished by ID. If the ID already exists, then its corresponding category will be updated. You should not specify ID (leave 0) for new categories.
+                                Imported Manufacturers are distinguished by ID. If the ID already exists, then its corresponding Manufacturer will be updated. You should not specify ID (leave 0) for new Manufacturers.
                                 Import requires a lot of memory resources. That's why it's not recommended to import more than 100 - 200 records at once.
                             </p>
                             <div class="col-md-2">
@@ -102,7 +95,6 @@
                                 </div>
                             </div>
                             <div class="col-md-10">
-                                @*<input type="file" name="postedFile" id="file1" />*@
                                 <input type="file" class="form-control" name="postedExcelFile" id="excelfileId" placeholder="Id" />
                             </div>
                         </div>
@@ -135,3 +127,5 @@
     }
 </section>
 
+@section scripts{
+}

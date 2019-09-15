@@ -31,5 +31,9 @@ namespace HiFi.Data.ViewModels
         public DateTime UpdatedDate { get; set; }
         public List<ProductImageViewModel> ProductImage { get; set; }
 
+        public string ManufacturerName { get; set; }
+
+        public int ManufacturerDescription { get; set; }
+
     }
 }

@@ -33,5 +33,8 @@ namespace HiFi.Data.Data
         public DbSet<OrderDetails> OrderDetails { get; set; }
         public DbQuery<CategoryChildsCount> CategoryChildsCounts { get; set; }
         public DbQuery<CategorySubCategoryTable> CategorySubCategoryTable { get; set; }
+
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Product_Manufacturer_Mapping> Product_Manufacturer_Mapping { get; set; }
     }
 }

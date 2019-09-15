@@ -55,28 +55,34 @@
                         <h3>@Model.ProductName</h3>
                         <small>- @Model.ShortDescription</small>
                         <hr class="soft" />
-                        <form class="form-horizontal qtyFrm" asp-controller="ShoppingCart" asp-action="AddToShoppingCart"
+                        @*<form class="form-horizontal qtyFrm" asp-controller="ShoppingCart" asp-action="AddToShoppingCart"
                               asp-route-productId="@Model.PKProductId" method="post">
                             <div class="control-group">
                                 <label class="control-label"><span>@Model.Price</span></label>
                                 <div class="controls">
                                     <input type="number" id="productQty" class="span1" placeholder="Qty." />
-                                    @*<a type="button" class="btn btn-large btn-primary pull-right"
-                                           href="@Url.Action("AddToShoppingCart","ShoppingCart",new { productId = @Model.PKProductId })">
-                                            Add to cart<i class=" icon-shopping-cart"></i>
-                                        </a>*@
                                     <button type="submit" class="btn btn-large btn-primary pull-right">
                                         Add to cart <i class="fa fa-shopping-cart"></i>
                                     </button>
 
-                                    <input id="itemId" value="6" />
-                                    <input type="button" id="btnAddtoCartAjax" value="Add2Cart Ajax" />
+                                    <input type="hidden" id="itemId" value="@Model.PKProductId" />
+                                    <input type="button" id="btnAddtoCartAjax" value="Add2Cart Ajax" class="btn btn-large btn-primary pull-right" /><i class="fa fa-shopping-cart"></i>
                                 </div>
+                                        </div>
+                                    </form>*@
+                        <div class="control-group">
+                            <label class="control-label"><span>@Model.Price</span></label>
+                            <div class="controls">
+                                <input type="number" id="productQty" class="span1" placeholder="Qty." />
+                                <button type="submit" id="btnAddtoCartAjax" class="btn btn-large btn-primary pull-right">
+                                    Add to cart <i class="fa fa-shopping-cart"></i>
+                                </button>
+                                <input type="hidden" id="itemId" value="@Model.PKProductId" />
                             </div>
-                        </form>
+                        </div>
 
                         <hr class="soft" />
-                        <h4>100 items in stock</h4>
+                        <h4>@Model.Quantity items in stock</h4>
 
                         <hr class="soft clr" />
                         <p>
@@ -102,7 +108,7 @@
                                 <table class="table table-bordered">
                                     <tbody>
                                         <tr class="techSpecRow"><th colspan="2">Product Details</th></tr>
-                                        @*<tr class="techSpecRow"><td class="techSpecTD1">Brand: </td><td class="techSpecTD2">Fujifilm</td></tr>*@
+                                        <tr class="techSpecRow"><td class="techSpecTD1">Manufacturer: </td><td class="techSpecTD2">Manufacturer Name</td></tr>
                                         <tr class="techSpecRow"><td class="techSpecTD1">Serial Number: </td><td class="techSpecTD2">@Model.SerialNumber</td></tr>
                                         <tr class="techSpecRow"><td class="techSpecTD1">Model Number:</td><td class="techSpecTD2">@Model.ModelNumber</td></tr>
                                         <tr class="techSpecRow"><td class="techSpecTD1">Released on:</td><td class="techSpecTD2"> @Model.UpdatedDate.Date.ToString("dddd, dd MMMM yyyy")</td></tr>
@@ -444,16 +450,12 @@
                     'productId': $("#itemId").val(),
                     'productQty': $("#productQty").val()
                 });
+
                 $.ajax({
                     type: 'POST',
-                    //url: '/ShoppingCart/AddToShoppingCart',
-                    url: ' @Url.Action("AddToShoppingCart", "ShoppingCart")',
-                    data: { productId: productId, productQty: productQty },
-                    dataType: JSON,
-                    //data: {
-                    //    productId: $("#itemId").val(),
-                    //    productQty: $("#productQty").val()
-                    //},
+                    url: '/ShoppingCart/AddToShoppingCart?productId='+productId+'&productQty='+productQty,
+                   // url: '@Url.Action("AddToShoppingCart", "ShoppingCart")',
+                    data: { productId: $('#itemId').val(), productQty: $('#productQty').val() },
                     contentType: 'application/json; charset=utf-8',
                     success: function (data) {
                         alert('success'+data);

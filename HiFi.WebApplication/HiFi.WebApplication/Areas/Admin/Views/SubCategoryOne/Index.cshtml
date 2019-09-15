@@ -78,17 +78,20 @@
                             </td>*@
                             <td>
                                 <div>
-                                    <img src="@item?.SC_ImagePath" width="90%"
-                                         style="border-radius:5px;border:1px solid #bbb9b9; height: 50px; width: 50px;" />
+                                    @if (!string.IsNullOrEmpty(item.SC_ImagePath))
+                                    {
+                                        <img src="@item?.SC_ImagePath" width="90%"
+                                             style="border-radius:5px;border:1px solid #bbb9b9; height: 50px; width: 50px;" />
+                                    }
+                                    else
+                                    {
+                                        <img src="\Images\default-subcat.png"
+                                             style="border-radius:5px;border:1px solid #bbb9b9; height: 50px; width: 50px;" />
+                                    }
                                 </div>
                                 @*@Html.DisplayFor(modelItem => item.SC_ImagePath)*@
                             </td>
                             @Html.Partial("_TableButtonPartial", item.SubCategoryOneId)
-                            @*<td>
-                                <a asp-action="Edit" asp-route-id="@item.SubCategoryOneId">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.SubCategoryOneId">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.SubCategoryOneId">Delete</a>
-                            </td>*@
                         </tr>
                     }
                 </tbody>
@@ -108,7 +111,7 @@
                             <div class="form-group">
                                 <p>
                                     Imported SubCategories are distinguished by ID. If the ID already exists, then its corresponding category will be updated. You should not specify ID (leave 0) for new categories.
-                                    Import requires a lot of memory resources. That's why it's not recommended to import more than 500 - 1,000 records at once.
+                                    Import requires a lot of memory resources. That's why it's not recommended to import more than 100 - 200 records at once.
                                 </p>
                                 <div class="col-md-2">
                                     <div class="label-wrapper" style="margin-top:10px">

@@ -102,8 +102,8 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
                         //HttpContext.Session.SetInt32("CartCount", count);
                         _logger.LogInformation("User logged in.");
                         
-                        await _emailSender.SendEmailAsync(Input.Email, "Login Success email",
-                        $"Logined Successfully account by "+Input.Email +" you.");
+                        //await _emailSender.SendEmailAsync(Input.Email, "Login Success email",
+                        //$"Logined Successfully account by "+Input.Email +" you.");
 
                         if (roleName.ToLower() == SD.AdminEndUser.ToLower())
                         {

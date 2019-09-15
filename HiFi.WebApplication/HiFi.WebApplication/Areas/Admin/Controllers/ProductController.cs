@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using HiFi.Common;
+using HiFi.Common.ExcelModel;
 using HiFi.Data.Data;
 using HiFi.Data.Models;
 using HiFi.Services;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
@@ -26,19 +28,23 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly ISubCategoryService _subCategoryService;
+        private readonly ILogger<ProductController> _logger;
+        //private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public ProductController(IProductService productService, IHostingEnvironment hostingEnvironment,
-            ICategoryService categoryService, ISubCategoryService subCategoryService)
+            ICategoryService categoryService, ISubCategoryService subCategoryService, ILogger<ProductController> logger)
         {
             _productService = productService;
             _hostingEnvironment = hostingEnvironment;
             _categoryService = categoryService;
             _subCategoryService = subCategoryService;
+            _logger = logger;
         }
 
         // GET: Admin/SubCategoryOne
         public IActionResult Index()
         {
+            _logger.LogInformation("Info invoked from ProductController of Index");
             var products = _productService.GetAllProducts();
             var listProductViewModel = new List<ProductViewModel>();
             foreach (var item in products)
@@ -59,26 +65,6 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 {
                     productViewModel.ProductImageModel.Add(AssignProdudctImageToProduct(prodImages));
                 }
-                #region Implemented in Separate method
-                //foreach (var img in prodImages)
-                //{
-                //    if (img.IsMainImage)
-                //    {
-                //        ProductImageViewModel productImageViewModel = new ProductImageViewModel
-                //        {
-                //            ImageName = img.ImageName,
-                //            ImagePath = img.ImagePath,
-                //            IsMainImage = img.IsMainImage,
-                //            CreatedDate = img.CreatedDate,
-                //            PKImageId = img.PKImageId,
-                //            UpdatedDate = img.UpdatedDate,
-                //            FKProductId = img.Product.PKProductId
-
-                //        };
-                //        productViewModel.ProductImageModel.Add(productImageViewModel);
-                //    }
-                //} 
-                #endregion
                 listProductViewModel.Add(productViewModel);
             }
             return View(listProductViewModel);
@@ -315,7 +301,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         }
 
         /// <summary>
-        /// Importing Categories.
+        /// Importing Products.
         /// </summary>
         /// <param name="postedExcelFile"></param>
         /// <returns></returns>
@@ -344,22 +330,26 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
 
                     try
                     {
-                        //List<CategoryImportExcel> records = ExcelHelper.ReadSheet<CategoryImportExcel>(path, true, 0, null, true).ToList();
-                        //records = records.Where(r => !string.IsNullOrEmpty(r.CategoryName) && !string.IsNullOrEmpty(r.CreatedByUser)).ToList();
-                        //if (records.Count > 0)
-                        //{
-                        //    //objCategoryBO.InsertCategoryInBulk(records);
-                        //    bool result = _categoryService.InsertCategorInBulk(records);
-                        //    System.IO.File.Delete(path);
-                        //    TempData["Success"] = $"\"NumberOfRecords Uploaded\" : {records.Count()}";
-                        //    return RedirectToAction("Index");
-                        //}
-                        //System.IO.File.Delete(path);
-                        //TempData["Success"] = $"\"NumberOfRecords Uploaded\" : 0";
-                        //return RedirectToAction("Index");
+                        List<ProductImportExcel> records = ExcelHelper.ReadSheet<ProductImportExcel>(path, true, 0, null, true).ToList();
+                        records = records.Where(r => !string.IsNullOrEmpty(r.ProductName) && !string.IsNullOrEmpty(r.SubCategoryId)).ToList();
+                        if (records.Count > 0)
+                        {
+                            string userId = User.Claims.
+                                Where(t => t.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").
+                                Select(a => a.Value).FirstOrDefault();
+
+                            bool result = _productService.InsertProductsInBulk(records, userId);
+                            System.IO.File.Delete(path);
+                            TempData["Success"] = $"\"NumberOfRecords Uploaded\" : {records.Count()}";
+                            return RedirectToAction("Index");
+                        }
+                        System.IO.File.Delete(path);
+                        TempData["Success"] = $"\"NumberOfRecords Uploaded\" : 0";
+                        return RedirectToAction("Index");
                     }
                     catch (Exception ex)
                     {
+                        _logger.LogError(ex.Message, new[] { "ImporProducts", "ProductController" });
                         if (ex.Message.Contains("InValidZipCode"))
                         {
                             return Content(ex.Message);

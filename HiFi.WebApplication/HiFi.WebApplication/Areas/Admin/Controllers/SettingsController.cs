@@ -13,7 +13,8 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
     {
         public IActionResult Index()
         {
-            return RedirectToPage("/Settings/Profile");
+            //return RedirectToPage("/Settings/Profile");
+            return RedirectToPage("/Admin/Profile/Profile");
         }
 
         public IActionResult TwoFactorAuth()

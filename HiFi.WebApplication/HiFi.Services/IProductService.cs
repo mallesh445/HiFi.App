@@ -1,4 +1,5 @@
-﻿using HiFi.Data.Models;
+﻿using HiFi.Common.ExcelModel;
+using HiFi.Data.Models;
 using HiFi.Data.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -19,8 +20,6 @@ namespace HiFi.Services
         IEnumerable<ProductImage> GetAllProductImagesById(int pKProductId);
         Product GetProductByProductId(int id);
         Task<Product> GetProductById(int id);
-        IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId);
-
-        //bool InsertProductInBulk(List<ProductImportExcel> records);
+        bool InsertProductsInBulk(List<ProductImportExcel> records, string userId);
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HiFi.Common.ExcelModel;
 using HiFi.Data.Models;
 using HiFi.Data.ViewModels;
 using HiFi.Repository;
@@ -92,5 +93,44 @@ namespace HiFi.Services.Implementation
             return true;
         }
 
+        public bool InsertProductsInBulk(List<ProductImportExcel> productExcelList, string userId)
+        {
+            if (productExcelList.Count > 0)
+            {
+                try
+                {
+                    IList<Product> productsList = new List<Product>();
+                    ApplicationUser applicationUser = productRepository.GetApplicationUser(userId);
+                    foreach (var item in productExcelList)
+                    {
+                        Product productExcel = new Product()
+                        {
+                            SubCategoryOneId = Convert.ToInt32(item.SubCategoryId),
+                            ProductName = item.ProductName,
+                            Description = item.Description,
+                            ShortDescription = item.ShortDescription,
+                            DisplayOrder = Convert.ToInt32(item.DisplayOrder),
+                            ModelNumber = item.ModelNumber,
+                            SerialNumber = item.SerialNumber,
+                            Price = Convert.ToDecimal(item.Price),
+                            Quantity = Convert.ToInt32(item.Quantity),
+                            ApplicationUser = applicationUser,
+                            ApplicationUser1 = applicationUser,
+                            CreatedDate = DateTime.Now,
+                            UpdatedDate = DateTime.Now,
+                            IsActive = true
+                        };
+
+                        productsList.Add(productExcel);
+                    }
+                    return productRepository.BulkCreate(productsList);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            return true;
+        }
     }
 }

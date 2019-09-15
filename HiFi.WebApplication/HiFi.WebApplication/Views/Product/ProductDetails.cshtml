@@ -440,7 +440,7 @@
                 debugger;
                  var productId = $('#itemId').val();
                 var productQty = $('#productQty').val();
-                var data = JSON.stringify({
+                var data1 = JSON.stringify({
                     'productId': $("#itemId").val(),
                     'productQty': $("#productQty").val()
                 });
@@ -448,7 +448,7 @@
                     type: 'POST',
                     //url: '/ShoppingCart/AddToShoppingCart',
                     url: ' @Url.Action("AddToShoppingCart", "ShoppingCart")',
-                    data: { 'productId': productId, 'productQty': productQty },
+                    data: { productId: productId, productQty: productQty },
                     dataType: JSON,
                     //data: {
                     //    productId: $("#itemId").val(),

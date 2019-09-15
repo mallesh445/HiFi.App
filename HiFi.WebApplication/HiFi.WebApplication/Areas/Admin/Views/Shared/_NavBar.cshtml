@@ -51,7 +51,7 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="@(Html.IsMenuActive("/Settings/Profile") ? "active" : "")"><a href="~/Settings/Profile"><i class="fa fa-user"></i> Profile</a></li>
+                    <li class="@(Html.IsMenuActive("/Profile/Profile") ? "active" : "")"><a href="~/Admin/Profile/Profile"><i class="fa fa-user"></i> Profile</a></li>
                     <li class="@(Html.IsMenuActive("/Settings/Account") ? "active" : "")"><a href="~/Settings/Account"><i class="fa fa-lock"></i> Account</a></li>
                     <li class="@(Html.IsMenuActive("/Settings/Security") ? "active" : "")"><a href="~/Settings/Security"><i class="fa fa-user-secret"></i> Security</a></li>
                     <li class="@(Html.IsMenuActive("/Settings/History") ? "active" : "")"><a href="~/Settings/History"><i class="fa fa-history"></i> History</a></li>
@@ -68,16 +68,16 @@
             <li class="@(Html.IsMenuActive("/Admin/Product/Index") ? "active" : "")">
                 <a href="~/Admin/Product/Index"><i class="fa fa-product-hunt"></i>Product</a>
             </li>
-            <li class="@(Html.IsMenuActive("/Admin/Category/Index") ? "active" : "")">
+            <li class="@(Html.IsMenuActive("/Admin/SalesOrder/Index") ? "active" : "")">
                 <a href="~/Admin/SalesOrder/Index"><i class="fa fa-pie-chart"></i> Order</a>
             </li>
             <li class="@(Html.IsMenuActive("/Admin/Administrator/Index") ? "active" : "")">
-                <a href="~/Admin/Administrator/Index"><i class="fa fa-circle-o"></i> Users</a>
+                <a href="~/Admin/Administrator/Index"><i class="fa fa-user-circle"></i> Users</a>
             </li>
-            <li class="@(Html.IsMenuActive("/Admin/Administrator/Index") ? "active" : "")">
-                <a href="~/Admin/Administrator/Index"><i class="fa fa-circle-o"></i> Roles</a>
+            <li class="@(Html.IsMenuActive("/Admin/Administrator/Roles") ? "active" : "")">
+                <a href="~/Admin/Administrator/Roles"><i class="fa fa-chain"></i> Roles</a>
             </li>
-            <li class="treeview @(Html.IsMenuActive("/Admin/Category") ? "active" : "")">
+            @*<li class="treeview @(Html.IsMenuActive("/Admin/Category") ? "active" : "")">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
                     <span>Category</span>
@@ -101,7 +101,7 @@
                         <small class="label pull-right bg-green">Hot</small>
                     </span>
                 </a>
-            </li>
+            </li>*@
             <li class="header">LABELS</li>
             <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li>
             <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Warning</span></a></li>

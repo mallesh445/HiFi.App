@@ -144,5 +144,12 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
 
             return Ok("Your password has been set.");
         }
+
+
+        public IActionResult Profile(string returnUrl = null)
+        {
+            var user = CurrentUser;
+            return View(user);
+        }
     }
 }

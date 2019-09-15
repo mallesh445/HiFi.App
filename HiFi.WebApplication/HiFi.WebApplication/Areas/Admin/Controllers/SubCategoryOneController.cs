@@ -15,24 +15,27 @@ using System.IO;
 using HiFi.Common;
 using HiFi.WebApplication.Areas.Admin.ViewModels;
 using HiFi.Common.ExcelModel;
+using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
     [Area("Admin")]
     public class SubCategoryOneController : Controller
     {
+        private readonly ILogger<SubCategoryOneController> _logger;
         private readonly ApplicationDBContext _context;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ICategoryService _categoryService;
         private readonly ISubCategoryService _subCategoryService;
 
         public SubCategoryOneController(ApplicationDBContext context, IHostingEnvironment hostingEnvironment
-            , ICategoryService categoryService, ISubCategoryService subCategoryService)
+            , ICategoryService categoryService, ISubCategoryService subCategoryService, ILogger<SubCategoryOneController> logger)
         {
             _context = context;
             _hostingEnvironment = hostingEnvironment;
             _categoryService = categoryService;
             _subCategoryService = subCategoryService;
+            _logger = logger;
         }
 
         // GET: Admin/SubCategoryOne
@@ -124,6 +127,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                         subCategoryOne.SC_ImageName = subCategoryOne.SubCategoryName;
                     }
                     var finalResult = await _context.SaveChangesAsync();
+                    _logger.LogInformation("SubCategory created successfully");
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -324,6 +328,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     }
                     catch (Exception ex)
                     {
+                        _logger.LogError(ex.Message);
                         if (ex.Message.Contains("InValidZipCode"))
                         {
                             return Content(ex.Message);

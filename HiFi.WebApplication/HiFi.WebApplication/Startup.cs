@@ -24,6 +24,7 @@ using AutoMapper;
 using HiFi.Data.ViewModels;
 using HiFi.Data.DomainObjects;
 using HiFi.WebApplication.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication
 {

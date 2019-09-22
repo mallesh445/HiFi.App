@@ -14,9 +14,13 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
     public class DashboardsController : Controller
     {
         private readonly ISalesOrderService _salesOrderService;
-        public DashboardsController(ISalesOrderService salesOrderService)
+        private readonly IUserService _userService;
+        private readonly IProductService _productService;
+        public DashboardsController(ISalesOrderService salesOrderService, IUserService userService, IProductService productService)
         {
             _salesOrderService = salesOrderService;
+            _userService = userService;
+            _productService = productService;
         }
         public IActionResult Index()
         {
@@ -28,8 +32,8 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             DashboardViewModel dashboard = new DashboardViewModel();
 
             dashboard.administrators_count = 5;
-            dashboard.customers_count = 20;
-            dashboard.products_count = 86;
+            dashboard.customers_count = _userService.TotalUsersCount();
+            dashboard.products_count = _productService.ProductsCount();
             dashboard.orders_count = _salesOrderService.TotalOrdersCount();
             return View(dashboard);
         }

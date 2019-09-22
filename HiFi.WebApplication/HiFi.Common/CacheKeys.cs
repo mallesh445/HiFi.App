@@ -9,6 +9,7 @@ namespace HiFi.Common
         public const string OrderListCache = "OrderList-Cache";
         public const string CategoryNavListCache = "CategoryNavList-Cache";
         public const string ProductsListCache = "ProductsList-Cache";
+        public const string UsersListCache = "UsersList-Cache";
     }
 
 }

@@ -166,6 +166,7 @@ namespace HiFi.WebApplication
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             //services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
             //services.AddScoped(IDbContext, ApplicationDBContext);

@@ -132,5 +132,10 @@ namespace HiFi.Services.Implementation
             }
             return true;
         }
+
+        public int ProductsCount()
+        {
+            return productRepository.GetAll().Count();
+        }
     }
 }

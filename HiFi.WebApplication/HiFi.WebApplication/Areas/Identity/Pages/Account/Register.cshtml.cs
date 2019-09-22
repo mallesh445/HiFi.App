@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using HiFi.Common;
@@ -97,6 +98,10 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
                     {
                         await _roleManager.CreateAsync(new IdentityRole(SD.AdminEndUser));
                     }
+                    if (!await _roleManager.RoleExistsAsync(SD.EmployeeEndUser))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(SD.EmployeeEndUser));
+                    }
                     if (!await _roleManager.RoleExistsAsync(SD.CustomerEndUser))
                     {
                         await _roleManager.CreateAsync(new IdentityRole(SD.CustomerEndUser));
@@ -113,8 +118,9 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
                         values: new { userId = user.Id, code = code },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    string bodyMessage = GetBodyMessage(user,$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", bodyMessage);
+                    //$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created with new password.");
@@ -129,6 +135,27 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private string GetBodyMessage(ApplicationUser user, string bindMailMessage)
+        {
+            try
+            {
+                string FilePath = Directory.GetCurrentDirectory() + "\\EmailTemplates\\SignUp.html";
+                StreamReader str = new StreamReader(FilePath);
+                string MailBodyText = str.ReadToEnd();
+                str.Close();
+                //Repalce [username] = signup user name   
+                MailBodyText = MailBodyText.Replace("[name]", user.FirstName + user.LastName);
+                MailBodyText = MailBodyText.Replace("[Email]", user.Email);
+                MailBodyText = MailBodyText.Replace("[username]", user.UserName);
+                MailBodyText = MailBodyText.Replace("[bindMailMessage]", bindMailMessage);
+                return MailBodyText;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

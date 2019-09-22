@@ -26,8 +26,13 @@ namespace HiFi.Data.Models
         [Display(Name = "Description")]
         public string Description { get; set; }
 
+        [DisplayFormat(NullDisplayText = "Empty")]
         public string MetaKeywords { get; set; }
+
+        [DisplayFormat(NullDisplayText = "Empty")]
         public string MetaDescription { get; set; }
+
+        [DisplayFormat(NullDisplayText = "Empty")]
         public string MetaTitle { get; set; }
         public string ImagePath { get; set; }
 

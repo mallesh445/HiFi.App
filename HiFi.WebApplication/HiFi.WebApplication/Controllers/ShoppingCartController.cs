@@ -32,6 +32,7 @@ namespace HiFi.WebApplication.Controllers
         {
             var shoppingCartItems = await _shoppingCart.GetShoppingCartItemsAsync();
             var shoppingCartCountTotal = await _shoppingCart.GetCartCountAndTotalAmountAsync();
+            var sessionCartCount = HttpContext.Session.GetInt32("CartCount");
             HttpContext.Session.SetInt32("CartCount", shoppingCartCountTotal.ItemCount);
             var shoppingCartViewModel = new ShoppingCartViewModel
             {
@@ -44,14 +45,14 @@ namespace HiFi.WebApplication.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddToShoppingCart(string productId, string productQty)
+        public async Task<IActionResult> AddToShoppingCart(string productId, int productQty=1)
         {
-            var selectedProduct = await _productService.GetProductById(1);
+            var selectedProduct = await _productService.GetProductById(Convert.ToInt32(productId));
             if (selectedProduct == null)
             {
                 return NotFound();
             }
-            await _shoppingCart.AddToCartAsync(selectedProduct);
+            await _shoppingCart.AddToCartAsync(selectedProduct,productQty);
 
             return RedirectToAction("Index");
         }

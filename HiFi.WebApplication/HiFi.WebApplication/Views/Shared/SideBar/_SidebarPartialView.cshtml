@@ -2,8 +2,9 @@
 @*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 <!-- Sidebar ================================================== -->
-<div id="sidebar" class="span3">
+<div id="sidebar" class="span3 sidebarClass">
     <div class="well well-small">
         <a id="myCart" href="product_summary.html">
             <img src="~/themes/images/ico-cart.png" alt="cart">3 Items in your cart
@@ -14,10 +15,10 @@
         {
             <li class="subMenu">
                 <a asp-controller="Category" asp-action="GetSubCategoriesByCategoryId" asp-route-id="@currentCategory.CategoryId"> @currentCategory.CategoryName</a>
-                <ul>
+                <ul style="display:none">
                     @foreach (var subCat in currentCategory.SubCategories)
                     {
-                        @if (currentCategory.SubCategories.Count > 0 && currentCategory.SubCategories[0].SubCategoryId!=0)
+                        @if (currentCategory.SubCategories.Count > 0 && currentCategory.SubCategories[0].SubCategoryId != 0)
                         {
                             <li>
                                 <a asp-controller="Product" asp-action="GetAllProductsBySubCategory" asp-route-subCategoryId="@subCat.SubCategoryId">

@@ -6,7 +6,13 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject IHttpContextAccessor HttpContextAccessor
 @*@inject HiFi.Services.Catalog.ICategoryService categoryService;*@
-
+<head>
+    <style type="text/css">
+        nav-link.btn.btn-link.text-dark.btnLogout {
+    background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;
+}
+    </style>
+</head>
 @{
     var currentUserName = @User.Identity.Name ?? "User";
     var cartCount = 0;
@@ -79,7 +85,8 @@
                     <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
                           asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                         <button type="submit" class="nav-link btn btn-link text-dark btnLogout" style="color:#DDD;
-                            font-family:Arial, Helvetica, sans-serif; font-size:16px;padding-top:20px">
+                            font-family:Arial, Helvetica, sans-serif; font-size:16px;padding-top:20px;
+                            background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;">
                             Logout
                         </button>
                     </form>

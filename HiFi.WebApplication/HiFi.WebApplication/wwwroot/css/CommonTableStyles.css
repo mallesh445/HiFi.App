@@ -128,3 +128,13 @@ table.dataTable.no-footer {
 .LoginRegister {
     color:red !important;
 }
+
+@media (min-width: 1200px) {
+    .sidebarClass {
+        width: 250px !important;
+    }
+}
+/*Not working below one so added in line*/
+/*nav-link.btn.btn-link.text-dark.btnLogout {
+    background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;
+}*/

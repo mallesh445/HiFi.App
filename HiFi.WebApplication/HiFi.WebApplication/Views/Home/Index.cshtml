@@ -28,6 +28,12 @@
                                                              style="height: 160px; width: 160px;" />
                                                     </a>
                                                 }
+                                                else
+                                                {
+                                                    <a href="/Product/ProductDetails?productId=@item.PKProductId">
+                                                        <img src="~/Images/default-product.png" style="height: 160px; width: 160px;" />
+                                                    </a>
+                                                }
                                                 <div class="caption">
                                                     <h5>@item.ProductName</h5>
                                                     <h4>
@@ -69,13 +75,19 @@
                                      style="height: 160px; width: 160px;" />
                             </a>
                         }
+                        else
+                        {
+                            <a href="/Product/ProductDetails?productId=@item.PKProductId">
+                                <img src="~/Images/default-product.png" style="height: 160px; width: 160px;" />
+                            </a>
+                        }
 
                         <div class="caption">
                             <h5>@item.ProductName</h5>
                             <p>
-                                @if (@item.ShortDescription.Length > 35)
+                                @if (@item.ShortDescription.Length > 32)
                                 {
-                                    @item.ShortDescription.Substring(0, 35)
+                                    @item.ShortDescription.Substring(0, 32)
                                 }
                                 else
                                 {
@@ -84,7 +96,7 @@
                             </p>
 
                             <h4 style="text-align:center">
-                                <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">
+                                <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId&productQty=1">
                                     <i class="fa fa-search-plus"></i>
                                 </a>
                                 <a class="btn" href="ShoppingCart/AddToShoppingCart?productId=@item.PKProductId">Add to <i class="fa fa-cart-plus"></i></a>

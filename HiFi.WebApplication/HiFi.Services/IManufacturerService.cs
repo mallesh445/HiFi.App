@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HiFi.Services
 {
@@ -9,8 +10,9 @@ namespace HiFi.Services
     {
         IEnumerable<Manufacturer> GetAllManufacturers();
         Manufacturer GetManufacturerById(int manufacturerId);
-        bool InsertManufacturer(Manufacturer manufacturer);
+        Manufacturer InsertManufacturer(Manufacturer manufacturer);
         bool UpdateManufacturer(Manufacturer manufacturer);
         bool DeleteManufacturer(Manufacturer manufacturer);
+        Task<Manufacturer> GetManufacturerByIdAsync(int manufacturerId);
     }
 }

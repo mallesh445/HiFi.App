@@ -20,6 +20,13 @@
                                  style="height: 160px; width: 160px;" />
                         </a>
                     }
+                    else
+                    {
+                        <a asp-controller="Product" asp-action="GetAllProductsBySubCategory" asp-route-id="@item.SubCategoryId">
+                            <img src="~/Images/default-subcat.png" width="90" alt="@item.SubCategoryName"
+                                 style="height: 160px; width: 160px;" />
+                        </a>
+                    }
                     <div class="caption">
                         <h5>@item.SubCategoryName </h5>
                         <p>

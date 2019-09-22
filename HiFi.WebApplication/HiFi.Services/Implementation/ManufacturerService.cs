@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HiFi.Services.Implementation
 {
@@ -28,11 +29,18 @@ namespace HiFi.Services.Implementation
         {
             return _manufacturerRepository.GetById(manufacturerId);
         }
-
-        public bool InsertManufacturer(Manufacturer manufacturer)
+        
+        public async Task<Manufacturer> GetManufacturerByIdAsync(int manufacturerId)
         {
-            _manufacturerRepository.Insert(manufacturer);
-            return true;
+            var result = _manufacturerRepository.GetById(manufacturerId);
+            return result;
+        }
+
+        public Manufacturer InsertManufacturer(Manufacturer manufacturer)
+        {
+            //_manufacturerRepository.Insert(manufacturer);
+            //return true;
+            return _manufacturerRepository.InsertData(manufacturer); ;
         }
 
         public bool UpdateManufacturer(Manufacturer manufacturer)

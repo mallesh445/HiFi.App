@@ -30,17 +30,20 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
-            <li class="treeview @(Html.IsMenuActive("/Dashboards") ? "active" : "")">
-                <a href="#">
-                    <i class="fa fa-dashboard"></i> <span>Dashboards</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="@(Html.IsMenuActive("/Admin/Dashboards/Dashboard1") ? "active" : "")"><a href="~/Admin/Dashboards/Dashboard1"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                    <li class="@(Html.IsMenuActive("/Admin/Dashboards/Dashboard2") ? "active" : "")"><a href="~/Admin/Dashboards/Dashboard2"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-                </ul>
+            @*<li class="treeview @(Html.IsMenuActive("/Dashboards") ? "active" : "")">
+            <a href="#">
+                <i class="fa fa-dashboard"></i> <span>Dashboards</span>
+                <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li class="@(Html.IsMenuActive("/Admin/Dashboards/Dashboard1") ? "active" : "")"><a href="~/Admin/Dashboards/Dashboard1"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
+                <li class="@(Html.IsMenuActive("/Admin/Dashboards/Dashboard2") ? "active" : "")"><a href="~/Admin/Dashboards/Dashboard2"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+            </ul>
+        </li>*@
+            <li class="@(Html.IsMenuActive("/Admin/Dashboards/Dashboard1") ? "active" : "")">
+                <a href="~/Admin/Dashboards/Dashboard1"><i class="fa fa-desktop"></i> Dashboard</a>
             </li>
             <li class="treeview @(Html.IsMenuActive("/Settings") ? "active" : "")">
                 <a href="#">
@@ -66,10 +69,10 @@
                 <a href="~/Admin/SubCategoryOne/Index"><i class="fa fa-list-alt "></i>Sub Category</a>
             </li>
             <li class="@(Html.IsMenuActive("/Admin/Product/Index") ? "active" : "")">
-                <a href="~/Admin/Product/Index"><i class="fa fa-product-hunt"></i>Product</a>
+                <a href="~/Admin/Product/Index"><i class="fa fa-product-hunt"></i>Products</a>
             </li>
             <li class="@(Html.IsMenuActive("/Admin/SalesOrder/Index") ? "active" : "")">
-                <a href="~/Admin/SalesOrder/Index"><i class="fa fa-first-order"></i> Order</a>
+                <a href="~/Admin/SalesOrder/Index"><i class="fa fa-first-order"></i> Orders</a>
             </li>
             <li class="@(Html.IsMenuActive("/Admin/Manufacturer/Index") ? "active" : "")">
                 <a href="~/Admin/Manufacturer/Index"><i class="fa fa-industry"></i> Manufacturers</a>

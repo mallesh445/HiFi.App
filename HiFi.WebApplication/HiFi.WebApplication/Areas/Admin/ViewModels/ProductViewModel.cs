@@ -25,6 +25,9 @@ namespace HiFi.WebApplication.Areas.Admin.ViewModels
         public decimal Price { get; set; }
 
         public string SubCategoryId { get; set; }
+        public string ModelNumber { get; set; }
+        public string SerialNumber { get; set; }
+        public bool IsActive { get; set; }
 
         public List<ProductImageViewModel> ProductImageModel { get; set; }
 

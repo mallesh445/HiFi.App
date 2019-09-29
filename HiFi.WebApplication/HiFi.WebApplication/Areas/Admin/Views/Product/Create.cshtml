@@ -20,30 +20,27 @@
                         @*@Html.LabelFor(model => model.SubCategoryId, "SubCategory", new { @class = "control-label col-md-2" })*@
                         @Html.LabelFor(model => model.SubCategoryId, "SubCategory", new { @class = "control-label col-md-2" })
                         @*<div class="col-md-10">*@
-                            @*@Html.DropDownList("SubCategoryId", "Select SubCategory",new { @class = "form-control" })*@
-                            @Html.DropDownList("SubCategoryId", (IEnumerable<SelectListItem>)subCatList,new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.SubCategoryId)
+                        @*@Html.DropDownList("SubCategoryId", "Select SubCategory",new { @class = "form-control" })*@
+                        @Html.DropDownList("SubCategoryId", (IEnumerable<SelectListItem>)subCatList, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.SubCategoryId)
                         @*</div>*@
                     </div>
                     <br />
-                    @*<div class="form-group">
-                        <label asp-for="SubCategoryId"></label>
-                        @*<select asp-for="SubCategoryId" class="form-control"
-                asp-items="@(new SelectList(subCatList, "SubCategoryOneId", "SubCategoryName"))" />* @
-                        <select asp-for="SubCategoryId" asp-items="subCatList" class="form-control" />
-                        @*<span asp-validation-for="SubCategoryId" class="text-danger"></span>* @
-                    </div>
-                    <br /> <br />*@
-                    @*<div class="form-group">
-                        <label asp-for="ProductId" class="control-label"></label>
-                        <input asp-for="ProductId" class="form-control" />
-                        <span asp-validation-for="ProductId" class="text-danger"></span>
-                    </div>*@
 
                     <div class="form-group">
                         <label asp-for="ProductName" class="control-label"></label>
                         <input asp-for="ProductName" class="form-control" />
                         <span asp-validation-for="ProductName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ModelNumber" class="control-label"></label>
+                        <input asp-for="ModelNumber" class="form-control" />
+                        <span asp-validation-for="ModelNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SerialNumber" class="control-label"></label>
+                        <input asp-for="SerialNumber" class="form-control" />
+                        <span asp-validation-for="SerialNumber" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Description" class="control-label"></label>
@@ -71,10 +68,10 @@
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     @*<div class="form-group">
-                <label asp-for="SubCategoryId" class="control-label"></label>
-                <input asp-for="SubCategoryId" class="form-control" />
-                <span asp-validation-for="SubCategoryId" class="text-danger"></span>
-            </div>*@
+            <label asp-for="SubCategoryId" class="control-label"></label>
+            <input asp-for="SubCategoryId" class="form-control" />
+            <span asp-validation-for="SubCategoryId" class="text-danger"></span>
+        </div>*@
                     <div class="form-group">
                         <input type="file" name="images" value="" multiple="multiple" />
                     </div>

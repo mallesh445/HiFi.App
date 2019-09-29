@@ -95,41 +95,48 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                subCategoryVM.CategoryId = Convert.ToInt32(fc["CategoryId"]);
-                SubCategoryOne subCategoryOne = PrepareSubCategoryOneFromViewModel(subCategoryVM);
-
-                _context.Add(subCategoryOne);
-                var result = await _context.SaveChangesAsync();
-                if (result > 0)
+                try
                 {
-                    string webRootPath = _hostingEnvironment.WebRootPath;
-                    var files = HttpContext.Request.Form.Files;
-                    //var productImage = new ProductImage();
-                    if (files[0] != null && files[0].Length > 0)
+                    subCategoryVM.CategoryId = Convert.ToInt32(fc["CategoryId"]);
+                    SubCategoryOne subCategoryOne = PrepareSubCategoryOneFromViewModel(subCategoryVM);
+
+                    _context.Add(subCategoryOne);
+                    var result = await _context.SaveChangesAsync();
+                    if (result > 0)
                     {
-                        //when user uploads an image
-                        var uploads = Path.Combine(webRootPath, "Images");
-                        string uploadedImageName = files[0].FileName.Substring(0, files[0].FileName.LastIndexOf("."));
-                        var extension = files[0].FileName.Substring(files[0].FileName.LastIndexOf("."), files[0].FileName.Length - files[0].FileName.LastIndexOf("."));
-                        using (var filestream = new FileStream(Path.Combine(uploads, uploadedImageName + subCategoryOne.SubCategoryOneId + extension), FileMode.Create))
+                        string webRootPath = _hostingEnvironment.WebRootPath;
+                        var files = HttpContext.Request.Form.Files;
+                        //var productImage = new ProductImage();
+                        if (files[0] != null && files[0].Length > 0)
                         {
-                            files[0].CopyTo(filestream);
+                            //when user uploads an image
+                            var uploads = Path.Combine(webRootPath, "Images");
+                            string uploadedImageName = files[0].FileName.Substring(0, files[0].FileName.LastIndexOf("."));
+                            var extension = files[0].FileName.Substring(files[0].FileName.LastIndexOf("."), files[0].FileName.Length - files[0].FileName.LastIndexOf("."));
+                            using (var filestream = new FileStream(Path.Combine(uploads, uploadedImageName + subCategoryOne.SubCategoryOneId + extension), FileMode.Create))
+                            {
+                                files[0].CopyTo(filestream);
+                            }
+                            subCategoryOne.SC_ImagePath = @"\Images\" + uploadedImageName + subCategoryOne.SubCategoryOneId + extension;
+                            subCategoryOne.SC_ImageName = uploadedImageName;
                         }
-                        subCategoryOne.SC_ImagePath = @"\Images\" + uploadedImageName + subCategoryOne.SubCategoryOneId + extension;
-                        subCategoryOne.SC_ImageName = uploadedImageName;
+                        else
+                        {
+                            //when user does not upload image
+                            var uploads = Path.Combine(webRootPath, @"Images\" + SD.DefaultSubCategoryImage);
+                            System.IO.File.Copy(uploads, webRootPath + @"\Images\" + subCategoryOne.SubCategoryName + subCategoryOne.CategoryId + ".PNG");
+                            subCategoryOne.SC_ImagePath = @"\Images\" + subCategoryOne.CategoryId + ".PNG";
+                            subCategoryOne.SC_ImageName = subCategoryOne.SubCategoryName;
+                        }
+                        var finalResult = await _context.SaveChangesAsync();
+                        _logger.LogInformation("SubCategory created successfully");
                     }
-                    else
-                    {
-                        //when user does not upload image
-                        var uploads = Path.Combine(webRootPath, @"Images\" + SD.DefaultSubCategoryImage);
-                        System.IO.File.Copy(uploads, webRootPath + @"\Images\" + subCategoryOne.SubCategoryName + subCategoryOne.CategoryId + ".PNG");
-                        subCategoryOne.SC_ImagePath = @"\Images\" + subCategoryOne.CategoryId + ".PNG";
-                        subCategoryOne.SC_ImageName = subCategoryOne.SubCategoryName;
-                    }
-                    var finalResult = await _context.SaveChangesAsync();
-                    _logger.LogInformation("SubCategory created successfully");
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message, new[] { "Create", "SubCategoryController" });
+                }
             }
             return View(subCategoryVM);
         }
@@ -185,7 +192,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     _context.Update(subCategoryOne);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (DbUpdateConcurrencyException e)
                 {
                     if (!SubCategoryOneExists(subCategoryOne.SubCategoryOneId))
                     {
@@ -193,7 +200,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     }
                     else
                     {
-                        throw;
+                        _logger.LogError(e.Message, new[] { "ImportSubCategories", "SubCategoryController" });
                     }
                 }
                 return RedirectToAction(nameof(Index));
@@ -328,7 +335,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex.Message);
+                        _logger.LogError(ex.Message, new[] { "ImportSubCategories", "SubCategoryController" });
                         if (ex.Message.Contains("InValidZipCode"))
                         {
                             return Content(ex.Message);

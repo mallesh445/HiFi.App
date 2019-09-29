@@ -10,7 +10,7 @@
     </div>
     <div class="content panel-body">
         <div class="row">
-            <form asp-action="Edit" enctype="multipart/form-data">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
                 <div class="col-md-4">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
@@ -49,6 +49,16 @@
                         <span asp-validation-for="Price" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        <label asp-for="ModelNumber" class="control-label"></label>
+                        <input asp-for="ModelNumber" class="form-control" />
+                        <span asp-validation-for="ModelNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SerialNumber" class="control-label"></label>
+                        <input asp-for="SerialNumber" class="form-control" />
+                        <span asp-validation-for="SerialNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label asp-for="SubCategoryId" class="control-label"></label>
                         <input asp-for="SubCategoryId" class="form-control" />
                         <span asp-validation-for="SubCategoryId" class="text-danger"></span>
@@ -66,12 +76,17 @@
                         @if (Model.ProductImageModel != null && Model.ProductImageModel.Count > 0 && Model.ProductImageModel[0].IsMainImage)
                         {
                             <div>
-                                <img src="@Model.ProductImageModel[0]?.ImagePath" width="90%" 
+                                <img src="@Model.ProductImageModel[0]?.ImagePath" 
                                      style="height: 450px; width: 270px;"/>
                                 @*<img src="@Model.ProductImageModel[0]?.ImagePath" width="90%"
                                     style="border-radius:5px;border:1px solid #bbb9b9; height: 50px; width: 50px;" />*@
                             </div>
                         }
+                    </div><br />
+                    <div>
+                        <div class="form-group">
+                            <input type="file" name="images" value="" multiple="multiple" />
+                        </div>
                     </div>
                 </div>
             </form>

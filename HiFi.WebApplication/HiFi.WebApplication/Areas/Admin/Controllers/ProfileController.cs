@@ -37,7 +37,8 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     var user = _userManager.GetUserAsync(User);
                     if (user == null)
                     {
-                        throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                        //throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                        _logger.LogError($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
                     }
 
                     _currentUser = user.Result;

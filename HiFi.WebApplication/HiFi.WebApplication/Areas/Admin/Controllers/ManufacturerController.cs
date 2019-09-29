@@ -77,7 +77,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex.Message,new[] { "Create", "ManufacturerController" });
                 return View();
             }
         }
@@ -118,7 +118,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogError(ex.Message);
+                        _logger.LogError(ex.Message, new[] { "Edit", "ManufacturerController" });
                         return View();
                     }
                     return RedirectToAction(nameof(Index));
@@ -127,7 +127,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex.Message, new[] { "Edit", "ManufacturerController" });
                 return View();
             }
         }
@@ -191,7 +191,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message);
+                _logger.LogError(ex.Message, new[] { "PrepImage", "ManufacturerController" });
             }
             return manufacturer;
         }

@@ -25,6 +25,7 @@
                     }
                 </div>
                 <div class="card-footer">
+                    <input type="hidden" asp-for="@roleId" />
                     <input type="submit" value="Update" class="btn btn-primary" asp-route-id="@roleId" style="width:auto" />
                     <a asp-action="EditRole" asp-route-id="@roleId" class="btn btn-danger" style="width:auto">Cancel</a>
                 </div>

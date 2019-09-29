@@ -10,6 +10,7 @@ using HiFi.Services.Catalog;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
@@ -17,9 +18,11 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
     [Area("Admin")]
     public class CategoryController : Controller
     {
+        private readonly ILogger<CategoryController> _logger;
         private readonly ICategoryService _categoryService;
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger)
         {
+            _logger = logger;
             _categoryService=categoryService;
         }
         // GET: Category
@@ -68,8 +71,9 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 //return View(category);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.LogError(ex.Message, new[] { "Create", "CategoryController" });
                 return View();
             }
         }
@@ -105,8 +109,9 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex.Message, new[] { "Create", "CategoryController" });
                 return View();
             }
         }
@@ -141,8 +146,9 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex.Message, new[] { "Create", "CategoryController" });
                 return View();
             }
         }
@@ -193,6 +199,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     }
                     catch (Exception ex)
                     {
+                        _logger.LogError(ex.Message, new[] { "ImportCategories", "CategoryController" });
                         if (ex.Message.Contains("InValidZipCode"))
                         {
                             return Content(ex.Message);

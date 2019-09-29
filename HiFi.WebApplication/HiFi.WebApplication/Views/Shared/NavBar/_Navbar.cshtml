@@ -46,15 +46,6 @@
     <div class="navbar-inner">
         <a class="brand" href="\"><img src="~/themes/images/Hi-Fi Logo.jpg" alt="Hi-FI" height="55" width="55" /></a>
         <form class="form-inline navbar-search" method="post" action="#">
-            @*<input id="srchFld" class="srchTxt" type="text" />
-                    <select class="srchTxt">
-                    <option>All</option>
-                    <option>CLOTHES </option>
-                    <option>FOOD AND BEV    ERAGES </option>
-                    <option>HEALTH & BEAUTY </option>
-                    <option>SPORTS & LEISURE </option>
-                    <option>BOOKS & ENTERTAINMENTS </option>
-                </select>*@
             <div class="input-group">
                 <span class="input-group">
                     <i class="fa fa-search"></i>
@@ -69,7 +60,6 @@
 
         </form>
         <ul id="topMenu" class="nav pull-right">
-            @*<li class=""><a href="normal.html">Delivery</a></li>*@
             <li class=""><a href="@Url.Action("Contact", "Home")">Contact</a></li>
             @*@Html.Partial("_LoginPartial")*@
             @if (SignInManager.IsSignedIn(User))

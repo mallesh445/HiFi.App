@@ -51,7 +51,8 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             {
                 ProductViewModel productViewModel = new ProductViewModel
                 {
-                    Description = item.Description,
+                    ModelNumber = item.ModelNumber,
+                    SerialNumber = item.SerialNumber,
                     DisplayOrder = item.DisplayOrder,
                     Price = item.Price,
                     ProductId = item.PKProductId,
@@ -63,7 +64,9 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 var prodImages = _productService.GetAllProductImagesById(item.PKProductId);
                 if (prodImages.Count() > 0)
                 {
-                    productViewModel.ProductImageModel.Add(AssignProdudctImageToProduct(prodImages));
+                    ProductImageViewModel productImageViewModel=AssignProdudctImageToProduct(prodImages);
+                    if(productImageViewModel!=null)
+                        productViewModel.ProductImageModel.Add(productImageViewModel);
                 }
                 listProductViewModel.Add(productViewModel);
             }
@@ -96,21 +99,24 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                         //Image Being Saved
                         string webRootPath = _hostingEnvironment.WebRootPath;
                         var files = HttpContext.Request.Form.Files;
-                        string uploadedImageName = files[0].FileName.Substring(0, files[0].FileName.LastIndexOf("."));
                         var productImage = new ProductImage();
-                        if (files[0] != null && files[0].Length > 0)
+                        if (files != null && files.Count > 0)
                         {
-                            //when user uploads an image
-                            var uploads = Path.Combine(webRootPath, "Images");
-                            var extension = files[0].FileName.Substring(files[0].FileName.LastIndexOf("."), files[0].FileName.Length - files[0].FileName.LastIndexOf("."));
-                            using (var filestream = new FileStream(Path.Combine(uploads, uploadedImageName + resultProduct.PKProductId + extension), FileMode.Create))
+                            foreach (var formFile in files)
                             {
-                                files[0].CopyTo(filestream);
+                                string uploadedImageName = formFile.FileName.Substring(0, formFile.FileName.LastIndexOf("."));
+                                //when user uploads an image
+                                var uploads = Path.Combine(webRootPath, "Images");
+                                var extension = formFile.FileName.Substring(formFile.FileName.LastIndexOf("."), formFile.FileName.Length - formFile.FileName.LastIndexOf("."));
+                                using (var filestream = new FileStream(Path.Combine(uploads, uploadedImageName + resultProduct.PKProductId + extension), FileMode.Create))
+                                {
+                                    formFile.CopyTo(filestream);
+                                }
+                                productImage.ImagePath = @"\Images\" + uploadedImageName + resultProduct.PKProductId + extension;
+                                productImage.IsMainImage = true; //if it is 1 image then
+                                productImage.ImageName = uploadedImageName;
+                                //productImage.ImageName = resultProduct.ProductName; 
                             }
-                            productImage.ImagePath = @"\Images\" + uploadedImageName + resultProduct.PKProductId + extension;
-                            productImage.IsMainImage = true; //if it is 1 image then
-                            productImage.ImageName = uploadedImageName;
-                            //productImage.ImageName = resultProduct.ProductName;
                         }
                         else
                         {
@@ -166,12 +172,42 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             {
                 try
                 {
-                    Product product = PrepareProductEntityFromProductViewModel(productViewModel,false);
-                    var resultProduct = _productService.UpdateProduct(product);
+                    Product editproduct = PrepareProductEntityFromProductViewModel(productViewModel,false);
+                    List<ProductImage> images = new List<ProductImage>();
+                    //Image Being Saved
+                    var files = HttpContext.Request.Form.Files;
+                    if (files!= null && files.Count > 0)
+                    {
+                        foreach (var file in files)
+                        {
+                            var productImage = new ProductImage();
+                            string webRootPath = _hostingEnvironment.WebRootPath;
+                            string uploadedImageName = file.FileName.Substring(0, file.FileName.LastIndexOf("."));
+                            //when user uploads an image
+                            var uploads = Path.Combine(webRootPath, "Images");
+                            var extension = file.FileName.Substring(file.FileName.LastIndexOf("."), file.FileName.Length - file.FileName.LastIndexOf("."));
+                            using (var filestream = new FileStream(Path.Combine(uploads, uploadedImageName + editproduct.PKProductId + extension), FileMode.Create))
+                            {
+                                file.CopyTo(filestream);
+                            }
+                            productImage.ImagePath = @"\Images\" + uploadedImageName + editproduct.PKProductId + extension;
+                            productImage.IsMainImage = false; //if it is 1 image then
+                            productImage.ImageName = uploadedImageName;
+                            productImage.FKProductId = editproduct.PKProductId;
+                            productImage.CreatedDate = DateTime.Now;
+                            productImage.UpdatedDate = DateTime.Now;
+                            images.Add(productImage); 
+                        }
+                    }
+                    if (images.Count > 0)
+                    {
+                        editproduct.ProductImage = images;
+                    }
+                    var resultProduct = _productService.UpdateProduct(editproduct);
                 }
                 catch (Exception ex)
                 {
-                    throw ex;
+                    _logger.LogError(ex.Message, new[] { "Edit", "ProductController" });
                 }
                 return RedirectToAction(nameof(Index));
             }
@@ -251,7 +287,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         /// <returns></returns>
         private Product PrepareProductEntityFromProductViewModel(ProductViewModel productModel,bool IsNewProduct)
         {
-            Product product = new Product
+            Product product = new Product()
             {
                 ProductName = productModel.ProductName,
                 Description = productModel.Description,
@@ -261,11 +297,12 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 Quantity = productModel.Quantity,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
-                SubCategoryOneId = Convert.ToInt32(productModel.SubCategoryId)
-                //SubCategoryOne = new SubCategoryOne
-                //{ SubCategoryOneId= Convert.ToInt32(productModel.SubCategoryId) }
+                SubCategoryOneId = Convert.ToInt32(productModel.SubCategoryId),
+                ModelNumber = productModel.ModelNumber,
+                SerialNumber = productModel.SerialNumber,
+                IsActive = productModel.IsActive
             };
-            if (IsNewProduct)
+            if (!IsNewProduct)
             {
                 product.PKProductId = productModel.ProductId;
             }
@@ -290,13 +327,17 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     DisplayOrder = retrievedProduct.DisplayOrder,
                     Price = retrievedProduct.Price,
                     Quantity = retrievedProduct.Quantity,
-                    SubCategoryId = retrievedProduct.SubCategoryOneId.ToString()
+                    SubCategoryId = retrievedProduct.SubCategoryOneId.ToString(),
+                    ModelNumber = retrievedProduct.ModelNumber,
+                    SerialNumber = retrievedProduct.SerialNumber,
+                    IsActive = retrievedProduct.IsActive
                 };
                 return productViewModel;
             }
             catch (Exception ex)
             {
-                throw ex;
+                _logger.LogError(ex.Message, new[] { "PrepProduModel", "ProductController" });
+                return null;
             }
         }
 

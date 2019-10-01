@@ -53,14 +53,14 @@ namespace HiFi.Services.Catalog
             return true;
         }
 
-        public bool InsertCategorInBulk(List<CategoryImportExcel> categoryExcelList)
+        public bool InsertCategorInBulk(List<CategoryImportExcel> categoryExcelList,string userId)
         {
             if (categoryExcelList.Count > 0)
             {
                 try
                 {
                     IList<Category> categoriesList = new List<Category>();
-                    ApplicationUser applicationUser = _categoryRepository.GetApplicationUser();
+                    ApplicationUser applicationUser = _categoryRepository.GetApplicationUser(userId);
                     foreach (var item in categoryExcelList)
                     {
                         Category categoryExcel = new Category();
@@ -70,7 +70,8 @@ namespace HiFi.Services.Catalog
                         categoryExcel.IsActive = item.IsActive;
                         if (!string.IsNullOrEmpty(item.CreatedByUser))
                         {
-                            categoryExcel.ApplicationUser = _categoryRepository.GetApplicationUser(item.CreatedByUser);
+                            //categoryExcel.ApplicationUser = _categoryRepository.GetApplicationUser(item.CreatedByUser);
+                            categoryExcel.ApplicationUser = applicationUser;
                         }
                         else
                         {

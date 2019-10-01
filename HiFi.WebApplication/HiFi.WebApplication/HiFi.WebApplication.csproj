@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="wwwroot\Excel\" />
     <Folder Include="wwwroot\themes\less\oregional\" />
   </ItemGroup>
 

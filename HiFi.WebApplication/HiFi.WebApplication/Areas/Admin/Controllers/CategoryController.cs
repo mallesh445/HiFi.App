@@ -187,8 +187,11 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                         records = records.Where(r => !string.IsNullOrEmpty(r.CategoryName) && !string.IsNullOrEmpty(r.CreatedByUser)).ToList();
                         if (records.Count > 0)
                         {
+                            string userId = User.Claims.
+                                Where(t => t.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").
+                                Select(a => a.Value).FirstOrDefault();
                             //objCategoryBO.InsertCategoryInBulk(records);
-                            bool result = _categoryService.InsertCategorInBulk(records);
+                            bool result = _categoryService.InsertCategorInBulk(records, userId);
                             System.IO.File.Delete(path);
                             TempData["Success"] = $"\"NumberOfRecords Uploaded\" : {records.Count()}";
                             return RedirectToAction("Index");

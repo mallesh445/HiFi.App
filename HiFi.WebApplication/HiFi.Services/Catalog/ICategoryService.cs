@@ -38,7 +38,7 @@ namespace HiFi.Services.Catalog
         /// </summary>
         /// <param name="records"></param>
         /// <returns></returns>
-        bool InsertCategorInBulk(List<CategoryImportExcel> records);
+        bool InsertCategorInBulk(List<CategoryImportExcel> records,string userId);
         Task<Category> GetCategoryByIdAsync(int id);
         List<CategoryNavViewModel> GetCategoriesAndSubCategories();
     }

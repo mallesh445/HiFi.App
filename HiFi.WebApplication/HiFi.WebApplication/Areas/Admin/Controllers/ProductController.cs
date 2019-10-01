@@ -240,7 +240,10 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 var productImages = _productService.GetAllProductImagesById(retrievedProduct.PKProductId);
                 if (productImages != null && productImages.Count() > 0)
                 {
-                    productViewModel.ProductImageModel.Add(AssignProdudctImageToProduct(productImages));
+                    ProductImageViewModel productImageViewModel = AssignProdudctImageToProduct(productImages);
+                    if (productImageViewModel != null)
+                        productViewModel.ProductImageModel.Add(productImageViewModel);
+                    //productViewModel.ProductImageModel.Add(AssignProdudctImageToProduct(productImages));
                 }
             }
             else
@@ -276,6 +279,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     return productImageViewModel;
                 }
             }
+            
             return productImageViewModel;
         }
 

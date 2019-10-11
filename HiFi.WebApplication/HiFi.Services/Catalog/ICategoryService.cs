@@ -19,7 +19,7 @@ namespace HiFi.Services.Catalog
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <param name="loadCacheableCopy">A value indicating whether to load a copy that could be cached (workaround until Entity Framework supports 2-level caching)</param>
         /// <returns>Categories</returns>
-        IEnumerable<Category> GetAllCategories(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true);
+        Task<IEnumerable<Category>> GetAllCategories(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true);
 
         /// <summary>
         /// InsertCategory
@@ -38,7 +38,7 @@ namespace HiFi.Services.Catalog
         /// </summary>
         /// <param name="records"></param>
         /// <returns></returns>
-        bool InsertCategorInBulk(List<CategoryImportExcel> records,string userId);
+        Task<bool> InsertCategorInBulk(List<CategoryImportExcel> records,string userId);
         Task<Category> GetCategoryByIdAsync(int id);
         List<CategoryNavViewModel> GetCategoriesAndSubCategories();
     }

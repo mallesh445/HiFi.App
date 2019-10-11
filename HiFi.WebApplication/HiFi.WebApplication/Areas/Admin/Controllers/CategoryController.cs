@@ -26,9 +26,9 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             _categoryService=categoryService;
         }
         // GET: Category
-        public ActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var data = _categoryService.GetAllCategories();
+            var data = await _categoryService.GetAllCategories();
             return View(data);
         }
 
@@ -159,7 +159,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         /// <param name="postedExcelFile"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult ImportCategories(IFormFile postedExcelFile)
+        public async Task<IActionResult> ImportCategories(IFormFile postedExcelFile)
         {
             if (ModelState.IsValid)
             {
@@ -191,7 +191,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                                 Where(t => t.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").
                                 Select(a => a.Value).FirstOrDefault();
                             //objCategoryBO.InsertCategoryInBulk(records);
-                            bool result = _categoryService.InsertCategorInBulk(records, userId);
+                            bool result =await _categoryService.InsertCategorInBulk(records, userId);
                             System.IO.File.Delete(path);
                             TempData["Success"] = $"\"NumberOfRecords Uploaded\" : {records.Count()}";
                             return RedirectToAction("Index");

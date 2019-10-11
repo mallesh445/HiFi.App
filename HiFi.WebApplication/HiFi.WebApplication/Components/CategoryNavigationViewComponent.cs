@@ -25,7 +25,7 @@ namespace HiFi.WebApplication.Components
             return View(model);
         }
 
-        public virtual CategoryNavigationModel PrepareCategoryNavigationModel(int currentCategoryId, int currentProductId)
+        public virtual async Task<CategoryNavigationModel> PrepareCategoryNavigationModel(int currentCategoryId, int currentProductId)
         {
             //get active category
             var activeCategoryId = 0;
@@ -44,7 +44,7 @@ namespace HiFi.WebApplication.Components
                 //    activeCategoryId = productCategories[0].CategoryId;
             }
 
-            var cachedCategoriesModel = PrepareCategorySimpleModels(0);
+            var cachedCategoriesModel = await PrepareCategorySimpleModels(0);
             var model = new CategoryNavigationModel
             {
                 CurrentCategoryId = activeCategoryId,
@@ -54,11 +54,11 @@ namespace HiFi.WebApplication.Components
             return model;
         }
 
-        private List<CategorySimpleModel> PrepareCategorySimpleModels(int rootCategoryId, bool loadSubCategories = true)
+        private async Task<List<CategorySimpleModel>> PrepareCategorySimpleModels(int rootCategoryId, bool loadSubCategories = true)
         {
             var result = new List<CategorySimpleModel>();
             var catSubCatProductCountsList = _categoryService.GetNoOfProductsAndSubCategoriesByCategories();
-            var allCategories = _categoryService.GetAllCategories();
+            var allCategories = await _categoryService.GetAllCategories();
             var categories = allCategories.Where(c => c.CategoryId == rootCategoryId).ToList();
             foreach (var category in allCategories)
             {
@@ -76,7 +76,7 @@ namespace HiFi.WebApplication.Components
 
                 if (loadSubCategories)
                 {
-                    var subCategories = PrepareSubCategorySimpleModels(category.CategoryId, loadSubCategories);
+                    var subCategories =await PrepareSubCategorySimpleModels(category.CategoryId, loadSubCategories);
                     categoryModel.SubCategories.AddRange(subCategories);
                 }
                 result.Add(categoryModel);
@@ -85,11 +85,11 @@ namespace HiFi.WebApplication.Components
             return result;
         }
 
-        private List<CategorySimpleModel> PrepareSubCategorySimpleModels(int currentCategoryId, bool loadSubCategories)
+        private async Task<List<CategorySimpleModel>> PrepareSubCategorySimpleModels(int currentCategoryId, bool loadSubCategories)
         {
             var result = new List<CategorySimpleModel>();
 
-            var allSubCategories = _subCategoryService.GetAllSubCategories();
+            var allSubCategories = await _subCategoryService.GetAllSubCategories();
             var subCategories = allSubCategories.Where(c => c.CategoryId == currentCategoryId).ToList();
             foreach (var subCategory in subCategories)
             {

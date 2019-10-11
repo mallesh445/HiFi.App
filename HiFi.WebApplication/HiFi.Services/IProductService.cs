@@ -10,18 +10,18 @@ namespace HiFi.Services
 {
     public interface IProductService
     { 
-        IEnumerable<Product> GetAllProducts(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true);
-        IEnumerable<Product> GetAllProductsFromDB();
+        Task<IEnumerable<Product>> GetAllProducts(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true);
+        Task<IEnumerable<Product>> GetAllProductsFromDB();
         IEnumerable<Product> GetAllProductsFromBySubCategory(int subCategoryId=0);
-        Product InsertProduct(Product product);
-        ProductImage InsertProductImage(ProductImage product);
-        bool UpdateProduct(Product product);
-        bool DeleteProduct(Product product);
+        Task<Product> InsertProduct(Product product);
+        Task<ProductImage> InsertProductImage(ProductImage product);
+        Task<bool> UpdateProduct(Product product);
+        Task<bool> DeleteProduct(Product product);
         IEnumerable<ProductImage> GetAllProductImagesById(int pKProductId);
         Product GetProductByProductId(int id);
         Task<Product> GetProductById(int id);
-        bool InsertProductsInBulk(List<ProductImportExcel> records, string userId);
+        Task<bool> InsertProductsInBulk(List<ProductImportExcel> records, string userId);
 
-        int ProductsCount();
+        Task<int> ProductsCount();
     }
 }

@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HiFi.Services
 {
     public interface ISalesOrderService
     {
-        IEnumerable<OrderHeader> GetAllSalesOrders();
+        Task<IEnumerable<OrderHeader>> GetAllSalesOrders();
 
-        int TotalOrdersCount();
+        Task<int> TotalOrdersCount();
     }
 }

@@ -194,11 +194,12 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     {
                         var user = await userManager.FindByIdAsync(model[i].UserId);
                         IdentityResult result = null;
-                        if (model[i].IsSelected && (await userManager.IsInRoleAsync(user, roleId)))
+                        bool isInRole = await userManager.IsInRoleAsync(user, roleId);
+                        if (model[i].IsSelected && !isInRole)
                         {
                             result = await userManager.AddToRoleAsync(user, role.Name);
                         }
-                        else if (!model[i].IsSelected && (await userManager.IsInRoleAsync(user, roleId)))
+                        else if (!model[i].IsSelected && isInRole)
                         {
                             result = await userManager.RemoveFromRoleAsync(user, role.Name);
                         }
@@ -222,7 +223,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    throw ex;
                 } 
             }
             return View();

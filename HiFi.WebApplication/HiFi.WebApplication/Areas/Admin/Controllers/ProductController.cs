@@ -42,10 +42,10 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/SubCategoryOne
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             _logger.LogInformation("Info invoked from ProductController of Index");
-            var products = _productService.GetAllProducts();
+            var products =await _productService.GetAllProducts();
             var listProductViewModel = new List<ProductViewModel>();
             foreach (var item in products)
             {
@@ -75,10 +75,10 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
 
 
         // GET: Admin/SubCategoryOne/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             //ViewBag.FKCategoryId = new SelectList(objCategoryBO.GetCategories(true), "PKCategoryId", "CategoryName");
-            ViewBag.SubCategoryId = new SelectList(_subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName");
+            ViewBag.SubCategoryId = new SelectList(await _subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName");
             return View();
         }
 
@@ -91,8 +91,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     Product product =PrepareProductEntityFromProductViewModel(productModel,true);
-
-                    var resultProduct = _productService.InsertProduct(product);
+                    var resultProduct = await _productService.InsertProduct(product);
 
                     if (resultProduct != null)
                     {
@@ -129,7 +128,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                         productImage.CreatedDate = DateTime.Now;
                         productImage.UpdatedDate = DateTime.Now;
                         productImage.Product = resultProduct;
-                        var result = _productService.InsertProductImage(productImage);
+                        var result = await _productService.InsertProductImage(productImage);
                     }
                     return RedirectToAction(nameof(Index));
                 }
@@ -155,7 +154,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
 
             if (productViewModel == null)
                 return NotFound();
-            ViewBag.SubCategoryId = new SelectList(_subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName", productViewModel.SubCategoryId);
+            ViewBag.SubCategoryId = new SelectList(await _subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName", productViewModel.SubCategoryId);
             return View(productViewModel);
         }
 
@@ -225,7 +224,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
 
             if (productViewModel == null)
                 return NotFound();
-            ViewBag.SubCategoryId = new SelectList(_subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName", productViewModel.SubCategoryId);
+            ViewBag.SubCategoryId = new SelectList(await _subCategoryService.GetAllSubCategories(), "SubCategoryOneId", "SubCategoryName", productViewModel.SubCategoryId);
             return View(productViewModel);
         }
 
@@ -351,7 +350,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         /// <param name="postedExcelFile"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult ImporProducts(IFormFile postedExcelFile)
+        public async Task<IActionResult> ImporProducts(IFormFile postedExcelFile)
         {
             if (ModelState.IsValid)
             {
@@ -383,7 +382,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                                 Where(t => t.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").
                                 Select(a => a.Value).FirstOrDefault();
 
-                            bool result = _productService.InsertProductsInBulk(records, userId);
+                            bool result =await _productService.InsertProductsInBulk(records, userId);
                             System.IO.File.Delete(path);
                             TempData["Success"] = $"\"NumberOfRecords Uploaded\" : {records.Count()}";
                             return RedirectToAction("Index");

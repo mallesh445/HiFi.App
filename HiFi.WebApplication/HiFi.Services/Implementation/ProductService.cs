@@ -21,15 +21,15 @@ namespace HiFi.Services.Implementation
             imageRepository = _imageRepository;
         }
 
-        public IEnumerable<Product> GetAllProducts(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true)
+        public async Task<IEnumerable<Product>> GetAllProducts(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true)
         {
-            var data = productRepository.GetAll();
+            var data =await productRepository.GetAll();
             return data;
         }
 
-        public IEnumerable<Product> GetAllProductsFromDB()
+        public async Task<IEnumerable<Product>> GetAllProductsFromDB()
         {
-            var data = productRepository.GetAll().ToList();
+            var data = await productRepository.GetAll();
             return data;
         }
 
@@ -49,9 +49,9 @@ namespace HiFi.Services.Implementation
             var products = productRepository.GetProductsBySubCategoryId(subCategoryId);
             return products;
         }
-        public IEnumerable<ProductImage> GetAllProductImages()
+        public async Task<IEnumerable<ProductImage>> GetAllProductImages()
         {
-            var data = imageRepository.GetAll();
+            var data =await imageRepository.GetAll();
             return data;
         }
 
@@ -71,29 +71,28 @@ namespace HiFi.Services.Implementation
             return data;
         }
 
-        public Product InsertProduct(Product product)
+        public async Task<Product> InsertProduct(Product product)
         {
-            var entity =productRepository.InsertData(product);
+            var entity =await productRepository.InsertData(product);
             return entity;
         }
-        public ProductImage InsertProductImage(ProductImage image)
+        public async Task<ProductImage> InsertProductImage(ProductImage image)
         {
-            ProductImage entity = imageRepository.InsertData(image);
+            ProductImage entity = await imageRepository.InsertData(image);
             return entity;
         }
 
-        public bool UpdateProduct(Product product)
+        public async Task<bool> UpdateProduct(Product product)
         {
-            productRepository.Update(product);
-            return true;
+            var result = await productRepository.Update(product);
+            return result;
         }
-        public bool DeleteProduct(Product product)
+        public async Task<bool> DeleteProduct(Product product)
         {
-            productRepository.Delete(product);
-            return true;
+            return await productRepository.Delete(product);
         }
 
-        public bool InsertProductsInBulk(List<ProductImportExcel> productExcelList, string userId)
+        public async Task<bool> InsertProductsInBulk(List<ProductImportExcel> productExcelList, string userId)
         {
             if (productExcelList.Count > 0)
             {
@@ -123,7 +122,7 @@ namespace HiFi.Services.Implementation
 
                         productsList.Add(productExcel);
                     }
-                    return productRepository.BulkCreate(productsList);
+                    return await productRepository.BulkCreate(productsList);
                 }
                 catch (Exception ex)
                 {
@@ -133,9 +132,11 @@ namespace HiFi.Services.Implementation
             return true;
         }
 
-        public int ProductsCount()
+        public async Task<int> ProductsCount()
         {
-            return productRepository.GetAll().Count();
+            var data = await productRepository.GetAll();
+            int count = data.Count();
+            return count;
         }
     }
 }

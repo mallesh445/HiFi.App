@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HiFi.Services.Implementation
 {
@@ -19,20 +20,20 @@ namespace HiFi.Services.Implementation
             _repository = repository;
         }
 
-        public int TotalUsersCount()
+        public async Task<int> TotalUsersCount()
         {
-            var data = SetGetUsersByCache();
+            var data =await SetGetUsersByCache();
             return data.AsQueryable().Count();
         }
 
-        private IEnumerable<ApplicationUser> SetGetUsersByCache()
+        private async Task<IEnumerable<ApplicationUser>> SetGetUsersByCache()
         {
             string cacheKey = CacheKeys.UsersListCache;
             IEnumerable<ApplicationUser> applicationUsers;
 
             if (!_memoryCache.TryGetValue(cacheKey, out applicationUsers))
             {
-                applicationUsers = _repository.GetAll();
+                applicationUsers = await _repository.GetAll();
                 _memoryCache.Set(cacheKey, applicationUsers,
                     new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30)));

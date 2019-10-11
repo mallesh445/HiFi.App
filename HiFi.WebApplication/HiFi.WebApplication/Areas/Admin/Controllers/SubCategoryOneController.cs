@@ -63,10 +63,10 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         }
 
         // GET: Admin/SubCategoryOne/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             //ViewBag.CategoryList = new SelectList(_categoryService.GetAllCategories(), "CategoryId", "CategoryName");
-            var catlist = _categoryService.GetAllCategories();
+            var catlist = await _categoryService.GetAllCategories();
             var cvm = new List<CategoryViewModel>();
             foreach (var item in catlist)
             {
@@ -152,7 +152,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             var subCategoryOne = await _context.SubCategoryOne.FindAsync(id);
             SubCategoryOneViewModel scViewModel = PrepareSubCategoryOneViewModelFromSubCategoryOneEntity(subCategoryOne);
 
-            var catlist = _categoryService.GetAllCategories();
+            var catlist = await _categoryService.GetAllCategories();
             var cvm = new List<CategoryViewModel>();
             foreach (var item in catlist)
             {
@@ -292,7 +292,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         /// <param name="postedExcelFile"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult ImportSubCategories(IFormFile postedExcelFile)
+        public async Task<ActionResult> ImportSubCategories(IFormFile postedExcelFile)
         {
             if (ModelState.IsValid)
             {
@@ -324,7 +324,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                                 Where(t => t.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").
                                 Select(a => a.Value).FirstOrDefault();
 
-                            bool result = _subCategoryService.InsertSubCategoriesInBulk(records,userId);
+                            bool result =await _subCategoryService.InsertSubCategoriesInBulk(records,userId);
                             System.IO.File.Delete(path);
                             TempData["Success"] = $"\"NumberOfRecords Uploaded\" : {records.Count()}";
                             return RedirectToAction("Index");

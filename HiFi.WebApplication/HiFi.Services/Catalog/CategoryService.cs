@@ -22,16 +22,29 @@ namespace HiFi.Services.Catalog
             _memoryCache = memoryCache;
         }
 
-
-        public virtual IEnumerable<Category> GetAllCategories(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true)
+        /// <summary>
+        /// Gets all categories from db
+        /// </summary>
+        /// <param name="storeId"></param>
+        /// <param name="showHidden"></param>
+        /// <param name="loadCacheableCopy"></param>
+        /// <returns></returns>
+        public virtual async Task<IEnumerable<Category>> GetAllCategories(int storeId = 0, bool showHidden = false, bool loadCacheableCopy = true)
         {
-            var data = _categoryRepository.GetAll();
+            var data = await _categoryRepository.GetAll();
+            foreach (var item in data)
+            {
+                if (item.Description.Length > 40)
+                {
+                    item.Description = item.Description.Substring(0, 40);
+                }
+            }
             return data;
         }
 
         public async Task<Category> GetCategoryByIdAsync(int id)
         {
-            var result = _categoryRepository.GetById(id);
+            var result = await _categoryRepository.GetById(id);
             return result;
         }
 
@@ -53,7 +66,7 @@ namespace HiFi.Services.Catalog
             return true;
         }
 
-        public bool InsertCategorInBulk(List<CategoryImportExcel> categoryExcelList,string userId)
+        public async Task<bool> InsertCategorInBulk(List<CategoryImportExcel> categoryExcelList,string userId)
         {
             if (categoryExcelList.Count > 0)
             {
@@ -81,7 +94,7 @@ namespace HiFi.Services.Catalog
                         categoryExcel.UpdatedDate = DateTime.Now;
                         categoriesList.Add(categoryExcel);
                     }
-                    return _categoryRepository.BulkCreate(categoriesList);
+                    return await _categoryRepository.BulkCreate(categoriesList);
                 }
                 catch (Exception ex)
                 {

@@ -8,11 +8,11 @@ namespace HiFi.Services
 {
     public interface IManufacturerService
     {
-        IEnumerable<Manufacturer> GetAllManufacturers();
-        Manufacturer GetManufacturerById(int manufacturerId);
-        Manufacturer InsertManufacturer(Manufacturer manufacturer);
-        bool UpdateManufacturer(Manufacturer manufacturer);
-        bool DeleteManufacturer(Manufacturer manufacturer);
+        Task<IEnumerable<Manufacturer>> GetAllManufacturers();
+        Task<Manufacturer> GetManufacturerById(int manufacturerId);
+        Task<Manufacturer> InsertManufacturer(Manufacturer manufacturer);
+        Task<bool> UpdateManufacturer(Manufacturer manufacturer);
+        Task<bool> DeleteManufacturer(Manufacturer manufacturer);
         Task<Manufacturer> GetManufacturerByIdAsync(int manufacturerId);
     }
 }

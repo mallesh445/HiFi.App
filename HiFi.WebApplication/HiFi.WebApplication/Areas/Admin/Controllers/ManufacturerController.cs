@@ -26,9 +26,9 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             _logger = logger;
         }
         // GET: Manufacturer
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var manfacturersList = _manufacturerService.GetAllManufacturers();
+            var manfacturersList =await _manufacturerService.GetAllManufacturers();
             return View(manfacturersList);
         }
 
@@ -59,16 +59,16 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         // POST: Manufacturer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Manufacturer manufacturer)
+        public async Task<IActionResult> Create(Manufacturer manufacturer)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var resultManufacturer = _manufacturerService.InsertManufacturer(manufacturer);
+                    var resultManufacturer = await _manufacturerService.InsertManufacturer(manufacturer);
                     if (resultManufacturer != null)
                     {
-                        var finalResult = _manufacturerService.UpdateManufacturer(CheckAndPrepareAnyImageUploaded(manufacturer));
+                        var finalResult =await _manufacturerService.UpdateManufacturer(CheckAndPrepareAnyImageUploaded(manufacturer));
                         _logger.LogInformation("Manufacturer created successfully");
                     }
                     return RedirectToAction("Index");

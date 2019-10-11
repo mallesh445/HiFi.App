@@ -27,14 +27,14 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             return RedirectToAction("Dashboard1");
         }
 
-        public IActionResult Dashboard1()
+        public async Task<IActionResult> Dashboard1()
         {
             DashboardViewModel dashboard = new DashboardViewModel();
 
             dashboard.administrators_count = 5;
-            dashboard.customers_count = _userService.TotalUsersCount();
-            dashboard.products_count = _productService.ProductsCount();
-            dashboard.orders_count = _salesOrderService.TotalOrdersCount();
+            dashboard.customers_count = await _userService.TotalUsersCount();
+            dashboard.products_count = await _productService.ProductsCount();
+            dashboard.orders_count =await _salesOrderService.TotalOrdersCount();
             return View(dashboard);
         }
 

@@ -19,39 +19,37 @@ namespace HiFi.Services.Implementation
             _memoryCache = memoryCache;
         }
 
-        public IEnumerable<Manufacturer> GetAllManufacturers()
+        public async Task<IEnumerable<Manufacturer>> GetAllManufacturers()
         {
-            var data = _manufacturerRepository.GetAll();
+            var data =await _manufacturerRepository.GetAll();
             return data;
         }
 
-        public Manufacturer GetManufacturerById(int manufacturerId)
+        public async Task<Manufacturer> GetManufacturerById(int manufacturerId)
         {
-            return _manufacturerRepository.GetById(manufacturerId);
+            return await _manufacturerRepository.GetById(manufacturerId);
         }
         
         public async Task<Manufacturer> GetManufacturerByIdAsync(int manufacturerId)
         {
-            var result = _manufacturerRepository.GetById(manufacturerId);
+            var result = await _manufacturerRepository.GetById(manufacturerId);
             return result;
         }
 
-        public Manufacturer InsertManufacturer(Manufacturer manufacturer)
+        public async Task<Manufacturer> InsertManufacturer(Manufacturer manufacturer)
         {
             //_manufacturerRepository.Insert(manufacturer);
             //return true;
-            return _manufacturerRepository.InsertData(manufacturer); ;
+            return await _manufacturerRepository.InsertData(manufacturer); ;
         }
 
-        public bool UpdateManufacturer(Manufacturer manufacturer)
+        public async Task<bool> UpdateManufacturer(Manufacturer manufacturer)
         {
-            _manufacturerRepository.Update(manufacturer);
-            return true;
+            return await _manufacturerRepository.Update(manufacturer);
         }
-        public bool DeleteManufacturer(Manufacturer manufacturer)
+        public async Task<bool> DeleteManufacturer(Manufacturer manufacturer)
         {
-            _manufacturerRepository.Delete(manufacturer);
-            return true;
+            return await _manufacturerRepository.Delete(manufacturer);
         }
     }
 }

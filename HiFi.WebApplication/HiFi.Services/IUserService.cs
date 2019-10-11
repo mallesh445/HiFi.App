@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HiFi.Services
 {
     public interface IUserService
     {
-        int TotalUsersCount();
+        Task<int> TotalUsersCount();
     }
 }

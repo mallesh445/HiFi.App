@@ -3,17 +3,18 @@ using HiFi.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HiFi.Services
 {
     public interface ISubCategoryService
     {
-        IEnumerable<SubCategoryOne> GetAllSubCategories();
+        Task<IEnumerable<SubCategoryOne>> GetAllSubCategories();
 
-        bool InsertSubCategory(SubCategoryOne subCategory);
-        bool UpdateSubCategory(SubCategoryOne subCategory);
-        bool DeleteSubCategory(SubCategoryOne subCategory);
+        Task<bool> InsertSubCategory(SubCategoryOne subCategory);
+        Task<bool> UpdateSubCategory(SubCategoryOne subCategory);
+        Task<bool> DeleteSubCategory(SubCategoryOne subCategory);
         IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId);
-        bool InsertSubCategoriesInBulk(List<SubCategoryImportExcel> records, string userId);
+        Task<bool> InsertSubCategoriesInBulk(List<SubCategoryImportExcel> records, string userId);
     }
 }

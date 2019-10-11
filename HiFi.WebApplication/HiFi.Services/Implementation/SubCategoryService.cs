@@ -4,6 +4,7 @@ using HiFi.Repository;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HiFi.Services.Implementation
 {
@@ -19,28 +20,25 @@ namespace HiFi.Services.Implementation
         }
 
 
-        public virtual IEnumerable<SubCategoryOne> GetAllSubCategories()
+        public virtual async Task<IEnumerable<SubCategoryOne>> GetAllSubCategories()
         {
-            var data = _subCategoryRepository.GetAll();
+            var data = await _subCategoryRepository.GetAll();
             return data;
         }
 
-        public bool InsertSubCategory(SubCategoryOne subCategory)
+        public async Task<bool> InsertSubCategory(SubCategoryOne subCategory)
         {
-            _subCategoryRepository.Insert(subCategory);
-            return true;
+            return await _subCategoryRepository.Insert(subCategory);
         }
 
-        public bool UpdateSubCategory(SubCategoryOne subCategory)
+        public async Task<bool> UpdateSubCategory(SubCategoryOne subCategory)
         {
-            _subCategoryRepository.Update(subCategory);
-            return true;
+            return await _subCategoryRepository.Update(subCategory);
         }
 
-        public bool DeleteSubCategory(SubCategoryOne subCategory)
+        public async Task<bool> DeleteSubCategory(SubCategoryOne subCategory)
         {
-            _subCategoryRepository.Delete(subCategory);
-            return true;
+            return await _subCategoryRepository.Delete(subCategory);
         }
 
         public IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId)
@@ -54,7 +52,7 @@ namespace HiFi.Services.Implementation
         /// <param name="subCategoryExcelList"></param>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public bool InsertSubCategoriesInBulk(List<SubCategoryImportExcel> subCategoryExcelList, string userId)
+        public async Task<bool> InsertSubCategoriesInBulk(List<SubCategoryImportExcel> subCategoryExcelList, string userId)
         {
             if (subCategoryExcelList.Count > 0)
             {
@@ -87,7 +85,7 @@ namespace HiFi.Services.Implementation
 
                         subCategoriesList.Add(subCategoryExcel);
                     }
-                    return _subCategoryRepository.BulkCreate(subCategoriesList);
+                    return await _subCategoryRepository.BulkCreate(subCategoriesList);
                 }
                 catch (Exception ex)
                 {

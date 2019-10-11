@@ -25,7 +25,7 @@ namespace HiFi.Repository
             this._context = context;
             tableEntity = context.Set<T>();
         }
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             return tableEntity.ToList();
         }
@@ -66,16 +66,16 @@ namespace HiFi.Repository
             return _context.ProductImage.Where(a => a.Product.PKProductId == pKProductId);
         }
 
-        public T GetById(object id)
+        public async Task<T> GetById(object id)
         {
             return tableEntity.Find(id);
         }
-        public bool Insert(T obj)
+        public async Task<bool> Insert(T obj)
         {
             tableEntity.Add(obj);
-            return Save();
+            return await Save();
         }
-        public T InsertData(T entity)
+        public async Task<T> InsertData(T entity)
         {
             var storedEntity = tableEntity.Add(entity);
             try
@@ -88,19 +88,19 @@ namespace HiFi.Repository
             }
             return storedEntity.Entity;
         }
-        public bool Update(T obj)
+        public async Task<bool> Update(T obj)
         {
             tableEntity.Attach(obj);
             _context.Entry(obj).State = EntityState.Modified;
-            return Save();
+            return await Save();
         }
-        public bool Delete(object id)
+        public async Task<bool> Delete(object id)
         {
             T existing = tableEntity.Find(id);
             tableEntity.Remove(existing);
-            return Save();
+            return await Save();
         }
-        public bool Save()
+        public async Task<bool> Save()
         {
             int result = _context.SaveChanges();
             if (result > 0)
@@ -113,10 +113,10 @@ namespace HiFi.Repository
             }
         }
 
-        public bool BulkCreate(IList<T> categoriesList)
+        public async Task<bool> BulkCreate(IList<T> categoriesList)
         {
             tableEntity.AddRange(categoriesList);
-            return Save();
+            return await Save();
         }
 
         public ApplicationUser GetApplicationUser(string userid = "")

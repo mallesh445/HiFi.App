@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using HiFi.Common;
 using HiFi.Data.Models;
 using HiFi.Repository;
@@ -20,20 +21,20 @@ namespace HiFi.Services.Implementation
             _memoryCache = memoryCache;
         }
 
-        public IEnumerable<OrderHeader> GetAllSalesOrders()
+        public async Task<IEnumerable<OrderHeader>> GetAllSalesOrders()
         {
-            var data = SetGetSalesOrderByCache();
+            var data = await SetGetSalesOrderByCache();
             return data;
         }
 
-        private IEnumerable<OrderHeader> SetGetSalesOrderByCache()
+        private async Task<IEnumerable<OrderHeader>> SetGetSalesOrderByCache()
         {
             string cacheKey = CacheKeys.OrderListCache;
             IEnumerable<OrderHeader> orders;
 
             if (!_memoryCache.TryGetValue(cacheKey, out orders))
             {
-                orders = _repository.GetAll(); 
+                orders = await _repository.GetAll(); 
                 _memoryCache.Set(cacheKey, orders,
                     new MemoryCacheEntryOptions()
                     .SetSlidingExpiration(TimeSpan.FromMinutes(30)));
@@ -42,9 +43,9 @@ namespace HiFi.Services.Implementation
             return orders;
         }
 
-        public int TotalOrdersCount()
+        public async Task<int> TotalOrdersCount()
         {
-            var data = SetGetSalesOrderByCache();
+            var data =await SetGetSalesOrderByCache();
             return data.AsQueryable().Count();
         }
     }

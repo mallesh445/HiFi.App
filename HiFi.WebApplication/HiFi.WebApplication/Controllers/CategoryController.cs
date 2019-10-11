@@ -48,12 +48,5 @@ namespace HiFi.WebApplication.Controllers
             return categoryNavViewModels;
         }
 
-        //if (TempData["Success"] != null)
-        //{
-        //    TempData["Success"] = TempData["Success"];
-        //}
-        //if (TempData["Error"] != null)
-        //    TempData["Error"] = TempData["Error"];
-        //return View();
     }
 }

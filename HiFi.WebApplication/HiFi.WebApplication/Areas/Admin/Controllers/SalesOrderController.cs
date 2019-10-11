@@ -6,6 +6,7 @@ using HiFi.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
@@ -14,15 +15,17 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
     public class SalesOrderController : Controller
     {
         private readonly ISalesOrderService _salesOrderService;
-        public SalesOrderController(ISalesOrderService salesOrderService)
+        private readonly ILogger<SalesOrderController> _logger;
+        public SalesOrderController(ISalesOrderService salesOrderService,ILogger<SalesOrderController> logger)
         {
             _salesOrderService = salesOrderService;
+            _logger = logger;
         }
 
         // GET: SalesOrder
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var data = _salesOrderService.GetAllSalesOrders();
+            var data =await _salesOrderService.GetAllSalesOrders();
             return View(data);
         }
 

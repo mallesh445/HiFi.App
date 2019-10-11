@@ -1,0 +1,57 @@
+﻿
+@model IEnumerable<HiFi.Data.ViewModels.SubCategoryViewModel>
+
+@{
+    ViewData["Title"] = "Get SubCategories By Category";
+}
+
+
+<div class="span9">
+    <h4>SubCategories By Category : @ViewBag.CategoryName </h4>
+    <ul class="thumbnails">
+        @foreach (var item in Model)
+        {
+            <li class="span3">
+                <div class="thumbnail">
+                    @if (@item.SC_ImagePath != null)
+                    {
+                        <a asp-controller="Product" asp-action="GetAllProductsBySubCategory" asp-route-id="@item.SubCategoryId">
+                            <img src="@item.SC_ImagePath" width="90" alt="@item.SC_ImagePath"
+                                 style="height: 160px; width: 160px;" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Product" asp-action="GetAllProductsBySubCategory" asp-route-id="@item.SubCategoryId">
+                            <img src="~/Images/default-subcat.png" width="90" alt="@item.SubCategoryName"
+                                 style="height: 160px; width: 160px;" />
+                        </a>
+                    }
+                    <div class="caption">
+                        <h5>@item.SubCategoryName </h5>
+                        <p>
+                            @if (@item.Description.Length > 35)
+                            {
+                                @item.Description.Substring(0, 35)
+                            }
+                            else
+                            {
+                                @item.Description
+                            }
+                        </p>
+                        <h4 style="text-align:center">
+                            <a class="btn" href="/Product/ProductDetails?productId=@item.SubCategoryId">
+                                <i class="fa fa-search"></i>
+                            </a>
+
+                            <a class="btn btn-primary" href="#">20</a>
+                        </h4>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+
+</div>
+
+

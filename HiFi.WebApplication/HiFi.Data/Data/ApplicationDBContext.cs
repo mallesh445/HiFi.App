@@ -1,4 +1,5 @@
-﻿using HiFi.Data.Models;
+﻿using HiFi.Common;
+using HiFi.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,5 +22,19 @@ namespace HiFi.Data.Data
             // Add your customizations after calling base.OnModelCreating(builder);
         }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
+        public DbSet<Address> Address { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<SubCategoryOne> SubCategoryOne { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductImage> ProductImage { get; set; }
+        public DbSet<PictureBinary> PictureBinary { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+        public DbSet<OrderHeader> Orders { get; set; }
+        public DbSet<OrderDetails> OrderDetails { get; set; }
+        public DbQuery<CategoryChildsCount> CategoryChildsCounts { get; set; }
+        public DbQuery<CategorySubCategoryTable> CategorySubCategoryTable { get; set; }
+
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Product_Manufacturer_Mapping> Product_Manufacturer_Mapping { get; set; }
     }
 }

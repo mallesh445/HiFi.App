@@ -1,0 +1,64 @@
+﻿@model HiFi.Data.Models.Manufacturer
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Areas/Admin/Views/Shared/_ALayout.cshtml";
+}
+
+<section class="container-fluid">
+    <div class="content panel-body">
+        <div class="box-header with-border">
+            <h3 class="box-title">Add Manufacturer</h3>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="DisplayOrder" class="control-label"></label>
+                        <input asp-for="DisplayOrder" class="form-control" />
+                        <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CreatedDate" class="control-label"></label>
+                        <input asp-for="CreatedDate" class="form-control" />
+                        <span asp-validation-for="CreatedDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="UpdatedDate" class="control-label"></label>
+                        <input asp-for="UpdatedDate" class="form-control" />
+                        <span asp-validation-for="UpdatedDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsActive" />
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Choose Image </label>
+                        <input type="file" class="form-control" name="images" value="" multiple="multiple" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+
+
+    </div>
+</section>

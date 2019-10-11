@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <br />
+    <table width="50%">
+        <tr>
+            <td align="center" style="background-color:dodgerblue">
+                <span style="font-size:25px;">   Order From Hi-Fi Technologies </span>
+                <br />
+                <br />
+            </td>
+
+        </tr>
+
+        <tr align="center">
+            <td>
+                <br />
+                <br />
+                Dear [username]
+                <br />
+                <br />
+                Thank you for placing Order with us!We will get back to you
+                <br />
+                your Order details
+                <div align="left">
+                    AddressLine : [AddressLine1]<br />
+                    City : [City]<br />
+                    State : [State]<br />
+                    PhoneNumber : [PhoneNumber]<br />
+                    ZipCode : [ZipCode]<br />
+                    Status : [Status]<br />
+                </div>
+                <a href="http://hifitechstore.com">
+                    Click here to Login & Manage your orders.
+                </a>
+
+                Regards,
+                <br />
+                <br />
+            </td>
+        </tr>
+        <tr>
+            <td align="center" style="background-color:yellow">
+                <br />
+                <br />
+                <span style="font-size:15px;text-decoration:underline">   Keep shopping with us.   </span>
+                <br />
+                <span id="currentDate" style="font-size:20px;"> </span>
+                <br />
+                <br />
+            </td>
+
+        </tr>
+
+    </table>
+    <script>
+        var d = new Date().toLocaleString();
+        document.getElementById("currentDate").innerHTML = d;
+    </script>
+</body>
+</html>  

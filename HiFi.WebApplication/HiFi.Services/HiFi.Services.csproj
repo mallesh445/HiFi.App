@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HiFi.Common\HiFi.Common.csproj" />
+    <ProjectReference Include="..\HiFi.Data\HiFi.Data.csproj" />
+    <ProjectReference Include="..\HiFi.Repository\HiFi.Repository.csproj" />
+  </ItemGroup>
+
+</Project>

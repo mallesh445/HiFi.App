@@ -1,8 +1,112 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model LatestAndFeatureProductsViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_HomeLayout";
+}
+    <div class="span9">
+        <h4>Featured Products<small class="pull-right">100+ featured products</small></h4>
+        <div class="well well-small">
+            <div class="row-fluid">
+                <div id="featured" class="carousel slide">
+
+                    <div class="carousel-inner">
+                        @{ var index = 0;}
+                        <div class="item active">
+                            <ul class="thumbnails">
+                                @foreach (var item in Model.FeatureProductsVM)
+                                {
+                                    @if (index < 4)
+                                    {
+                                        <li class="span3">
+                                            <div class="thumbnail" id="@item.PKProductId">
+                                                <i class="tag"></i>
+                                                @if (@item.ProductImage != null && item.ProductImage.Count > 0 && item.ProductImage[0].FKProductId == item.PKProductId)
+                                                {
+                                                    <a href="/Product/ProductDetails?productId=@item.PKProductId">
+                                                        <img src="@item.ProductImage[0]?.ImagePath" alt="@item.ProductImage[0].ImageName"
+                                                             style="height: 160px; width: 160px;" />
+                                                    </a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="/Product/ProductDetails?productId=@item.PKProductId">
+                                                        <img src="~/Images/default-product.png" style="height: 160px; width: 160px;" />
+                                                    </a>
+                                                }
+                                                <div class="caption">
+                                                    <h5>@item.ProductName</h5>
+                                                    <h4>
+                                                        <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">VIEW</a>
+                                                        <span class="pull-right">$@item.Price</span>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        break;
+                                    }
+                                    index++;
+                                }
+                            </ul>
+                        </div>
+
+                    </div>
+                    <a class="left carousel-control" href="#featured" data-slide="prev">‹</a>
+                    <a class="right carousel-control" href="#featured" data-slide="next">›</a>
+
+                </div>
+            </div>
+            @*================================================================*@
+
+        </div>
+        <h4>Latest Products </h4>
+        <ul class="thumbnails">
+            @foreach (var item in Model.LatestProductsVM)
+            {
+                <li class="span3">
+                    <div class="thumbnail">
+                        @if (@item.ProductImage != null && item.ProductImage.Count > 0 && item.ProductImage[0].FKProductId == item.PKProductId)
+                        {
+                            <a href="/Product/ProductDetails?productId=@item.PKProductId">
+                                <img src="@item.ProductImage[0]?.ImagePath" width="90%" alt="@item.ProductImage[0].ImageName"
+                                     style="height: 160px; width: 160px;" />
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/Product/ProductDetails?productId=@item.PKProductId">
+                                <img src="~/Images/default-product.png" style="height: 160px; width: 160px;" />
+                            </a>
+                        }
+
+                        <div class="caption">
+                            <h5>@item.ProductName</h5>
+                            <p>
+                                @if (@item.ShortDescription.Length > 32)
+                                {
+                                    @item.ShortDescription.Substring(0, 32)
+                                }
+                                else
+                                {
+                                    @item.ShortDescription
+                                }
+                            </p>
+
+                            <h4 style="text-align:center">
+                                <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId&productQty=1">
+                                    <i class="fa fa-search-plus"></i>
+                                </a>
+                                <a class="btn" href="ShoppingCart/AddToShoppingCart?productId=@item.PKProductId">Add to <i class="fa fa-cart-plus"></i></a>
+                                <a class="btn btn-primary" href="#">$@item.Price</a>
+                            </h4>
+                        </div>
+                    </div>
+                </li>
+            }
+
+        </ul>
+
+    </div>

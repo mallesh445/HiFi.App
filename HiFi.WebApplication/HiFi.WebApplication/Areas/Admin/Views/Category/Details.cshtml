@@ -1,0 +1,68 @@
+﻿@model HiFi.Data.Models.Category
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+    <section class="container-fluid">
+        <div class="panel-heading panel-body MainHeaderColor">
+            <h3>@Model.CategoryName Category Details</h3>
+        </div>
+
+        <div class="content panel-body">
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CategoryId)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CategoryId)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CategoryName)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.Description)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.DisplayOrder)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.DisplayOrder)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.CreatedDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.CreatedDate)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.UpdatedDate)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.UpdatedDate)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.IsActive)
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+
+        <div class="panel-footer">
+            <p>
+                @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+                <a asp-action="Index">Back to List</a>
+            </p>
+        </div>
+    </section>

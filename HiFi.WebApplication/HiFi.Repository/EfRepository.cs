@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -256,5 +257,23 @@ namespace HiFi.Repository
 
         }
 
+        public bool CheckUserExistInDatabase(string userName)
+        {
+            try
+            {
+                SqlParameter userNameParameter = new SqlParameter("@UserName", userName);
+                //var result = _context.Database.ExecuteSqlCommand("sp_CheckUserExistsOrNot @UserName", userNameParameter);
+                var resu = _context.ApplicationUser.FromSql("exec sp_CheckUserExistsOrNot @UserName", userNameParameter);
+                if (resu!=null && resu.Count() > 0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+            return false;
+        }
     }
 }

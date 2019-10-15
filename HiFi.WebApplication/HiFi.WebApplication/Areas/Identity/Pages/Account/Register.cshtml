@@ -27,6 +27,10 @@
                     <label asp-for="Input.Email" style="padding-right: 92px;padding-top:15px;"></label>
                     <input asp-for="Input.Email" class="form-control" />
                     <span asp-validation-for="Input.Email" class="LoginRegister"></span>
+                    @if (Model.Input != null && !string.IsNullOrEmpty(Model.Input.PopupMessage))
+                    {
+                        <span class="LoginRegister">@Model.Input.PopupMessage</span>
+                    }
                 </div>
                 <div class="form-inline">
                     <label asp-for="Input.Password"  style="padding-right: 66px;padding-top:15px;"></label>

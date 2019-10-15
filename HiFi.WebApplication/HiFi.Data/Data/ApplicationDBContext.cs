@@ -20,6 +20,10 @@ namespace HiFi.Data.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            #region To Modify default Identity tables Names.
+            //builder.Entity<ApplicationUser>().ToTable("ApplicationUser"); //ToTable("MyUserTable")
+            #endregion
         }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Address> Address { get; set; }

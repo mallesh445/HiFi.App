@@ -8,5 +8,6 @@ namespace HiFi.Services
     public interface IUserService
     {
         Task<int> TotalUsersCount();
+        bool CheckUserExistInDatabase(string userName);
     }
 }

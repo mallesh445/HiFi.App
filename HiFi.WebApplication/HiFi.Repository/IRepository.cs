@@ -32,5 +32,6 @@ namespace HiFi.Repository
         List<CategoryChildsCount> GetNoOfProductsAndSubCategoriesByCategories();
         IEnumerable<SubCategoryOne> GetSubCategoriesByCategoryId(int categoryId);
         List<CategoryNavViewModel> GetCategoriesAndSubCategories();
+        bool CheckUserExistInDatabase(string userName);
     }
 }

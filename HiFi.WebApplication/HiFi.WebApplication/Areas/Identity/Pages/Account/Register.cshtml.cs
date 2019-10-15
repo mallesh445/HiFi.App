@@ -6,6 +6,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using HiFi.Common;
 using HiFi.Data.Models;
+using HiFi.Services;
 using HiFi.WebApplication.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -25,19 +26,21 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IUserService _userService;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender, IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _logger = logger;
             _emailSender = emailSender;
+            _userService = userService;
         }
 
         [BindProperty]
@@ -74,6 +77,8 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
+
+            public string PopupMessage { get; set; }
         }
 
         public void OnGet(string returnUrl = null)
@@ -86,50 +91,71 @@ namespace HiFi.WebApplication.Areas.Identity.Pages.Account
             returnUrl = returnUrl ?? Url.Content("~/");
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = Input.Email, Email = Input.Email,
-                    FirstName = Input.FirstName,
-                    LastName = Input.LastName,
-                    PhoneNumber = Input.PhoneNumber
-                };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
+                try
                 {
-                    if (!await _roleManager.RoleExistsAsync(SD.AdminEndUser))
+                    bool isUserExist = _userService.CheckUserExistInDatabase(Input.Email);
+                    if (!isUserExist)
                     {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.AdminEndUser));
+                        var user = new ApplicationUser
+                        {
+                            UserName = Input.Email,
+                            Email = Input.Email,
+                            FirstName = Input.FirstName,
+                            LastName = Input.LastName,
+                            PhoneNumber = Input.PhoneNumber
+                        };
+                        var result = await _userManager.CreateAsync(user, Input.Password);
+                        if (result.Succeeded)
+                        {
+                            if (!await _roleManager.RoleExistsAsync(SD.AdminEndUser))
+                            {
+                                await _roleManager.CreateAsync(new IdentityRole(SD.AdminEndUser));
+                            }
+                            if (!await _roleManager.RoleExistsAsync(SD.EmployeeEndUser))
+                            {
+                                await _roleManager.CreateAsync(new IdentityRole(SD.EmployeeEndUser));
+                            }
+                            if (!await _roleManager.RoleExistsAsync(SD.CustomerEndUser))
+                            {
+                                await _roleManager.CreateAsync(new IdentityRole(SD.CustomerEndUser));
+                            }
+
+                            await _userManager.AddToRoleAsync(user, SD.CustomerEndUser);
+
+                            _logger.LogInformation("User created a new account with password.");
+
+                            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { userId = user.Id, code = code },
+                                protocol: Request.Scheme);
+
+                            string bodyMessage = GetBodyMessage(user, $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", bodyMessage);
+                            //$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
+
+                            await _signInManager.SignInAsync(user, isPersistent: false);
+                            _logger.LogInformation("User created with new password.");
+                            HttpContext.Session.SetInt32("CartCount", 0);
+                            Input.PopupMessage = "Successfully Registered User";
+                            return LocalRedirect(returnUrl);
+                        }
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        Input.PopupMessage = "Failed to create User";
                     }
-                    if (!await _roleManager.RoleExistsAsync(SD.EmployeeEndUser))
+                    else
                     {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.EmployeeEndUser));
+                        Input.PopupMessage = "Email already exist. Please provide unique Email";
                     }
-                    if (!await _roleManager.RoleExistsAsync(SD.CustomerEndUser))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.CustomerEndUser));
-                    }
-
-                    await _userManager.AddToRoleAsync(user, SD.CustomerEndUser);
-
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
-
-                    string bodyMessage = GetBodyMessage(user,$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", bodyMessage);
-                    //$"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>."
-
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created with new password.");
-                    HttpContext.Session.SetInt32("CartCount", 0);
-                    return LocalRedirect(returnUrl);
                 }
-                foreach (var error in result.Errors)
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    Input.PopupMessage = "Failed to create User";
+                    _logger.LogError(ex,ex.Message);
                 }
             }
 

@@ -41,5 +41,16 @@ namespace HiFi.Services.Implementation
             }
             return applicationUsers;
         }
+
+        /// <summary>
+        /// CheckUserExistInDatabase
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public bool CheckUserExistInDatabase(string userName)
+        {
+            return _repository.CheckUserExistInDatabase(userName);
+        }
+
     }
 }

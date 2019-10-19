@@ -9,12 +9,12 @@
 <head>
     <style type="text/css">
         nav-link.btn.btn-link.text-dark.btnLogout {
-    background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;
-}
+            background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;
+        }
     </style>
 </head>
 @{
-    var currentUserName = @User.Identity.Name ?? "User";
+    var currentUserName = @User.Identity.Name ?? "";
     var cartCount = 0;
     if (HttpContextAccessor.HttpContext.Session.GetInt32("CartCount") != null)
     {
@@ -24,7 +24,45 @@
     var categoriesList = Model;
 }
 <!-- Navbar ================================================== -->
-<div id="welcomeLine" class="row">
+<div class="header-wrap-inner style1">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="header-top clearfix">
+                <div class="header-top-logo">
+                    <a id="logo" href="\">
+                        <img src="~/themes/images/logo.png" alt="Hi Fi" data-retina="image/logo@2x.png"
+                             data-width="156" data-height="36" style="width:312px; height:68px;">
+                    </a>
+                </div>
+                <div class="header-top-info">
+                    <ul>
+                        <li class="email">
+                            <div class="header-image">
+                                <img src="~/themes/images/blog3.png" alt="image">
+                            </div>
+                            <div class="header-text">
+                                <p style="color:#000000; font-weight: 600; font-size: 16px;"><a href="#">EMAIL</a></p>
+                                <h5><a href="\">ksaibabu@hifitech.in</a></h5>
+                            </div>
+                        </li>
+                        <li class="phone">
+                            <div class="header-image">
+                                <img src="~/themes/images/blog23.png" alt="image">
+                            </div>
+                            <div class="header-text">
+                                <p style="color:#000000; font-weight: 600; font-size: 16px;"><a href="#">MOBILE</a></p>
+                                <h5><a href="\">+91 94907 46511</a></h5>
+                            </div>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="welcomeLine" class="row">
     <div class="span6">Welcome!<strong> @currentUserName</strong></div>
     <div class="span6">
         <div class="pull-right">
@@ -36,7 +74,8 @@
             </a>
         </div>
     </div>
-</div>
+</div>*@
+
 <div id="logoArea" class="navbar">
     <a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
         <span class="icon-bar"></span>
@@ -44,52 +83,55 @@
         <span class="icon-bar"></span>
     </a>
     <div class="navbar-inner">
-        <a class="brand" href="\"><img src="~/themes/images/Hi-Fi Logo.jpg" alt="Hi-FI" height="55" width="55" /></a>
+        @*<a class="brand" href="\"><img src="~/themes/images/Hi-Fi Logo.jpg" alt="Hi-FI" height="55" width="55" /></a>*@
         <form class="form-inline navbar-search" method="post" action="#">
             <div class="input-group">
-                <span class="input-group">
-                    <i class="fa fa-search"></i>
-                </span>
+                @*<span class="input-group">
+                        <i class="fa fa-search"></i>
+                    </span>*@
                 <input id="txtSearch" placeholder="Search" class="form-control" type="text" />
                 @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)categoriesList, new { @class = "form-control" })
                 <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
             </div>
-            @*<input id="txtSearch" placeholder="Search" class="form-control" type="text" />
-                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)categoriesList, new { @class = "form-control" })
-                    <button type="submit" id="submitButton" class="btn btn-primary">Go</button>*@
-
         </form>
         <ul id="topMenu" class="nav pull-right">
+            <li class="">
+                <a href="/ShoppingCart/Index">
+                    <span>Cart</span>
+                    <i class="fa fa-shopping-cart" style="color:white"></i>
+                    <span class="cartQuantity"> @cartCount</span>
+                </a>
+            </li>
             <li class=""><a href="@Url.Action("Contact", "Home")">Contact</a></li>
             @*@Html.Partial("_LoginPartial")*@
             @if (SignInManager.IsSignedIn(User))
             {
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                        Hello @User.Identity.Name!
-                    </a>
-                </li>
-                <li class="nav-item">
-                    @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout"
-                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Logout</a>*@
-                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                        <button type="submit" class="nav-link btn btn-link text-dark btnLogout" style="color:#DDD;
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    Hello @User.Identity.Name!
+                </a>
+            </li>
+            <li class="nav-item">
+                @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout"
+                    asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Logout</a>*@
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-dark btnLogout" style="color:#DDD;
                             font-family:Arial, Helvetica, sans-serif; font-size:16px;padding-top:20px;
                             background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;">
-                            Logout
-                        </button>
-                    </form>
-                </li>
+                        Logout
+                    </button>
+                </form>
+            </li>
             }
             else
             {
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            </li>
             }
         </ul>
     </div>

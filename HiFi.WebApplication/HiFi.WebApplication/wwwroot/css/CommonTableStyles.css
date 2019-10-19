@@ -138,3 +138,65 @@ table.dataTable.no-footer {
 /*nav-link.btn.btn-link.text-dark.btnLogout {
     background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;
 }*/
+
+/*top new header styles*/
+.header-wrap-inner.style1 .header-top {
+    position: relative;
+    display: table;
+    width: 100%;
+}
+
+.header-wrap-inner.style1 .header-top-logo {
+    float: left;
+    /* display: table-cell; */
+    /* vertical-align: middle; */
+}
+
+.header-wrap-inner.style1 .header-top-info {
+    float: right;
+    display: table-cell;
+    vertical-align: middle;
+    margin-top: 10px;
+}
+
+    .header-wrap-inner.style1 .header-top-info .header-text {
+        display: inline-block;
+    }
+
+    .header-wrap-inner.style1 .header-top-info ul li.phone {
+        margin-left: 54px;
+    }
+
+    .header-wrap-inner.style1 .header-top-info ul li {
+        float: left;
+        display: inline-block;
+    }
+
+    .header-wrap-inner.style1 .header-top-info .header-image {
+        float: left;
+        display: inline-block;
+        margin-right: 20px;
+        margin-top: 6px;
+    }
+.header-wrap-inner.style1 {
+    background-color: #ffffff;
+    /*padding: 23px 0 56px;*/
+}
+@media only screen and (max-width: 1270px) {
+    .header-top-info {
+        display: none !important;
+    }
+}
+
+.cartQuantity {
+    position: relative;
+    height: 17px;
+    width: 17px;
+    background: #ffffff;
+    border-radius: 20px;
+    top: -8px;
+    color: #333;
+    font-size: 12px;
+    line-height: 19px;
+    font-family: "font-regular";
+}

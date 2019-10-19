@@ -10,6 +10,7 @@ using HiFi.Services;
 using HiFi.WebApplication.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication.Controllers
 {
@@ -17,10 +18,12 @@ namespace HiFi.WebApplication.Controllers
     {
         private readonly IProductService _productService;
         private readonly IShoppingCartService _shoppingCart;
-        public ShoppingCartController(IProductService productService, IShoppingCartService shoppingCart)
+        private readonly ILogger<ShoppingCartController> _logger;
+        public ShoppingCartController(IProductService productService, IShoppingCartService shoppingCart, ILogger<ShoppingCartController> logger)
         {
             _productService = productService;
             _shoppingCart = shoppingCart;
+            _logger = logger;
         }
 
         public IActionResult AddToCart(int? productId = 0, decimal? price = 0, int? quantity = 0)
@@ -30,6 +33,7 @@ namespace HiFi.WebApplication.Controllers
 
         public async Task<IActionResult> Index()
         {
+            _logger.LogInformation(" ShoppingCartController Index action Invoked.");
             var shoppingCartItems = await _shoppingCart.GetShoppingCartItemsAsync();
             var shoppingCartCountTotal = await _shoppingCart.GetCartCountAndTotalAmountAsync();
             var sessionCartCount = HttpContext.Session.GetInt32("CartCount");
@@ -41,12 +45,20 @@ namespace HiFi.WebApplication.Controllers
                 ShoppingCartTotal = shoppingCartCountTotal.TotalAmount,
             };
 
+            _logger.LogInformation(" ShpCartController-Index action Returning to View Action.");
             return View(shoppingCartViewModel);
         }
 
+        /// <summary>
+        /// Add To ShoppingCart post action
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="productQty"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> AddToShoppingCart(string productId, int productQty=1)
         {
+            _logger.LogInformation(" ShoppingCartController AddToShoppingCart action Invoked.");
             var selectedProduct = await _productService.GetProductById(Convert.ToInt32(productId));
             if (selectedProduct == null)
             {
@@ -54,12 +66,14 @@ namespace HiFi.WebApplication.Controllers
             }
             await _shoppingCart.AddToCartAsync(selectedProduct,productQty);
 
+            _logger.LogInformation(" ShpCartController-AddToShoppingCart action Returning to Index Action.");
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public async Task<IActionResult> RemoveFromShoppingCart(int productId)
         {
+            _logger.LogInformation(" ShoppingCartController RemoveFromShoppingCart action Invoked.");
             var selectedProduct = await _productService.GetProductById(productId);
             if (selectedProduct == null)
             {
@@ -68,6 +82,7 @@ namespace HiFi.WebApplication.Controllers
 
             await _shoppingCart.RemoveFromCartAsync(selectedProduct);
 
+            _logger.LogInformation(" ShpCartController-RemoveFromShoppingCart action Returning to Index Action.");
             return RedirectToAction("Index");
         }
 
@@ -75,6 +90,7 @@ namespace HiFi.WebApplication.Controllers
         public async Task<IActionResult> RemoveAllCart()
         {
             await _shoppingCart.ClearCartAsync();
+            _logger.LogInformation(" ShpCartController-RemoveAllCart action Returning to Index Action.");
             return RedirectToAction("Index");
         }
 

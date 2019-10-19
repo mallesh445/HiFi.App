@@ -13,15 +13,17 @@ namespace HiFi.WebApplication
 {
     public class Program
     {
-        private static readonly string logfilesPath= Directory.GetCurrentDirectory();
+        private static readonly string logfilesPath = Directory.GetCurrentDirectory();
+        private static readonly string nextPath = "\\wwwroot\\Logs\\";
 
         public static void Main(string[] args)
         {
             // NLog: setup the logger first to catch all errors
+            //NLog.LogManager.Configuration.Variables["mybasedir"] = logfilesPath + nextPath;
             var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
-                DeleteLogFiles();
+                //DeleteLogFiles();
                 logger.Debug("init main");
                 CreateWebHostBuilder(args).Build().Run();
             }
@@ -49,12 +51,14 @@ namespace HiFi.WebApplication
 
         private static void DeleteLogFiles()
         {
-            string[] files = Directory.GetFiles(logfilesPath+ "\\bin\\Debug\\netcoreapp2.2\\Logs\\");
+            //string[] files = Directory.GetFiles(logfilesPath + "\\bin\\Debug\\netcoreapp2.2\\Logs\\");
+            //string[] files = Directory.GetFiles(logfilesPath + "\\wwwroot\\Logs\\");
+            string[] files = Directory.GetFiles(logfilesPath + nextPath);
 
             foreach (string file in files)
             {
                 FileInfo fi = new FileInfo(file);
-                if (fi.LastAccessTime < DateTime.Now.AddDays(-2))
+                if (fi.LastAccessTime < DateTime.Now.AddDays(-4))
                 {
                     fi.Delete();
                 }

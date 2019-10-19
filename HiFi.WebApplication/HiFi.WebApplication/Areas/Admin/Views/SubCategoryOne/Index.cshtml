@@ -24,6 +24,9 @@
             <thead>
                 <tr>
                     <th>
+                        @*@Html.DisplayNameFor(model => model.SubCategoryOneId)*@Id
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.SubCategoryName)
                     </th>
                     <th>
@@ -39,8 +42,8 @@
                         @Html.DisplayNameFor(model => model.IsActive)
                     </th>
                     @*<th>
-                            @Html.DisplayNameFor(model => model.SC_ImageName)
-                        </th>*@
+            @Html.DisplayNameFor(model => model.SC_ImageName)
+        </th>*@
                     <th>
                         Picture
                         @*@Html.DisplayNameFor(model => model.SC_ImagePath)*@
@@ -53,6 +56,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td>@Html.DisplayFor(modelItem => item.SubCategoryOneId)</td>
                         <td>
                             @Html.DisplayFor(modelItem => item.SubCategoryName)
                         </td>

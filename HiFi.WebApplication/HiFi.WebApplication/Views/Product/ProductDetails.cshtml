@@ -483,6 +483,7 @@
                 if (Boolean(productQty)) {
                     $.ajax({
                         type: 'POST',
+                        async: false, //blocks window close
                         url: '/ShoppingCart/AddToShoppingCart?productId=' + productId + '&productQty=' + productQty,
                         // url: '@Url.Action("AddToShoppingCart", "ShoppingCart")',
                         data: { productId: $('#itemId').val(), productQty: $('#productQty').val() },
@@ -498,7 +499,6 @@
                 }
                 else {
                     document.getElementById("#btnTriggerModal").click();
-                    //$("#btnTriggerModal").click();
                     }
             });
             setSession = function(){

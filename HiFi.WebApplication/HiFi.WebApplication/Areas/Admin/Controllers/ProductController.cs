@@ -278,6 +278,24 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                     return productImageViewModel;
                 }
             }
+            if (productImageViewModel == null)
+            {
+                if (prodImages.Count() > 0)
+                {
+                    var productImage = prodImages.GroupBy(a=>a.ImageName).Select(x=>x.First()).FirstOrDefault();
+                    productImageViewModel = new ProductImageViewModel
+                    {
+                        ImageName = productImage.ImageName,
+                        ImagePath = productImage.ImagePath,
+                        IsMainImage = productImage.IsMainImage,
+                        CreatedDate = productImage.CreatedDate,
+                        PKImageId = productImage.PKImageId,
+                        UpdatedDate = productImage.UpdatedDate,
+                        FKProductId = productImage.Product.PKProductId
+
+                    };
+                }
+            }
             
             return productImageViewModel;
         }

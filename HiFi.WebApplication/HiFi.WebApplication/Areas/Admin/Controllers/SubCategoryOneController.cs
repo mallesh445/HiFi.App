@@ -178,7 +178,8 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, SubCategoryOne subCategoryOne)
+        //public async Task<IActionResult> Edit(int id, SubCategoryOne subCategoryOne)
+        public async Task<IActionResult> Edit(int id, SubCategoryOneViewModel subCategoryOne)
         {
             if (id != subCategoryOne.SubCategoryOneId)
             {
@@ -189,8 +190,16 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(subCategoryOne);
-                    await _context.SaveChangesAsync();
+                    //_context.Update(subCategoryOne);
+                    //await _context.SaveChangesAsync();
+                    var subCategoryReq = _context.SubCategoryOne.Where(c => c.SubCategoryOneId == subCategoryOne.SubCategoryOneId).Single();
+                    subCategoryReq.Description = subCategoryOne.Description;
+                    subCategoryReq.SubCategoryName = subCategoryOne.SubCategoryName;
+                    subCategoryReq.IsActive = subCategoryOne.IsActive;
+                    //subCategoryReq.SC_ImageName = subCategoryOne.ImageName;
+                    //subCategoryReq.SC_ImagePath = subCategoryOne.ImagePath;
+                    subCategoryReq.DisplayOrder = subCategoryOne.DisplayOrder;
+                    await _subCategoryService.UpdateSubCategory(subCategoryReq);
                 }
                 catch (DbUpdateConcurrencyException e)
                 {
@@ -282,6 +291,7 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
                 //Temporarly storing b'coz this column is expecting not null.so later we will update exact name.
                 subCategoryVM.ImageName = subCategoryOne.SC_ImageName;
                 subCategoryVM.ImagePath = subCategoryOne.SC_ImagePath;
+                subCategoryVM.SubCategoryOneId = subCategoryOne.SubCategoryOneId;
             }
             return subCategoryVM;
         }

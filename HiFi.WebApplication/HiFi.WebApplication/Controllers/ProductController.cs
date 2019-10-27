@@ -60,9 +60,16 @@ namespace HiFi.WebApplication.Controllers
 
         public IActionResult ProductDetails(int productId)
         {
-            var productFromDB = _productService.GetProductByProductId(productId);
-            ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(productFromDB);
-            return View(productViewModel);
+            try
+            {
+                var productFromDB = _productService.GetProductByProductId(productId);
+                ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(productFromDB);
+                return View(productViewModel);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }

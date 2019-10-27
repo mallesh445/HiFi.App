@@ -13,10 +13,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Caching.Memory;
+using HiFi.WebApplication.Filters;
 
 namespace HiFi.WebApplication.Controllers
 {
     //[Route("Home")] 
+
+    [TypeFilter(typeof(CustomFilterWithDI))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -39,7 +42,7 @@ namespace HiFi.WebApplication.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            _logger.LogInformation("Index page invoked from HomeController");
+            //_logger.LogInformation("Index page invoked from HomeController");
             if (HttpContext.User.Identity.IsAuthenticated)
             {
                 string userData = User.Identity.Name;

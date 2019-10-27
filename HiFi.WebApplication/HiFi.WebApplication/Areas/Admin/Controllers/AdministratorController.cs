@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HiFi.Data.Models;
 using HiFi.WebApplication.Areas.Admin.ViewModels;
+using HiFi.WebApplication.Filters;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HiFi.WebApplication.Areas.Admin.Controllers
 {
+    [TypeFilter(typeof(CustomFilterWithDI))]
     [Authorize]
     [Area("Admin")]
     public class AdministratorController : Controller

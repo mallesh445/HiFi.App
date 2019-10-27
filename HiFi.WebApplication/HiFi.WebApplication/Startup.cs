@@ -25,21 +25,25 @@ using HiFi.Data.ViewModels;
 using HiFi.Data.DomainObjects;
 using HiFi.WebApplication.Helpers;
 using Microsoft.Extensions.Logging;
+using HiFi.WebApplication.Filters;
 
 namespace HiFi.WebApplication
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(ILogger<Startup> logger, IConfiguration configuration)
         {
+            _logger = logger;
             Configuration = configuration;
         }
 
+        private readonly ILogger<Startup> _logger;
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            _logger.LogInformation("ConfigureServices called");
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -66,7 +70,9 @@ namespace HiFi.WebApplication
 
             services.AddMemoryCache();
             //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddRazorPagesOptions(options =>
+            services.AddMvc(options=>
+            options.Filters.Add(typeof(CustomExceptionFilter)))
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddRazorPagesOptions(options =>
             {
                 options.AllowAreas = true;
                 //options.Conventions.AddPageRoute("/Admin/Index", "Admin");
@@ -87,11 +93,9 @@ namespace HiFi.WebApplication
             #region Automapper Configuration
             MapperConfiguration mapperConfiguration = ResolveMappers();
             IMapper mapper = mapperConfiguration.CreateMapper();
-            services.AddSingleton(mapper); 
+            services.AddSingleton(mapper);
             #endregion
 
-            //services.AddAutoMapper(typeof(Startup).Assembly);
-            //services.AddAutoMapper();
             services.AddAutoMapper(typeof(Startup).Assembly);
         }
 
@@ -145,7 +149,7 @@ namespace HiFi.WebApplication
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            
+
         }
 
         /// <summary>
@@ -154,11 +158,12 @@ namespace HiFi.WebApplication
         /// <param name="services"></param>
         private void ResolveDependencyServices(IServiceCollection services)
         {
+            services.AddScoped<CustomFilterWithDI>();
             services.AddScoped<IRepository<Category>, EfRepository<Category>>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ISubCategoryService, SubCategoryService>();
             services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IManufacturerService,ManufacturerService>();
+            services.AddScoped<IManufacturerService, ManufacturerService>();
             services.AddTransient(typeof(IRepository<>), typeof(EfRepository<>));
             services.AddScoped<ISalesOrderService, SalesOrderService>();
 
@@ -174,6 +179,13 @@ namespace HiFi.WebApplication
             services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddSingleton<IEmailSender, EmailSender>();
             services.AddSingleton<ICacheService, CacheService>();
+            //services.AddAntiforgery(options =>
+            //{
+            //    // Set Cookie properties using CookieBuilder properties†.
+            //    options.FormFieldName = "AntiforgeryFieldname";
+            //    options.HeaderName = "X-CSRF-TOKEN-HEADERNAME";
+            //    options.SuppressXFrameOptionsHeader = false;
+            //});
         }
 
         /// <summary>
@@ -185,7 +197,7 @@ namespace HiFi.WebApplication
             var config = new AutoMapper.MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<SubCategoryOne, SubCategoryViewModel>()
-                .ForMember(dest=>dest.SubCategoryId,opt=>opt.MapFrom(src=>src.SubCategoryOneId));
+                .ForMember(dest => dest.SubCategoryId, opt => opt.MapFrom(src => src.SubCategoryOneId));
                 cfg.CreateMap<Product, ProductViewModel>();
                 cfg.CreateMap<Product, LatestProductsViewModel>();
                 cfg.CreateMap<Product, FeatureProductsViewModel>();

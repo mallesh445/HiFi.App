@@ -31,12 +31,20 @@ namespace HiFi.Repository
             var request = httpContext.Request;
             var response = httpContext.Response;
 
-            var cardId = request.Cookies["CartId-cookie"] ?? Guid.NewGuid().ToString();
-
-            response.Cookies.Append("CartId-cookie", cardId, new CookieOptions
+            //var cardId = request.Cookies["CartId-cookie"] ?? Guid.NewGuid().ToString();
+            //response.Cookies.Append("CartId-cookie", cardId, new CookieOptions
+            //{
+            //    Expires = DateTime.Now.AddMonths(1)
+            //});
+            string cardId = request.Cookies["CartId-cookie"];
+            if (string.IsNullOrEmpty(cardId))
             {
-                Expires = DateTime.Now.AddMonths(1)
-            });
+                cardId = Guid.NewGuid().ToString();
+                response.Cookies.Append("CartId-cookie", cardId, new CookieOptions
+                {
+                    Expires = DateTime.Now.AddMonths(1)
+                });
+            }
 
             return new ShoppingCartRepository(context)
             {

@@ -47,8 +47,10 @@ namespace HiFi.WebApplication
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => false;//it should be false always.otherwise it won't store cookie in browser after deploy.
                 options.MinimumSameSitePolicy = SameSiteMode.None;
+                
+                options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
             });
 
             services.AddDbContext<ApplicationDBContext>(options =>
@@ -86,6 +88,8 @@ namespace HiFi.WebApplication
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
                 options.Cookie.HttpOnly = true;
+                // Make the session cookie essential
+                options.Cookie.IsEssential = true;
             });
 
             //Dependencies
@@ -169,7 +173,7 @@ namespace HiFi.WebApplication
 
             services.AddScoped<IShoppingCartService, ShoppingCartService>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp));
+            services.AddTransient<IShoppingCartRepository>(sp => ShoppingCartRepository.GetCart(sp,Convert.ToDouble(Configuration.GetValue<string>("MinutesToExpiry"))));
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

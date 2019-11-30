@@ -11,6 +11,7 @@ using HiFi.WebApplication.Filters;
 using HiFi.WebApplication.Models.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace HiFi.WebApplication.Controllers
@@ -21,11 +22,14 @@ namespace HiFi.WebApplication.Controllers
         private readonly IProductService _productService;
         private readonly IShoppingCartService _shoppingCart;
         private readonly ILogger<ShoppingCartController> _logger;
-        public ShoppingCartController(IProductService productService, IShoppingCartService shoppingCart, ILogger<ShoppingCartController> logger)
+        private readonly IConfiguration config;
+        public ShoppingCartController(IProductService productService, IShoppingCartService shoppingCart,
+            ILogger<ShoppingCartController> logger, IConfiguration iConfig)
         {
             _productService = productService;
             _shoppingCart = shoppingCart;
             _logger = logger;
+            config = iConfig;
         }
 
         public IActionResult AddToCart(int? productId = 0, decimal? price = 0, int? quantity = 0)
@@ -38,7 +42,6 @@ namespace HiFi.WebApplication.Controllers
             _logger.LogInformation(" ShoppingCartController-Index action Invoked.");
             var shoppingCartItems = await _shoppingCart.GetShoppingCartItemsAsync();
             var shoppingCartCountTotal = await _shoppingCart.GetCartCountAndTotalAmountAsync();
-            var sessionCartCount = HttpContext.Session.GetInt32("CartCount");
             HttpContext.Session.SetInt32("CartCount", shoppingCartCountTotal.ItemCount);
             var shoppingCartViewModel = new ShoppingCartViewModel
             {
@@ -46,6 +49,17 @@ namespace HiFi.WebApplication.Controllers
                 ShoppingCartItemsTotal = shoppingCartCountTotal.ItemCount,
                 ShoppingCartTotal = shoppingCartCountTotal.TotalAmount,
             };
+            string cardId = HttpContext.Request.Cookies["CartId_Cookie"];//
+            if (string.IsNullOrEmpty(cardId))
+            {
+                cardId = Guid.NewGuid().ToString();
+                CookieOptions option = new CookieOptions();
+                option.Expires = DateTime.Now.AddMinutes(Convert.ToDouble(config.GetValue<string>("MinutesToExpiry")));
+                option.HttpOnly = false;
+                option.Domain = Request.Host.ToUriComponent();
+                option.Path = "/";
+                HttpContext.Response.Cookies.Append("CartId_Cookie", cardId, option);
+            }
 
             _logger.LogInformation(" ShpCartController-Index action Returning to View Action.");
             return View(shoppingCartViewModel);

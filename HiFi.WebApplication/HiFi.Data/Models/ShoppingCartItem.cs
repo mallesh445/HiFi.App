@@ -31,5 +31,7 @@ namespace HiFi.Data.Models
 
         [NotMapped]
         public string StatusMessage { get; set; }
+        
+        public DateTime CreatedDate { get; set; }
     }
 }

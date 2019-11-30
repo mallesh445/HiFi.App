@@ -10,6 +10,7 @@ using HiFi.Data.Models;
 using HiFi.Services;
 using HiFi.WebApplication.Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -59,7 +60,7 @@ namespace HiFi.WebApplication.Controllers
 
                 if (cartItems?.Count() <= 0)
                 {
-                    ModelState.AddModelError("", "Your Cart is empty. Please add some cakes before checkout");
+                    ModelState.AddModelError("", "Your Cart is empty. Please add some items before checkout");
                     return View(orderDto);
                 }
 
@@ -71,6 +72,7 @@ namespace HiFi.WebApplication.Controllers
 
                 string bodyMessage = GetBodyMessage(orderDto);
                 await _emailSender.SendEmailAsync(orderDto.Email, "Thank you for Placing order with us.", bodyMessage);
+                HttpContext.Session.SetInt32("CartCount", 0);
             }
             catch (Exception ex)
             {
@@ -103,6 +105,8 @@ namespace HiFi.WebApplication.Controllers
                 MailBodyText = MailBodyText.Replace("[State]", orderDto.State);
                 MailBodyText = MailBodyText.Replace("[PhoneNumber]", orderDto.PhoneNumber);
                 MailBodyText = MailBodyText.Replace("[ZipCode]", orderDto.ZipCode);
+                string companyLogo = Directory.GetCurrentDirectory() + "/wwwroot/themes/images/logo.png";
+                MailBodyText = MailBodyText.Replace("", companyLogo);
                 return MailBodyText;
             }
             catch (Exception ex)

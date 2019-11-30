@@ -23,7 +23,7 @@ namespace HiFi.Repository
             _context = context;
         }
 
-        public static ShoppingCartRepository GetCart(IServiceProvider services)
+        public static ShoppingCartRepository GetCart(IServiceProvider services,double minutesToExpiry)
         {
             var httpContext = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext;
             var context = services.GetRequiredService<ApplicationDBContext>();
@@ -31,19 +31,16 @@ namespace HiFi.Repository
             var request = httpContext.Request;
             var response = httpContext.Response;
 
-            //var cardId = request.Cookies["CartId-cookie"] ?? Guid.NewGuid().ToString();
-            //response.Cookies.Append("CartId-cookie", cardId, new CookieOptions
-            //{
-            //    Expires = DateTime.Now.AddMonths(1)
-            //});
-            string cardId = request.Cookies["CartId-cookie"];
+            string cardId = request.Cookies["CartId_Cookie"];
             if (string.IsNullOrEmpty(cardId))
             {
                 cardId = Guid.NewGuid().ToString();
-                response.Cookies.Append("CartId-cookie", cardId, new CookieOptions
+                response.Cookies.Append("CartId_Cookie", cardId, new CookieOptions
                 {
-                    Expires = DateTime.Now.AddMonths(1)
-                });
+                    Expires = DateTime.Now.AddMinutes(minutesToExpiry),
+                    HttpOnly = false,
+                    Path = "/"
+            });
             }
 
             return new ShoppingCartRepository(context)
@@ -114,7 +111,8 @@ namespace HiFi.Repository
                 {
                     ShoppingCartId = Id,
                     Product = product,
-                    Qunatity = 0
+                    Qunatity = 0,
+                    CreatedDate = DateTime.Now
                 };
 
                 await _context.ShoppingCartItems.AddAsync(shoppingCartItem);

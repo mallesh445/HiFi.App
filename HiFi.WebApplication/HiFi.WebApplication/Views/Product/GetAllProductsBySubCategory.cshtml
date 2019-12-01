@@ -44,7 +44,11 @@
                             <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">
                                 <i class="fa fa-search"></i>
                             </a>
-                            <a class="btn" href="#">Add to <i class="fa fa-shopping-cart"></i></a>
+                            <input id="itemId" type="hidden" asp-for="@item.PKProductId" />
+                            <button type="submit" id="btnAddtoCartAjax" class="btn btn-success pull-right">
+                                Add to<i class="fa fa-shopping-cart"></i>
+                            </button>
+                            @*<a class="btnAddToCart" href="#">Add to <i class="fa fa-shopping-cart"></i></a>*@
                             <a class="btn btn-primary" href="#">$@item.Price</a>
                         </h4>
                     </div>
@@ -54,3 +58,28 @@
     </ul>
 
 </div>
+
+@section Scripts{
+       <script type="text/javascript">
+           $(document).ready(function () {
+               $("#btnAddToCart").click(function () {
+                   debugger;
+                   $.ajax({
+                       type: 'POST',
+                       async: false, //blocks window close
+                       url: '/ShoppingCart/AddToShoppingCart?productId=' + $('#itemId').val() + '&productQty=' + 1,
+                       // url: '@Url.Action("AddToShoppingCart", "ShoppingCart")',
+                       data: { productId: $('#itemId').val(), productQty: 1 },
+                       contentType: 'application/json; charset=utf-8',
+                       success: function (data) {
+                           window.location.href = "ProductDetails?productId=" + productId;
+                           //alert('Successfully product added to cart.');
+                       },
+                       error: function () {
+                           alert("error");
+                       }
+                   });
+               });
+           });
+       </script>
+}

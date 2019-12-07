@@ -19,7 +19,7 @@
         </div>
     </div>
     <div class="panel panel-body" id="WrapTables">
-        <table class="table" id="adminCategoriesTable">
+        <table class="table" id="adminManufacturesTable">
             <thead>
                 <tr>
                     <th>
@@ -128,4 +128,15 @@
 </section>
 
 @section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnExportData').click(function () {
+                $("#adminManufacturesTable").table2excel({
+                    // exclude: ".excludeThisClass",
+                    //name: "Worksheet Name",
+                    filename: "Manufactures.xls" //do not include extension
+                });
+            });
+        });
+    </script>
 }

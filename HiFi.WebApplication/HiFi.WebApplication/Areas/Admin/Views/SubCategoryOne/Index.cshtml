@@ -42,8 +42,8 @@
                         @Html.DisplayNameFor(model => model.IsActive)
                     </th>
                     @*<th>
-            @Html.DisplayNameFor(model => model.SC_ImageName)
-        </th>*@
+                            @Html.DisplayNameFor(model => model.SC_ImageName)
+                        </th>*@
                     <th>
                         Picture
                         @*@Html.DisplayNameFor(model => model.SC_ImagePath)*@
@@ -152,3 +152,17 @@
         </div>
     }
 </section>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnExportData').click(function () {
+                $("#adminSubCategoriesTable").table2excel({
+                    // exclude: ".excludeThisClass",
+                    //name: "Worksheet Name",
+                    filename: "SubCategories.xls" //do not include extension
+                });
+            });
+        });
+    </script>
+}

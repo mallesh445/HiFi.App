@@ -165,53 +165,41 @@
 
 @section scripts{
 
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#myFlashMessageDiv").show().delay(2000).fadeOut();
-            var wed = $('#adminCategoriesTable').DataTable({
-                bSort: true,
-
-                'aoColumns': [
-                    { sWidth: "25%", bSearchable: true, bSortable: true, className: "dt-left" },
-                    { sWidth: "20%", bSearchable: true, bSortable: true, className: "dt-left" },
-                    { sWidth: "10%", bSearchable: true, bSortable: true, className: "dt-left" },
-                    { sWidth: "22%", bSearchable: true, bSortable: true, className: "dt-left" },
-                    { sWidth: "22%", bSearchable: true, bSortable: true, className: "dt-left" },
-                    { sWidth: "10%", bSearchable: true, bSortable: true },
-                    { sWidth: "45%", bSearchable: true, bSortable: true }
-                    //{ sWidth: "10%", bSearchable: true, bSortable: true },
-                    //match the number of columns here for table1
-                ],
-                "bAutoWidth": false,
-                "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
-                "info": true,
-                "paging": true,
-                "fnInitComplete": function () {
-
-                    $("#adminCategoriesTable").css("width", "100%");
-                }
-            });
 
             $('#btnExportData').click(function () {
-                $("#adminCategoriesTable").table2excel({
+                $("#adminProductTable").table2excel({
                     // exclude: ".excludeThisClass",
                     //name: "Worksheet Name",
-                    filename: "SomeFile.xls" //do not include extension
-                    //fnExcelReport();
+                    filename: "Products.xls" //do not include extension
                 });
             });
-            function fnExcelReport() {
-                var tab_text = $('#adminCategoriesTable').val();
+            
+            //var wed = $('#adminProductTable').DataTable({
+            //    bSort: true,
 
-                txtArea1.document.open("txt/html", "replace");
-                txtArea1.document.write(tab_text);
-                txtArea1.document.close();
-                txtArea1.focus();
-                sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+            //    'aoColumns': [
+            //        { sWidth: "25%", bSearchable: true, bSortable: true, className: "dt-left" },
+            //        { sWidth: "20%", bSearchable: true, bSortable: true, className: "dt-left" },
+            //        { sWidth: "10%", bSearchable: true, bSortable: true, className: "dt-left" },
+            //        { sWidth: "22%", bSearchable: true, bSortable: true, className: "dt-left" },
+            //        { sWidth: "22%", bSearchable: true, bSortable: true, className: "dt-left" },
+            //        { sWidth: "10%", bSearchable: true, bSortable: true },
+            //        { sWidth: "45%", bSearchable: true, bSortable: true }
+            //        //{ sWidth: "10%", bSearchable: true, bSortable: true },
+            //        //match the number of columns here for table1
+            //    ],
+            //    "bAutoWidth": false,
+            //    "aLengthMenu": [[5, 10, 25, -1], [5, 10, 25, "All"]],
+            //    "info": true,
+            //    "paging": true,
+            //    "fnInitComplete": function () {
 
-            }
-
-            //$('.adminCategoriesTable').DataTable();
+            //        $("#adminProductTable").css("width", "100%");
+            //    }
+            //});
         })
     </script>
 }

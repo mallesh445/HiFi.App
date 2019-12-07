@@ -16,9 +16,9 @@
         <div class="pull-left MainHeaderColor" style="font-size: 26px;">List of Orders</div>
         <div class="pull-right">
             @*<a class="btn bg-blue" asp-action="Create"><i class="fa fa-plus-square"></i> Add New</a>
-            <button type="button" class="btn bg-olive" data-toggle="modal" data-target="#myModal">
-                <i class="fa fa-download"></i> Import
-            </button>*@
+                <button type="button" class="btn bg-olive" data-toggle="modal" data-target="#myModal">
+                    <i class="fa fa-download"></i> Import
+                </button>*@
             <button type="button" class="btn btn-success" id="btnExportData">
                 <i class="fa fa-upload"></i>
                 Export
@@ -26,7 +26,7 @@
         </div>
     </div>
     <div class="panel panel-body" id="WrapTables">
-        <table class="table" id="adminCategoriesTable">
+        <table class="table" id="adminOrdersTable">
             <thead>
                 <tr>
                     <th>
@@ -135,3 +135,16 @@
     }
 </section>
 
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnExportData').click(function () {
+                $("#adminOrdersTable").table2excel({
+                    // exclude: ".excludeThisClass",
+                    //name: "Worksheet Name",
+                    filename: "Orders.xls" //do not include extension
+                });
+            });
+        });
+    </script>
+}

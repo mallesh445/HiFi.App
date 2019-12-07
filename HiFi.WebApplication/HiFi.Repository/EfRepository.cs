@@ -67,6 +67,22 @@ namespace HiFi.Repository
             return _context.ProductImage.Where(a => a.Product.PKProductId == pKProductId);
         }
 
+        /// <summary>
+        /// Gets Vendor by itemid.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public async Task<Manufacturer> GetManufacturerByProductId(int productId)
+        {
+            Manufacturer manufacturer = null;
+            var item_Manufacturer_Mapping = _context.Product_Manufacturer_Mapping.Where(a => a.ProductId == productId).FirstOrDefault();
+            if (item_Manufacturer_Mapping != null)
+            {
+                manufacturer = await _context.Manufacturers.Where(a => a.ManufacturerId == item_Manufacturer_Mapping.ManufacturerId).FirstOrDefaultAsync(); 
+            }
+            return manufacturer;
+        }
+
         public async Task<T> GetById(object id)
         {
             return tableEntity.Find(id);

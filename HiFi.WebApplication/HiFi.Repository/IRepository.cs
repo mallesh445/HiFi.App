@@ -25,6 +25,8 @@ namespace HiFi.Repository
         Task<bool> BulkCreate(IList<T> categoriesList);
         ApplicationUser GetApplicationUser(string userid="");
         IEnumerable<ProductImage> GetAllById(int pKProductId);
+
+        Task<Manufacturer> GetManufacturerByProductId(int pKProductId);
         IEnumerable<Product> GetProductsBySubCategoryId(int subcaId = 0);
         Product GetProductByProductId(int productId);
         Task<Product> GetProductById(int id);

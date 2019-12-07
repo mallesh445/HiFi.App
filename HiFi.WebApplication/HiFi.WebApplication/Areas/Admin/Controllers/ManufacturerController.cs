@@ -29,6 +29,17 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             var manfacturersList =await _manufacturerService.GetAllManufacturers();
+            #region Linq code but if condition not possible here.
+            //manfacturersList = manfacturersList.Select(m => { m.Description = m.Description.Substring(0, 90); return m; }).ToList();
+            //manfacturersList.ToList().ForEach(m => m.Description = m.Description.Substring(0, 90)); 
+            #endregion
+            foreach (var manufacturer in manfacturersList)
+            {
+                if (manufacturer.Description != null && manufacturer.Description.Length > 90)
+                {
+                    manufacturer.Description = manufacturer.Description.Substring(0, 90);
+                }
+            }
             return View(manfacturersList);
         }
 

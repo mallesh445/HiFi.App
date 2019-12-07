@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using HiFi.Data.Models;
 using HiFi.Data.ViewModels;
 using HiFi.Services;
 using HiFi.Services.Catalog;
@@ -18,8 +19,9 @@ namespace HiFi.WebApplication.Controllers
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly ISubCategoryService _subCategoryService;
+        private readonly IManufacturerService _manufacturerService;
 
-        public ProductController(IProductService productService, IHostingEnvironment hostingEnvironment,
+        public ProductController(IProductService productService, IHostingEnvironment hostingEnvironment, IManufacturerService manufacturerService,
             ICategoryService categoryService, ISubCategoryService subCategoryService, IMapper mapper)
         {
             _productService = productService;
@@ -27,6 +29,7 @@ namespace HiFi.WebApplication.Controllers
             _categoryService = categoryService;
             _subCategoryService = subCategoryService;
             _mapper = mapper;
+            _manufacturerService = manufacturerService;
         }
 
         // GET: Admin/SubCategoryOne
@@ -58,12 +61,29 @@ namespace HiFi.WebApplication.Controllers
             return listOfProductsVM;
         }
 
+        /// <summary>
+        /// Retrieves Item details based on productId.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public IActionResult ProductDetails(int productId)
         {
             try
             {
                 var productFromDB = _productService.GetProductByProductId(productId);
                 ProductViewModel productViewModel = _mapper.Map<ProductViewModel>(productFromDB);
+                productViewModel.RelatedProducts = GetRelatedProducts(productFromDB.SubCategoryOneId, productFromDB.PKProductId);
+                var manufacturer = _manufacturerService.GetManufacturerByProductId(productId).Result;
+                if (manufacturer != null)
+                {
+                    productViewModel.ManufacturerName = manufacturer.Name;
+                    productViewModel.ManufacturerDescription = manufacturer.Description;
+                }
+                else
+                {
+                    productViewModel.ManufacturerName = "Not Available";
+                    productViewModel.ManufacturerDescription = "Not Available";
+                }
                 return View(productViewModel);
             }
             catch (Exception ex)
@@ -72,5 +92,48 @@ namespace HiFi.WebApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets products of same sub category of selcted product.
+        /// </summary>
+        /// <param name="subCategoryId"></param>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        [NonAction]
+        private IEnumerable<RelatedProductsViewModel> GetRelatedProducts(int subCategoryId, int productId)
+        {
+            try
+            {
+                List<RelatedProductsViewModel> relatedProductsList= new List<RelatedProductsViewModel>();
+                var products = _productService.GetAllProductsFromBySubCategory(subCategoryId).ToList();
+                if (products != null)
+                {
+                    foreach (var item in products)
+                    {
+                        if (item.PKProductId != productId)
+                        {
+                            RelatedProductsViewModel relatedProduct = new RelatedProductsViewModel()
+                            {
+                                ProductId = item.PKProductId,
+                                Description = item.Description,
+                                ProductName = item.ProductName,
+                                Price = item.Price
+                            };
+                            if (item.ProductImage != null && item.ProductImage.Count > 0)
+                            {
+                                relatedProduct.ImageName = item.ProductImage[0].ImageName;
+                                relatedProduct.ImagePath = item.ProductImage[0].ImagePath;
+                            }
+                            relatedProductsList.Add(relatedProduct);
+                        }
+                    }
+                    //return _mapper.Map<List<RelatedProductsViewModel>>(products);
+                }
+                return relatedProductsList;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
     }
 }

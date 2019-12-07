@@ -14,5 +14,6 @@ namespace HiFi.Services
         Task<bool> UpdateManufacturer(Manufacturer manufacturer);
         Task<bool> DeleteManufacturer(Manufacturer manufacturer);
         Task<Manufacturer> GetManufacturerByIdAsync(int manufacturerId);
+        Task<Manufacturer> GetManufacturerByProductId(int productId);
     }
 }

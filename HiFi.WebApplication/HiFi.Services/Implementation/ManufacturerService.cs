@@ -36,6 +36,16 @@ namespace HiFi.Services.Implementation
             return result;
         }
 
+        /// <summary>
+        /// Gets Vendor by itemid.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
+        public async Task<Manufacturer> GetManufacturerByProductId(int productId)
+        {
+            return await _manufacturerRepository.GetManufacturerByProductId(productId);
+        }
+
         public async Task<Manufacturer> InsertManufacturer(Manufacturer manufacturer)
         {
             //_manufacturerRepository.Insert(manufacturer);

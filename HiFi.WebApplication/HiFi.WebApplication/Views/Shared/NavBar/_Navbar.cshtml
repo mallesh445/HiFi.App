@@ -11,6 +11,14 @@
         nav-link.btn.btn-link.text-dark.btnLogout {
             background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;
         }
+
+        .navbar .nav > li > a {
+            border-top: 1px solid #2382ce82;
+        }
+        
+        a#smallScreen {
+            margin: 10px !important;
+        }
     </style>
 </head>
 @{
@@ -63,32 +71,30 @@
 </div>
 
 @*<div id="welcomeLine" class="row">
-    <div class="span6">Welcome!<strong> @currentUserName</strong></div>
-    <div class="span6">
-        <div class="pull-right">
-            <a href="/ShoppingCart/Index">
-                <span class="btn btn-mini btn-primary">
-                    <i class="fa fa-shopping-cart" style="color:white">
-                    </i> @cartCount Items in your cart.
-                </span>
-            </a>
+        <div class="span6">Welcome!<strong> @currentUserName</strong></div>
+        <div class="span6">
+            <div class="pull-right">
+                <a href="/ShoppingCart/Index">
+                    <span class="btn btn-mini btn-primary">
+                        <i class="fa fa-shopping-cart" style="color:white">
+                        </i> @cartCount Items in your cart.
+                    </span>
+                </a>
+            </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 
 <div id="logoArea" class="navbar">
-    <a id="smallScreen" data-target="#topMenu" data-toggle="collapse" class="btn btn-navbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </a>
     <div class="navbar-inner">
+
         @*<a class="brand" href="\"><img src="~/themes/images/Hi-Fi Logo.jpg" alt="Hi-FI" height="55" width="55" /></a>*@
         <form class="form-inline navbar-search" method="post" action="#">
+            <a id="smallScreen" class="btn btn-navbar" data-toggle="collapse" data-target="#topMenu" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
             <div class="input-group">
-                @*<span class="input-group">
-                        <i class="fa fa-search"></i>
-                    </span>*@
                 <input id="txtSearch" placeholder="Search" class="form-control" type="text" />
                 @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)categoriesList, new { @class = "form-control" })
                 <button type="submit" id="submitButton" class="btn btn-primary">Go</button>
@@ -106,32 +112,32 @@
             @*@Html.Partial("_LoginPartial")*@
             @if (SignInManager.IsSignedIn(User))
             {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                    Hello @User.Identity.Name!
-                </a>
-            </li>
-            <li class="nav-item">
-                @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout"
-                    asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Logout</a>*@
-                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button type="submit" class="nav-link btn btn-link text-dark btnLogout" style="color:#DDD;
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                        Hello @User.Identity.Name!
+                    </a>
+                </li>
+                <li class="nav-item">
+                    @*<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout"
+                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">Logout</a>*@
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
+                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button type="submit" class="nav-link btn btn-link text-dark btnLogout" style="color:#DDD;
                             font-family:Arial, Helvetica, sans-serif; font-size:16px;padding-top:20px;
                             background-image: linear-gradient(#2fa3e6, #2fa3e6 5%, #2fa3e6) !important;">
-                        Logout
-                    </button>
-                </form>
-            </li>
+                            Logout
+                        </button>
+                    </form>
+                </li>
             }
             else
             {
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                </li>
             }
         </ul>
     </div>

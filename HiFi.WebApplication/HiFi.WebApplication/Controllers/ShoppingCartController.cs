@@ -65,6 +65,18 @@ namespace HiFi.WebApplication.Controllers
             return View(shoppingCartViewModel);
         }
 
+        public async Task<IActionResult> AddToShoppingCartDefaultOne(string productId, int productQty = 1)
+        {
+            var selectedProduct = await _productService.GetProductById(Convert.ToInt32(productId));
+            if (selectedProduct == null)
+            {
+                return NotFound();
+            }
+            await _shoppingCart.AddToCartAsync(selectedProduct, productQty);
+
+            return RedirectToAction("Index", "Home");
+        }
+
         /// <summary>
         /// Add To ShoppingCart post action
         /// </summary>

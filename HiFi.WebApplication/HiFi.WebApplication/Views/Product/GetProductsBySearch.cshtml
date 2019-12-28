@@ -1,0 +1,83 @@
+﻿@model IEnumerable<HiFi.Data.ViewModels.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Products By Search Results";
+}
+
+
+<div class="span9">
+    <div class="accordion accordion-heading">
+        <h4>Search Results : @ViewBag.SubCategoryName </h4>
+    </div>
+    <ul class="thumbnails">
+        @foreach (var item in Model)
+        {
+            <li class="span3">
+                <div class="thumbnail">
+                    @if (@item.ProductImage != null && item.ProductImage.Count > 0 && item.ProductImage[0].FKProductId == item.PKProductId)
+                    {
+                        <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@item.PKProductId">
+                            <img src="@item.ProductImage[0]?.ImagePath" alt="@item.ProductImage[0].ImageName"
+                                 style="height: 160px; width: 160px;" />
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@item.PKProductId">
+                            <img src="~/Images/default-product.png" alt="@item.ProductName"
+                                 style="height: 160px; width: 160px;" />
+                        </a>
+                    }
+                    <div class="caption">
+                        <h5>@item.ProductName</h5>
+                        <p>
+                            @if (@item.ShortDescription.Length > 32)
+                            {
+                                @item.ShortDescription.Substring(0, 32)
+                            }
+                            else
+                            {
+                                @item.ShortDescription
+                            }
+                        </p>
+                        <h4 style="text-align:center">
+                            <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">
+                                <i class="fa fa-search"></i>
+                            </a>
+                            <input id="itemId" type="hidden" asp-for="@item.PKProductId" />
+                            <button type="submit" id="btnAddtoCartAjax" class="btn btn-success pull-right">
+                                Add to<i class="fa fa-shopping-cart"></i>
+                            </button>
+                            <a class="btn btn-primary" href="#">$@item.Price</a>
+                        </h4>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+           $(document).ready(function () {
+               $("#btnAddToCart").click(function () {
+                   debugger;
+                   $.ajax({
+                       type: 'POST',
+                       async: false, //blocks window close
+                       url: '/ShoppingCart/AddToShoppingCart?productId=' + $('#itemId').val() + '&productQty=' + 1,
+                       // url: '@Url.Action("AddToShoppingCart", "ShoppingCart")',
+                       data: { productId: $('#itemId').val(), productQty: 1 },
+                       contentType: 'application/json; charset=utf-8',
+                       success: function (data) {
+                           window.location.href = "ProductDetails?productId=" + productId;
+                       },
+                       error: function () {
+                           alert("error");
+                       }
+                   });
+               });
+           });
+    </script>
+}

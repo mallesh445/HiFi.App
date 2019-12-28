@@ -38,7 +38,7 @@ namespace HiFi.WebApplication.Controllers
             return View();
         }
 
-        
+       
 
         public IActionResult GetAllProductsBySubCategory(int subCategoryId)
         {
@@ -59,6 +59,29 @@ namespace HiFi.WebApplication.Controllers
             }
             
             return listOfProductsVM;
+        }
+
+        /// <summary>
+        /// Search products in Inventory
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult GetProductsBySearch()
+        {
+            int selectedCategoryId = Convert.ToInt32(Request.Form["CategoryId"]);
+            string searchValue = Request.Form["txtSearch"].ToString();
+            //var listOfDbProducts = _productService.GetAllProductsFromBySubCategory(selectedCategoryId);
+            var listOfDbProducts = _productService.GetAllProducts().Result;
+            listOfDbProducts = listOfDbProducts.Where(a => a.ProductName.Contains(searchValue)).ToList();
+            IEnumerable<ProductViewModel> listOfProductsVM = _mapper.Map<IEnumerable<ProductViewModel>>(listOfDbProducts);
+            if (listOfProductsVM.Count() > 0)
+            {
+                ViewBag.SubCategoryName = selectedCategoryId;
+            }
+            else
+            {
+                ViewBag.SubCategoryName = searchValue + " products Under this " + selectedCategoryId.ToString()+" doesn't exist. Please try other";
+            }
+            return View(listOfProductsVM);
         }
 
         /// <summary>

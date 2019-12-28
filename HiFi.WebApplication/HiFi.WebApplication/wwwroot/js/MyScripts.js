@@ -84,4 +84,9 @@ $(document).ready(function () {
     $('#dateUpdated').datepicker({
         format: 'mm/dd/yyyy'
     });
+
+    $('#searchButton').click(function () {
+        alert('Seraching Data')
+    });
+
 })

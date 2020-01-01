@@ -10,6 +10,7 @@ namespace HiFi.Data.ViewModels
         {
             ProductImage = new List<ProductImageViewModel>();
             RelatedProducts = new List<RelatedProductsViewModel>();
+            SubCategoryViewModel = new SubCategoryViewModel();
         }
         public int PKProductId { get; set; }
 
@@ -38,5 +39,6 @@ namespace HiFi.Data.ViewModels
 
         public IEnumerable<RelatedProductsViewModel> RelatedProducts { get; set; }
 
+        public SubCategoryViewModel SubCategoryViewModel { get; set; }
     }
 }

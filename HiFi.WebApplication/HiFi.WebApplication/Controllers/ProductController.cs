@@ -45,6 +45,11 @@ namespace HiFi.WebApplication.Controllers
             return View(GetAllProductsBySubCategoryId(subCategoryId));
         }
 
+        /// <summary>
+        /// GetAllProductsBySubCategoryId
+        /// </summary>
+        /// <param name="subCategoryId"></param>
+        /// <returns></returns>
         public IEnumerable<ProductViewModel> GetAllProductsBySubCategoryId(int subCategoryId)
         {
             var listOfDbProducts = _productService.GetAllProductsFromBySubCategory(subCategoryId);
@@ -65,13 +70,13 @@ namespace HiFi.WebApplication.Controllers
         /// Search products in Inventory
         /// </summary>
         /// <returns></returns>
-        public IActionResult GetProductsBySearch()
+        public async Task<IActionResult> GetProductsBySearch()
         {
             int selectedCategoryId = Convert.ToInt32(Request.Form["CategoryId"]);
             string searchValue = Request.Form["txtSearch"].ToString();
-            //var listOfDbProducts = _productService.GetAllProductsFromBySubCategory(selectedCategoryId);
-            var listOfDbProducts = _productService.GetAllProducts().Result;
-            listOfDbProducts = listOfDbProducts.Where(a => a.ProductName.Contains(searchValue)).ToList();
+            //var listOfDbProducts = _productService.GetAllProducts().Result;
+            //listOfDbProducts = listOfDbProducts.Where(a => a.ProductName.Contains(searchValue)).ToList();
+            var listOfDbProducts = await _productService.GetProductsBySearchValue(searchValue);
             IEnumerable<ProductViewModel> listOfProductsVM = _mapper.Map<IEnumerable<ProductViewModel>>(listOfDbProducts);
             if (listOfProductsVM.Count() > 0)
             {

@@ -5,58 +5,72 @@
 }
 
 
-<div class="span9">
-    <div class="accordion accordion-heading">
-        <h4>Search Results : @ViewBag.SubCategoryName </h4>
-    </div>
-    <ul class="thumbnails">
-        @foreach (var item in Model)
+    <div class="span9">
+        <div class="accordion accordion-heading">
+            <h4>Search Results : @ViewBag.SubCategoryName </h4>
+        </div>
+        @if (Model.Count() > 0)
         {
-            <li class="span3">
-                <div class="thumbnail">
-                    @if (@item.ProductImage != null && item.ProductImage.Count > 0 && item.ProductImage[0].FKProductId == item.PKProductId)
-                    {
-                        <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@item.PKProductId">
-                            <img src="@item.ProductImage[0]?.ImagePath" alt="@item.ProductImage[0].ImageName"
-                                 style="height: 160px; width: 160px;" />
-                        </a>
-                    }
-                    else
-                    {
-                        <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@item.PKProductId">
-                            <img src="~/Images/default-product.png" alt="@item.ProductName"
-                                 style="height: 160px; width: 160px;" />
-                        </a>
-                    }
-                    <div class="caption">
-                        <h5>@item.ProductName</h5>
-                        <p>
-                            @if (@item.ShortDescription.Length > 32)
+            <ul class="thumbnails">
+                @foreach (var item in Model)
+                {
+                    <li class="span3">
+                        <div class="thumbnail">
+                            @if (@item.ProductImage != null && item.ProductImage.Count > 0 && item.ProductImage[0].FKProductId == item.PKProductId)
                             {
-                                @item.ShortDescription.Substring(0, 32)
+                                <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@item.PKProductId">
+                                    <img src="@item.ProductImage[0]?.ImagePath" alt="@item.ProductImage[0].ImageName"
+                                         style="height: 160px; width: 160px;" />
+                                </a>
                             }
                             else
                             {
-                                @item.ShortDescription
+                                <a asp-controller="Product" asp-action="ProductDetails" asp-route-productId="@item.PKProductId">
+                                    <img src="~/Images/default-product.png" alt="@item.ProductName"
+                                         style="height: 160px; width: 160px;" />
+                                </a>
                             }
-                        </p>
-                        <h4 style="text-align:center">
-                            <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">
-                                <i class="fa fa-search"></i>
-                            </a>
-                            <input id="itemId" type="hidden" asp-for="@item.PKProductId" />
-                            <button type="submit" id="btnAddtoCartAjax" class="btn btn-success pull-right">
-                                Add to<i class="fa fa-shopping-cart"></i>
-                            </button>
-                            <a class="btn btn-primary" href="#">$@item.Price</a>
-                        </h4>
-                    </div>
-                </div>
-            </li>
+                            <div class="caption">
+                                <h5>@item.ProductName</h5>
+                                <p>
+                                    @if (@item.ShortDescription.Length > 32)
+                                    {
+                                        @item.ShortDescription.Substring(0, 32)
+                                    }
+                                    else
+                                    {
+                                        @item.ShortDescription
+                                    }
+                                </p>
+                                <h4 style="text-align:center">
+                                    <a class="btn" href="/Product/ProductDetails?productId=@item.PKProductId">
+                                        <i class="fa fa-search"></i>
+                                    </a>
+                                    <input id="itemId" type="hidden" asp-for="@item.PKProductId" />
+                                    <button type="submit" id="btnAddtoCartAjax" class="btn btn-success pull-right">
+                                        Add to<i class="fa fa-shopping-cart"></i>
+                                    </button>
+                                    <a class="btn btn-primary" href="#">$@item.Price</a>
+                                </h4>
+                            </div>
+                        </div>
+                    </li>
+                }
+            </ul>
         }
-    </ul>
-
-</div>
+        else
+        {
+            <div>
+                <img src="//img1a.flixcart.com/www/linchpin/fk-cp-zion/img/error-no-search-results_e83b58.png">
+            </div>
+            <div>
+                Sorry, no results found!
+            </div>
+            <div>
+                Please check the spelling or try searching for something else
+            </div>
+        }
+    </div>
 
 @section Scripts{
     <script type="text/javascript">

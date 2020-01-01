@@ -182,6 +182,26 @@ namespace HiFi.Repository
         }
 
         /// <summary>
+        /// GetProductsBySearchValue
+        /// </summary>
+        /// <param name="searchKeyword"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Product>> GetProductsBySearchValue(string searchKeyword)
+        {
+            if (string.IsNullOrEmpty(searchKeyword))
+            {
+                var data = _context.Product.Include(sc => sc.SubCategoryOne).Include(pi => pi.ProductImage);
+                return data;
+            }
+            else
+            {
+                var data = _context.Product.Where(a => a.ProductName.Contains(searchKeyword))
+                        .Include(sc => sc.SubCategoryOne).Include(pi => pi.ProductImage);
+                return data;
+            }
+        }
+
+        /// <summary>
         /// Get Product By ProductId
         /// </summary>
         /// <param name="productId"></param>

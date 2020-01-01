@@ -23,5 +23,6 @@ namespace HiFi.Services
         Task<bool> InsertProductsInBulk(List<ProductImportExcel> records, string userId);
 
         Task<int> ProductsCount();
+        Task<IEnumerable<Product>> GetProductsBySearchValue(string searchValue);
     }
 }

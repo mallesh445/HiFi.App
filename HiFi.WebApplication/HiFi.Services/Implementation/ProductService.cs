@@ -49,6 +49,17 @@ namespace HiFi.Services.Implementation
             var products = productRepository.GetProductsBySubCategoryId(subCategoryId);
             return products;
         }
+
+        /// <summary>
+        /// GetProductsBySearchValue
+        /// </summary>
+        /// <param name="searchKeyword"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Product>> GetProductsBySearchValue(string searchKeyword)
+        {
+            var products = await productRepository.GetProductsBySearchValue(searchKeyword);
+            return products;
+        }
         public async Task<IEnumerable<ProductImage>> GetAllProductImages()
         {
             var data =await imageRepository.GetAll();

@@ -1,5 +1,8 @@
 ﻿@model IEnumerable<MyOrderViewModel>
 
+@{ 
+    Layout = "_MainLayout";
+}
 <h2>My Orders</h2>
 
 @await Html.PartialAsync("_OrderList", Model)

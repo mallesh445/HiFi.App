@@ -47,7 +47,7 @@
                     <th>
                         @Html.DisplayName("Total Amount")
                     </th>
-                    <th>Operations</th>
+                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -72,7 +72,11 @@
                         <td>
                             @Html.DisplayFor(modelItem => order.OrderTotal)
                         </td>
-                        @Html.Partial("_TableButtonPartial", order.Id)
+                        <td>
+                            <a type="button" class="btn btn-primary" href="@Url.Action("Edit",new { id = order.Id })">
+                                <i class="fa fal fa-edit"></i>
+                            </a>
+                        </td>
                     </tr>
                 }
             </tbody>

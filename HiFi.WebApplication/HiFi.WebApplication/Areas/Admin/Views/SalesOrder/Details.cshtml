@@ -1,0 +1,102 @@
+﻿@model HiFi.WebApplication.Areas.Admin.ViewModels.ProductViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<section class="container-fluid">
+    <div class="panel-heading panel-body MainHeaderColor">
+        <h3>@Model.ProductName Product Details</h3>
+    </div>
+    <div class="content panel-body">
+        <div>
+            <div class="row">
+                <div class="col-md-8">
+                    <dl class="row">
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.ProductId)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.ProductId)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.ModelNumber)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.ModelNumber)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.SerialNumber)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.SerialNumber)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.ProductName)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.ProductName)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.ShortDescription)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.ShortDescription)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.DisplayOrder)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.DisplayOrder)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Quantity)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Quantity)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.Price)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.Price)
+                        </dd>
+                        <dt class="col-sm-3">
+                            @Html.DisplayNameFor(model => model.SubCategoryId)
+                        </dt>
+                        <dd class="col-sm-9">
+                            @Html.DisplayFor(model => model.SubCategoryId)
+                        </dd>
+                    </dl>
+                </div>
+
+                <div class="col-md-3">
+                    <div>
+                        <label>Picture : </label>
+                        @if (Model.ProductImageModel != null && Model.ProductImageModel.Count > 0 && Model.ProductImageModel[0].IsMainImage)
+                        {
+                            <div>
+                                <img src="@Model.ProductImageModel[0]?.ImagePath" width="90%"
+                                     style="height: 450px; width: 270px;" />
+                                @*<img src="@Model.ProductImageModel[0]?.ImagePath" width="90%"
+                                    style="border-radius:5px;border:1px solid #bbb9b9; height: 50px; width: 50px;" />*@
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+            <a asp-action="Index">Back to List</a>
+        </div>
+
+    </div>
+</section>

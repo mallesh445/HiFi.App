@@ -76,6 +76,72 @@
             <li class="@(Html.IsMenuActive("/Admin/Manufacturer/Index") ? "active" : "")">
                 <a href="~/Admin/Manufacturer/Index"><i class="fa fa-industry"></i> Manufacturers</a>
             </li>
+            <li class="@(Html.IsMenuActive("/Admin/Configuration") ? "active" : "")">
+                <a href="#">
+                    <i class="fa fa-gears"></i>
+                    <span>Configuration</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu" style="display: block;">
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-dot-circle-o"></i>
+                            <span>Settings</span>
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu" style="display: none;">
+                            <li>
+                                <a href="/Admin/Setting/GeneralCommon" class="menu-item-link">
+                                    <i class="fa fa-genderless"></i>
+                                    <span class="menu-item-title">General settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/Setting/CustomerUser" class="menu-item-link">
+                                    <i class="fa fa-genderless"></i>
+                                    <span class="menu-item-title">Customer settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/Setting/Order" class="menu-item-link">
+                                    <i class="fa fa-genderless"></i>
+                                    <span class="menu-item-title">Order settings</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/Admin/Setting/Catalog" class="menu-item-link">
+                                    <i class="fa fa-genderless"></i>
+                                    <span class="menu-item-title">Catalog settings</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="active current-active-item">
+                        <a href="/Admin/EmailAccount/List" class="menu-item-link">
+                            <i class="fa fa-dot-circle-o"></i>
+                            <span class="menu-item-title">Email accounts</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Admin/Country/List" class="menu-item-link">
+                            <i class="fa fa-dot-circle-o"></i>
+                            <span class="menu-item-title">Countries</span>
+                        </a>
+                    </li>
+                    @*<li>
+                        <a href="/Admin/Language/List" class="menu-item-link">
+                            <i class="fa fa-dot-circle-o"></i>
+                            <span class="menu-item-title">Languages</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Admin/Currency/List" class="menu-item-link">
+                            <i class="fa fa-dot-circle-o"></i>
+                            <span class="menu-item-title">Currencies</span>
+                        </a>
+                    </li>*@
+                </ul>
+            </li>
             <li class="@(Html.IsMenuActive("/Admin/Administrator/Index") ? "active" : "")">
                 <a href="~/Admin/Administrator/Index"><i class="fa fa-user-circle"></i> Users</a>
             </li>

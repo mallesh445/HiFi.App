@@ -58,7 +58,7 @@
                             @Html.DisplayFor(modelItem => order.Id)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => order.Status)
+                            <span class="grid-report-item pendingstatus">@Html.DisplayFor(modelItem => order.Status)</span> 
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => order.FirstName)
@@ -73,8 +73,9 @@
                             @Html.DisplayFor(modelItem => order.OrderTotal)
                         </td>
                         <td>
-                            <a type="button" class="btn btn-primary" href="@Url.Action("Edit",new { id = order.Id })">
-                                <i class="fa fal fa-edit"></i>
+                            <a type="button" class="btn btn-primary" href="@Url.Action("Details",new { id = order.Id })"
+                               data-toggle="tooltip" title="View" data-placement="right">
+                                <i class="fa fal fa-eye"></i>
                             </a>
                         </td>
                     </tr>

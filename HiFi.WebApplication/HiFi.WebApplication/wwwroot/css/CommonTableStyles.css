@@ -107,9 +107,9 @@ table.dataTable.no-footer {
     font-size: 16px
 }*/
 
-    .btnLogout:hover {
-        color: white;
-    }
+.btnLogout:hover {
+    color: white;
+}
 
 .hifierror-template {
     padding: 40px 15px;
@@ -126,7 +126,7 @@ table.dataTable.no-footer {
     }
 
 .LoginRegister {
-    color:red !important;
+    color: red !important;
 }
 
 @media (min-width: 1200px) {
@@ -178,10 +178,12 @@ table.dataTable.no-footer {
         margin-right: 20px;
         margin-top: 6px;
     }
+
 .header-wrap-inner.style1 {
     background-color: #ffffff;
     /*padding: 23px 0 56px;*/
 }
+
 @media only screen and (max-width: 1270px) {
     .header-top-info {
         display: none !important;
@@ -200,3 +202,22 @@ table.dataTable.no-footer {
     line-height: 19px;
     font-family: "font-regular";
 }
+
+span.grid-report-item {
+    padding: .2em .6em .3em;
+    border-radius: .25em;
+    color: #2e2e2e;
+}
+
+    span.grid-report-item.pendingstatus {
+        background-color: #f39c12;
+        color: #fff;
+    }
+    span.grid-report-item.processingstatus {
+        background-color: #00c0ef;
+        color: #fff;
+    }
+    span.grid-report-item.completestatus {
+        background-color: #00a65a;
+        color: #fff;
+    }

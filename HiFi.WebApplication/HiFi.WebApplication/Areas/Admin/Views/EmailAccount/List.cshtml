@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>Email Accounts</h1>
+
+<section class="container-fluid">
+    <div class="clearfix panel-body">
+        <div class="pull-left MainHeaderColor" style="font-size: 26px;">Email Accounts</div>
+        
+    </div>
+    <div class="panel panel-body" id="WrapTables">
+        @*Test Sample code*@
+        <div id="email-accounts-grid_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dataTables_scroll">
+                        <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;"><div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 1057px; padding-right: 0px;"><table class="table table-bordered table-hover table-striped dataTable no-footer" width="100%" role="grid" style="margin-left: 0px; width: 1057px;"><thead><tr role="row"><th class="sorting_disabled" rowspan="1" colspan="1" style="width: 266px;">Email address</th><th class="sorting_disabled" rowspan="1" colspan="1" style="width: 200px;">Email display name</th><th class="sorting_disabled text-center" rowspan="1" colspan="1" style="width: 200px;">Is default email account</th><th class="sorting_disabled text-center" rowspan="1" colspan="1" style="width: 205px;">Mark as default email account</th><th class="sorting_disabled button-column" rowspan="1" colspan="1" style="width: 100px;">Edit</th></tr></thead></table></div></div><div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%;">
+                            <table class="table table-bordered table-hover table-striped dataTable no-footer" width="100%" id="email-accounts-grid" role="grid" aria-describedby="email-accounts-grid_info" style="width: 100%;">
+                                <thead><tr role="row" style="height: 0px;"><th class="sorting_disabled" rowspan="1" colspan="1" style="width: 266px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Email address</div></th><th class="sorting_disabled" rowspan="1" colspan="1" style="width: 200px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Email display name</div></th><th class="sorting_disabled text-center" rowspan="1" colspan="1" style="width: 200px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Is default email account</div></th><th class="sorting_disabled text-center" rowspan="1" colspan="1" style="width: 205px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Mark as default email account</div></th><th class="sorting_disabled button-column" rowspan="1" colspan="1" style="width: 100px; padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;"><div class="dataTables_sizing" style="height: 0px; overflow: hidden;">Edit</div></th></tr></thead>
+                                <tbody><tr role="row" class="odd"><td>test@mail.com</td><td>Store name</td><td class=" text-center"><i class="fa fa-check true-icon" nop-value="true"></i></td><td class=" text-center"><a class="btn btn-success" href="/Admin/EmailAccount/MarkAsDefaultEmail/1">Mark as default email account</a></td><td class=" button-column"><a class="btn btn-default" href="Edit/1"><i class="fa fa-pencil"></i>Edit</a></td></tr></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="row margin-t-5"><div class="col-lg-5 col-xs-12"><div class="float-lg-left"><div class="dataTables_paginate paging_simple_numbers" id="email-accounts-grid_paginate"><ul class="pagination"><li class="paginate_button previous disabled" id="email-accounts-grid_previous"><a href="#" aria-controls="email-accounts-grid" data-dt-idx="0" tabindex="0"><i class="k-icon k-i-arrow-w"></i></a></li><li class="paginate_button active"><a href="#" aria-controls="email-accounts-grid" data-dt-idx="1" tabindex="0">1</a></li><li class="paginate_button next disabled" id="email-accounts-grid_next"><a href="#" aria-controls="email-accounts-grid" data-dt-idx="2" tabindex="0"><i class="k-icon k-i-arrow-e"></i></a></li></ul></div></div></div><div class="col-lg-3 col-xs-12"><div class="text-center"><div class="dataTables_length" id="email-accounts-grid_length"><label>Show <select name="email-accounts-grid_length" aria-controls="email-accounts-grid" class="form-control input-sm"><option value="7">7</option><option value="15">15</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select> items</label></div></div></div><div class="col-lg-3 col-xs-12"><div class="float-lg-right text-center"><div class="dataTables_info" id="email-accounts-grid_info" role="status" aria-live="polite">1-1 of 1 items</div></div></div><div class="col-lg-1 col-xs-12"><div class="float-lg-right text-center data-tables-refresh"><div class="dt-buttons btn-group"><button class="btn btn-default" tabindex="0" aria-controls="email-accounts-grid" type="button"><span><i class="fa fa-refresh" style="padding-left: 5px"></i></span></button> </div></div></div></div>
+        </div>
+        @*Test Sample code*@
+
+        @*<table class="table" id="emailAccountTable">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayName("OrderId")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Status")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Customer Name")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Address")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Order Date")
+                    </th>
+                    <th>
+                        @Html.DisplayName("Total Amount")
+                    </th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => order.Id)
+                        </td>
+                        <td>
+                            <span class="grid-report-item pendingstatus">@Html.DisplayFor(modelItem => order.Status)</span>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => order.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => order.AddressLine1)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => order.OrderPlacedTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => order.OrderTotal)
+                        </td>
+                        <td>
+                            <a type="button" class="btn btn-primary" href="@Url.Action("Details",new { id = order.Id })"
+                               data-toggle="tooltip" title="View" data-placement="right">
+                                <i class="fa fal fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+    </div>
+    
+</section>

@@ -81,6 +81,17 @@ $(document).ready(function () {
         }
     });
 
+    $('#adminOrdersTable').DataTable({
+        bSort: true,
+        "bAutoWidth": true,
+        "fnInitComplete": function () {
+            $("#adminOrdersTable").css("width", "100%");
+        }
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
+
     $('#dateUpdated').datepicker({
         format: 'mm/dd/yyyy'
     });

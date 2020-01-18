@@ -221,3 +221,16 @@ span.grid-report-item {
         background-color: #00a65a;
         color: #fff;
     }
+
+#lightbox-container-image-box {
+    max-width: 500px !important;
+    height: 100% !important;
+}
+
+#lightbox-container-image img {
+    max-width: 500px !important;
+}
+
+#lightbox-nav-btnPrev {
+    height: 100px !important;
+}

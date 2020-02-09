@@ -76,7 +76,7 @@ namespace HiFi.WebApplication.Controllers
             string searchValue = Request.Form["txtSearch"].ToString();
             //var listOfDbProducts = _productService.GetAllProducts().Result;
             //listOfDbProducts = listOfDbProducts.Where(a => a.ProductName.Contains(searchValue)).ToList();
-            var listOfDbProducts = await _productService.GetProductsBySearchValue(searchValue);
+            var listOfDbProducts = await _productService.GetProductsBySearchValue(searchValue, selectedCategoryId);
             IEnumerable<ProductViewModel> listOfProductsVM = _mapper.Map<IEnumerable<ProductViewModel>>(listOfDbProducts);
             if (listOfProductsVM.Count() > 0)
             {

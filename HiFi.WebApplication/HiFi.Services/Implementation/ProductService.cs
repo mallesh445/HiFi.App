@@ -54,10 +54,15 @@ namespace HiFi.Services.Implementation
         /// GetProductsBySearchValue
         /// </summary>
         /// <param name="searchKeyword"></param>
+        /// <param name="categoryId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Product>> GetProductsBySearchValue(string searchKeyword)
+        public async Task<IEnumerable<Product>> GetProductsBySearchValue(string searchKeyword, int categoryId)
         {
             var products = await productRepository.GetProductsBySearchValue(searchKeyword);
+            if (categoryId > 0)
+            {
+                return products.Where(p => p.SubCategoryOne.CategoryId == categoryId).ToList();
+            }
             return products;
         }
         public async Task<IEnumerable<ProductImage>> GetAllProductImages()

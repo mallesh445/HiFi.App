@@ -30,11 +30,25 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
         // GET: Administrator
         public ActionResult Index()
         {
+            return RedirectToAction("ListUsers");
+        }
+
+        // GET: Administrator
+        public ActionResult Roles()
+        {
             return RedirectToAction("ListRoles");
+        }
+       
+        [HttpGet]
+        // GET: Administrator/ListUsers
+        public async Task<IActionResult> ListUsers()
+        {
+            var usersList = userManager.Users;
+            return View(usersList);
         }
 
         [HttpGet]
-        // GET: Administrator/Create
+        // GET: Administrator/ListRoles
         public IActionResult ListRoles()
         {
             var roles = roleManager.Roles;
@@ -140,6 +154,26 @@ namespace HiFi.WebApplication.Areas.Admin.Controllers
             {
                 return View();
             }
+        }
+
+        // GET: Administrator/Edit/5
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var applicationUser = await userManager.FindByIdAsync(id);
+            if (applicationUser == null)
+            {
+                ViewBag.ErrorMessage = $"User with Id={id} cannot be found.";
+                return View("Notfound");
+            }
+            var model = new ApplicationUser
+            {
+                Id = applicationUser.Id,
+                UserName = applicationUser.UserName,
+                Email = applicationUser.Email,
+                PhoneNumber = applicationUser.PhoneNumber
+            };
+            
+            return View(model);
         }
 
         [HttpGet]

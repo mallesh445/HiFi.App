@@ -38,7 +38,7 @@ namespace HiFi.WebApplication.Controllers
             _shoppingCart = shoppingCart;
             _logger = logger;
             _memoryCache = memCache;
-            _cacheService=cacheService;
+            _cacheService = cacheService;
         }
         public async Task<IActionResult> Index()
         {

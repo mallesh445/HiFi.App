@@ -1,0 +1,81 @@
+﻿@model IEnumerable<IdentityUser>
+@{
+    ViewData["Title"] = "List Users";
+}
+
+<section class="container-fluid">
+    <div class="clearfix panel-body MainHeaderColor">
+        <div class="pull-left MainHeaderColor" style="font-size: 26px;">Users List</div>
+        <div></div>
+        <div class="pull-right">
+            <a class="btn bg-blue" asp-action="Create"><i class="fa fa-plus-square"></i>Add New</a>
+            @*<button type="button" class="btn bg-olive" data-toggle="modal" data-target="#myModal">
+                <i class="fa fa-download"></i> Import
+            </button>
+            <button type="button" class="btn btn-success" id="btnExportData">
+                <i class="fa fa-upload"></i>
+                Export
+            </button>*@
+        </div>
+    </div>
+    <div class="content panel-body">
+        <div id="WrapTables">
+            <table id="adminProductTable" class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <td>
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </td>
+                        <th>Operations</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PhoneNumber)
+                            </td>
+                            
+                            <td style="width:150px;">
+                                <div class="btn-group" role="group">
+                                    <a type="button" class="btn btn-primary" href="@Url.Action("EditUser",new { id = item.Id })"
+                                       data-toggle="tooltip" title="Edit" data-placement="left">
+                                        <i class="fa fal fa-edit"></i>
+                                    </a>
+                                    <a type="button" class="btn btn-success" href="@Url.Action("Details",new { id = item.Id })"
+                                       data-toggle="tooltip" title="Details" data-placement="bottom">
+                                        <i class="fa far fa-list-alt"></i>
+                                    </a>
+                                    <a type="button" class="btn btn-danger" href="@Url.Action("Delete",new { id = item.Id })"
+                                       data-toggle="tooltip" title="Delete" data-placement="right">
+                                        <i class="fa far fa-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</section>
